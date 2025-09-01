@@ -3520,7 +3520,7 @@ function submitCustomerInfo() {
         }
         
         // Redirect to success page
-        window.location.href = 'http://localhost:3031/success.html';
+        window.location.href = '/success.html';
         
         // Note: Button state will be reset when page redirects
         // No need to reset here as we're leaving the page
