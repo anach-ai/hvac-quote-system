@@ -207,11 +207,11 @@
 
 @media (max-width: 480px) {
     .fixed-summary-content {
-        padding: var(--spacing-md);
+        padding: var(--spacing-sm);
     }
     
     .fixed-summary-header {
-        padding: var(--spacing-sm) var(--spacing-md);
+        padding: var(--spacing-xs) var(--spacing-sm);
     }
     
     .fixed-summary-title {
@@ -246,11 +246,11 @@
 
 @media (max-width: 360px) {
     .fixed-summary-content {
-        padding: var(--spacing-sm);
+        padding: var(--spacing-xs);
     }
     
     .fixed-summary-header {
-        padding: var(--spacing-xs) var(--spacing-sm);
+        padding: var(--spacing-xs);
     }
     
     .fixed-quote-actions {
