@@ -1,0 +1,278 @@
+/* ===== FIXED BOTTOM QUOTE SUMMARY (MOBILE) ===== */
+
+.fixed-quote-summary {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    width: 100%;
+    background: rgba(255, 255, 255, 0.98);
+    backdrop-filter: blur(20px);
+    border-top: 2px solid var(--primary-blue);
+    box-shadow: 0 -8px 32px rgba(0, 0, 0, 0.15);
+    z-index: 9999;
+    transform: translateY(100%);
+    transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    display: none;
+}
+
+.fixed-quote-summary.show {
+    transform: translateY(0);
+}
+
+.fixed-summary-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: var(--spacing-xs) var(--spacing-sm);
+    background: linear-gradient(135deg, var(--primary-blue) 0%, var(--primary-blue-dark) 100%);
+    color: white;
+    border-radius: var(--radius-xl) var(--radius-xl) 0 0;
+}
+
+.fixed-summary-title {
+    font-size: clamp(0.875rem, 3vw, 1rem);
+    font-weight: 700;
+    margin: 0;
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-xs);
+}
+
+.fixed-summary-title i {
+    width: 18px;
+    height: 18px;
+    color: rgba(255, 255, 255, 0.9);
+}
+
+.fixed-summary-toggle {
+    background: rgba(255, 255, 255, 0.2);
+    border: none;
+    border-radius: 50%;
+    width: 28px;
+    height: 28px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    color: white;
+}
+
+.fixed-summary-toggle:hover {
+    background: rgba(255, 255, 255, 0.3);
+    transform: scale(1.1);
+}
+
+.fixed-summary-toggle i {
+    width: 14px;
+    height: 14px;
+    transition: transform 0.3s ease;
+}
+
+.fixed-summary-toggle[aria-expanded="true"] i {
+    transform: rotate(180deg);
+}
+
+.fixed-summary-content {
+    max-height: 180px;
+    overflow-y: auto;
+    padding: var(--spacing-sm);
+    background: rgba(255, 255, 255, 0.95);
+}
+
+.fixed-summary-stats {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--spacing-md);
+    margin-bottom: var(--spacing-md);
+}
+
+
+
+.fixed-summary-total {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: var(--spacing-sm);
+    background: linear-gradient(135deg, rgba(59, 130, 246, 0.1) 0%, rgba(59, 130, 246, 0.05) 100%);
+    border-radius: var(--radius-lg);
+    border: 2px solid rgba(59, 130, 246, 0.2);
+    flex: 1;
+}
+
+.fixed-total-label {
+    font-size: clamp(0.875rem, 2.5vw, 1rem);
+    font-weight: 600;
+    color: var(--gray-800);
+    margin-bottom: var(--spacing-xs);
+}
+
+.fixed-total-amount {
+    font-size: clamp(1.125rem, 3vw, 1.25rem);
+    font-weight: 700;
+    color: var(--primary-blue);
+}
+
+.fixed-timeline-estimate {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: var(--spacing-sm);
+    background: rgba(255, 140, 66, 0.1);
+    border-radius: var(--radius-lg);
+    border: 2px solid rgba(255, 140, 66, 0.2);
+    flex: 1;
+}
+
+.fixed-timeline-title {
+    font-size: var(--font-size-sm);
+    font-weight: 600;
+    color: var(--gray-800);
+    margin: 0 0 var(--spacing-xs) 0;
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+}
+
+.fixed-timeline-title i {
+    width: 16px;
+    height: 16px;
+    color: var(--primary-orange);
+}
+
+.fixed-timeline-label {
+    font-size: clamp(0.875rem, 2.5vw, 1rem);
+    font-weight: 600;
+    color: var(--gray-800);
+    margin-bottom: var(--spacing-xs);
+}
+
+.fixed-quote-actions {
+    display: flex;
+    gap: var(--spacing-md);
+    flex-wrap: nowrap;
+}
+
+.fixed-quote-actions .btn {
+    flex: 1;
+    justify-content: center;
+    min-height: 36px;
+    font-weight: 600;
+    min-width: 0;
+    white-space: nowrap;
+}
+
+/* Mobile-specific styles */
+@media (max-width: 768px) {
+    .fixed-quote-summary {
+        display: block;
+    }
+    
+    .quote-sidebar {
+        display: none;
+    }
+    
+    .quote-main {
+        margin-bottom: 120px; /* Space for fixed summary */
+    }
+    
+    /* Ensure buttons don't wrap on medium mobile screens */
+    .fixed-quote-actions {
+        flex-wrap: nowrap;
+    }
+    
+    .fixed-quote-actions .btn {
+        min-width: 0;
+        white-space: nowrap;
+    }
+    
+    /* Medium mobile font optimization */
+    .fixed-summary-title {
+        font-size: clamp(0.875rem, 2.5vw, 1rem);
+    }
+    
+    .fixed-total-label,
+    .fixed-timeline-label {
+        font-size: clamp(0.875rem, 2vw, 1rem);
+    }
+    
+    .fixed-total-amount {
+        font-size: clamp(1.125rem, 2.5vw, 1.25rem);
+    }
+}
+
+@media (max-width: 480px) {
+    .fixed-summary-content {
+        padding: var(--spacing-md);
+    }
+    
+    .fixed-summary-header {
+        padding: var(--spacing-sm) var(--spacing-md);
+    }
+    
+    .fixed-summary-title {
+        font-size: clamp(1rem, 4vw, 1.125rem);
+    }
+    
+    .fixed-total-label,
+    .fixed-timeline-label {
+        font-size: clamp(1rem, 3vw, 1.125rem);
+    }
+    
+    .fixed-total-amount {
+        font-size: clamp(1.25rem, 4vw, 1.5rem);
+    }
+    
+    .fixed-quote-actions {
+        flex-direction: row;
+        gap: var(--spacing-sm);
+        flex-wrap: nowrap;
+    }
+    
+    .fixed-quote-actions .btn {
+        flex: 1;
+        min-width: 0;
+        white-space: nowrap;
+    }
+    
+    .quote-main {
+        margin-bottom: 140px; /* More space for mobile */
+    }
+}
+
+@media (max-width: 360px) {
+    .fixed-summary-content {
+        padding: var(--spacing-sm);
+    }
+    
+    .fixed-summary-header {
+        padding: var(--spacing-xs) var(--spacing-sm);
+    }
+    
+    .fixed-quote-actions {
+        gap: var(--spacing-xs);
+    }
+    
+    .quote-main {
+        margin-bottom: 150px; /* Even more space for small screens */
+    }
+}
+
+/* Desktop: Hide fixed summary */
+@media (min-width: 769px) {
+    .fixed-quote-summary {
+        display: none;
+    }
+    
+    .quote-sidebar {
+        display: flex;
+    }
+    
+    .quote-main {
+        margin-bottom: 0;
+    }
+}
