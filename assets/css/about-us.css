@@ -660,3 +660,125 @@
         font-size: 1rem;
     }
 }
+
+/* ===== HERO CARD MOBILE OPTIMIZATION ===== */
+
+/* Tablet and below */
+@media (max-width: 768px) {
+    .hero-card {
+        max-width: 100%;
+        width: 100%;
+        margin: 0 auto;
+        padding: var(--spacing-lg);
+        order: 2; /* Move card below text on mobile */
+    }
+    
+    .hero-card-header {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        gap: var(--spacing-md);
+        margin-bottom: var(--spacing-lg);
+    }
+    
+    .developer-info {
+        flex-direction: column;
+        align-items: center;
+        gap: var(--spacing-sm);
+        text-align: center;
+    }
+    
+    .developer-info h3 {
+        font-size: 1.5rem;
+        margin-bottom: var(--spacing-xs);
+    }
+    
+    .developer-info p {
+        font-size: 1rem;
+        margin: 0;
+    }
+    
+    .hero-card-content {
+        text-align: center;
+        padding-top: var(--spacing-md);
+    }
+    
+    .hero-card-content p {
+        font-size: 1rem;
+        line-height: 1.6;
+        margin: 0;
+    }
+}
+
+/* Mobile devices */
+@media (max-width: 480px) {
+    .hero-card {
+        padding: var(--spacing-md);
+        margin: var(--spacing-md) 0;
+        border-radius: var(--border-radius-lg);
+    }
+    
+    .hero-card-header {
+        gap: var(--spacing-sm);
+        margin-bottom: var(--spacing-md);
+    }
+    
+    .developer-avatar {
+        width: 50px;
+        height: 50px;
+    }
+    
+    .developer-avatar i {
+        width: 24px;
+        height: 24px;
+    }
+    
+    .developer-info h3 {
+        font-size: 1.25rem;
+    }
+    
+    .developer-info p {
+        font-size: 0.875rem;
+    }
+    
+    .hero-card-content p {
+        font-size: 0.875rem;
+        line-height: 1.5;
+    }
+}
+
+/* Extra small mobile */
+@media (max-width: 360px) {
+    .hero-card {
+        padding: var(--spacing-sm);
+        margin: var(--spacing-sm) 0;
+    }
+    
+    .hero-card-header {
+        gap: var(--spacing-xs);
+        margin-bottom: var(--spacing-sm);
+    }
+    
+    .developer-avatar {
+        width: 45px;
+        height: 45px;
+    }
+    
+    .developer-avatar i {
+        width: 20px;
+        height: 20px;
+    }
+    
+    .developer-info h3 {
+        font-size: 1.125rem;
+    }
+    
+    .developer-info p {
+        font-size: 0.8rem;
+    }
+    
+    .hero-card-content p {
+        font-size: 0.8rem;
+        line-height: 1.4;
+    }
+}
