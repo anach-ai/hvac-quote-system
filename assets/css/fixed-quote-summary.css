@@ -262,6 +262,82 @@
     }
 }
 
+/* Small height screens - reduce padding for better space utilization */
+@media (max-height: 600px) {
+    .fixed-summary-content {
+        padding: 0.125rem; /* 2px - very minimal padding */
+        max-height: 140px; /* Reduce max height for small screens */
+    }
+    
+    .fixed-summary-header {
+        padding: 0.125rem 0.25rem; /* 2px vertical, 4px horizontal */
+    }
+    
+    .fixed-summary-stats {
+        margin-bottom: 0.25rem; /* 4px */
+        gap: 0.25rem; /* 4px */
+    }
+    
+    .fixed-quote-actions {
+        gap: 0.25rem; /* 4px */
+    }
+    
+    .fixed-quote-actions .btn {
+        padding: 0.25rem 0.5rem; /* 4px vertical, 8px horizontal */
+        font-size: 0.75rem; /* Smaller font for small heights */
+    }
+    
+    .fixed-summary-title {
+        font-size: 0.875rem; /* Smaller title for small heights */
+    }
+    
+    .fixed-total-amount {
+        font-size: 1rem; /* Smaller amount for small heights */
+    }
+    
+    .fixed-timeline-estimate {
+        font-size: 0.75rem; /* Smaller timeline for small heights */
+    }
+}
+
+/* Extra small height screens - ultra-compact layout */
+@media (max-height: 500px) {
+    .fixed-summary-content {
+        padding: 0.0625rem; /* 1px - minimal padding */
+        max-height: 100px; /* Ultra-compact height for very small screens */
+    }
+    
+    .fixed-summary-header {
+        padding: 0.0625rem 0.125rem; /* 1px vertical, 2px horizontal */
+    }
+    
+    .fixed-summary-stats {
+        margin-bottom: 0.125rem; /* 2px */
+        gap: 0.125rem; /* 2px */
+    }
+    
+    .fixed-quote-actions {
+        gap: 0.125rem; /* 2px */
+    }
+    
+    .fixed-quote-actions .btn {
+        padding: 0.125rem 0.25rem; /* 2px vertical, 4px horizontal */
+        font-size: 0.6875rem; /* Even smaller font */
+    }
+    
+    .fixed-summary-title {
+        font-size: 0.75rem; /* Very small title */
+    }
+    
+    .fixed-total-amount {
+        font-size: 0.875rem; /* Very small amount */
+    }
+    
+    .fixed-timeline-estimate {
+        font-size: 0.625rem; /* Very small timeline */
+    }
+}
+
 /* Desktop: Hide fixed summary */
 @media (min-width: 769px) {
     .fixed-quote-summary {

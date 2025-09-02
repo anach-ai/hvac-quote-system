@@ -4839,19 +4839,29 @@ document.addEventListener('DOMContentLoaded', function() {
             const fixedSummaryContent = document.getElementById('fixedSummaryContent'
             const fixedSummaryToggle = document.getElementById('fixedSummaryToggle'
             if (fixedSummaryContent && fixedSummaryToggle) {
-                fixedSummaryContent.style.maxHeight = '180px';
-                fixedSummaryToggle.setAttribute('aria-expanded', 'true'
+                // Dynamic height based on screen height for better mobile experience
+                const screenHeight = window.innerHeight;
+                let maxHeight = '180px'; // Default height
+                
+                if (screenHeight <= 500) {
+                    maxHeight = '100px'; // Ultra-compact for very small screens
+                } else if (screenHeight <= 600) {
+                    maxHeight = '140px'; // Compact for small screens
+                }
+                
+                fixedSummaryContent.style.maxHeight = maxHeight;
+                fixedSummaryToggle.setAttribute('aria-expanded', 'true');
             }
             
             // On mobile, just scroll down a reasonable amount instead of to the very bottom
             const currentScroll = window.pageYOffset;
-            const reasonableScrollDistance = Math.min(300, window.innerHeight * 0.3 // Max 300px or 30% of viewport
-            const targetPosition = Math.min(currentScroll + reasonableScrollDistance, document.body.scrollHeight - window.innerHeight
+            const reasonableScrollDistance = Math.min(300, window.innerHeight * 0.3); // Max 300px or 30% of viewport
+            const targetPosition = Math.min(currentScroll + reasonableScrollDistance, document.body.scrollHeight - window.innerHeight);
             
             window.scrollTo({
                 top: targetPosition,
                 behavior: 'smooth'
-            }
+            });
             
             // Add highlight effect to fixed summary
             fixedQuoteSummary.style.transition = 'box-shadow 0.3s ease';
@@ -4929,6 +4939,17 @@ document.addEventListener('DOMContentLoaded', function() {
     
     if (!fixedQuoteSummary || !fixedSummaryToggle || !fixedSummaryContent) return;
     
+    // Helper function to get dynamic height based on screen size
+    function getDynamicHeight() {
+        const screenHeight = window.innerHeight;
+        if (screenHeight <= 500) {
+            return '100px'; // Ultra-compact for very small screens
+        } else if (screenHeight <= 600) {
+            return '140px'; // Compact for small screens
+        }
+        return '180px'; // Default height
+    }
+    
     // Toggle fixed quote summary
     function toggleFixedSummary() {
         const isExpanded = fixedSummaryToggle.getAttribute('aria-expanded') === 'true';
@@ -4936,13 +4957,13 @@ document.addEventListener('DOMContentLoaded', function() {
         if (isExpanded) {
             // Collapse
             fixedSummaryContent.style.maxHeight = '0';
-            fixedSummaryToggle.setAttribute('aria-expanded', 'false'
-            fixedQuoteSummary.classList.remove('show'
+            fixedSummaryToggle.setAttribute('aria-expanded', 'false');
+            fixedQuoteSummary.classList.remove('show');
         } else {
             // Expand
-            fixedSummaryContent.style.maxHeight = '180px';
-            fixedSummaryToggle.setAttribute('aria-expanded', 'true'
-            fixedQuoteSummary.classList.add('show'
+            fixedSummaryContent.style.maxHeight = getDynamicHeight();
+            fixedSummaryToggle.setAttribute('aria-expanded', 'true');
+            fixedQuoteSummary.classList.add('show');
         }
     }
     
@@ -4952,9 +4973,9 @@ document.addEventListener('DOMContentLoaded', function() {
     // Show fixed summary when items are selected (mobile only)
     function showFixedSummaryIfMobile() {
         if (window.innerWidth <= 768) {
-            fixedQuoteSummary.classList.add('show'
-            fixedSummaryContent.style.maxHeight = '180px';
-            fixedSummaryToggle.setAttribute('aria-expanded', 'true'
+            fixedQuoteSummary.classList.add('show');
+            fixedSummaryContent.style.maxHeight = getDynamicHeight();
+            fixedSummaryToggle.setAttribute('aria-expanded', 'true');
         }
     }
     
