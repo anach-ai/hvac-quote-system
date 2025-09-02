@@ -202,8 +202,7 @@ export class Modal extends BaseComponent {
             this.emit('modalOpen', { modal: this });
             
         } catch (error) {
-            console.error('Error opening modal:', error);
-        }
+            }
     }
     
     close() {
@@ -222,8 +221,7 @@ export class Modal extends BaseComponent {
             }
             
         } catch (error) {
-            console.error('Error closing modal:', error);
-        }
+            }
     }
     
     finishClose() {

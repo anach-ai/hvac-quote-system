@@ -129,13 +129,11 @@ export class CardRenderer {
     renderCard(type, data, containerId) {
         const container = document.getElementById(containerId);
         if (!container) {
-            console.error(`Container ${containerId} not found`);
             return false;
         }
         
         const template = this.templates[type];
         if (!template) {
-            console.error(`Template for type ${type} not found`);
             return false;
         }
         
@@ -153,7 +151,6 @@ export class CardRenderer {
             
             return true;
         } catch (error) {
-            console.error(`Error rendering ${type} card:`, error);
             return false;
         }
     }
@@ -162,13 +159,11 @@ export class CardRenderer {
     renderCards(type, dataArray, containerId) {
         const container = document.getElementById(containerId);
         if (!container) {
-            console.error(`Container ${containerId} not found`);
             return false;
         }
         
         const template = this.templates[type];
         if (!template) {
-            console.error(`Template for type ${type} not found`);
             return false;
         }
         
@@ -186,7 +181,6 @@ export class CardRenderer {
             
             return true;
         } catch (error) {
-            console.error(`Error rendering ${type} cards:`, error);
             return false;
         }
     }
@@ -195,7 +189,6 @@ export class CardRenderer {
     createCardElement(type, data) {
         const template = this.templates[type];
         if (!template) {
-            console.error(`Template for type ${type} not found`);
             return null;
         }
         
@@ -205,7 +198,6 @@ export class CardRenderer {
             tempDiv.innerHTML = html;
             return tempDiv.firstElementChild;
         } catch (error) {
-            console.error(`Error creating ${type} card element:`, error);
             return null;
         }
     }

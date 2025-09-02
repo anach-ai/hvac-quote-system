@@ -119,7 +119,6 @@ export class BaseComponent {
      */
     mount(parent) {
         if (this.isDestroyed) {
-            console.warn(`Component ${this.id} is destroyed, cannot mount`);
             return;
         }
         
@@ -173,7 +172,6 @@ export class BaseComponent {
      */
     update(newState = {}, reRender = true) {
         if (this.isDestroyed) {
-            console.warn(`Component ${this.id} is destroyed, cannot update`);
             return;
         }
         

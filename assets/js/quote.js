@@ -137,7 +137,6 @@ class VirtualRenderer {
                 // Small delay to prevent UI blocking
                 await new Promise(resolve => setTimeout(resolve, this.processingDelay));
             } catch (error) {
-                console.error('Error in virtual render:', error);
                 this.completedRenders++;
                 this.updateProgress();
             }
@@ -171,7 +170,7 @@ class VirtualRenderer {
 
 class QuoteSystem {
     constructor() {
-        console.log('QuoteSystem constructor called');
+        
         
         // Initialize Virtual Renderer
         this.virtualRenderer = new VirtualRenderer();
@@ -375,7 +374,7 @@ class QuoteSystem {
         
 
         
-        console.log('Calling init()...');
+        
         this.init();
     }
     
@@ -407,7 +406,7 @@ class QuoteSystem {
                     this.selectedAddonServices = new Set(data.selectedAddonServices || []);
                     this.totalPrice = data.totalPrice || 0;
                     
-                    console.log('Loaded saved data from localStorage');
+                    
                     return true;
                 } else {
                     // Clear old data
@@ -415,7 +414,6 @@ class QuoteSystem {
                 }
             }
         } catch (error) {
-            console.error('Error loading from localStorage:', error);
             localStorage.removeItem('hvacQuoteData');
         }
         return false;
@@ -665,7 +663,7 @@ class QuoteSystem {
                 const expectedPrice = currentPrice.toString();
                 
                 if (displayedPrice !== expectedPrice) {
-                    console.log('Price mismatch detected, updating...');
+                    
                     summaryTotalElement.textContent = `$${currentPrice.toLocaleString()}`;
                     this.saveToLocalStorage();
                 }
@@ -683,7 +681,7 @@ class QuoteSystem {
                         const expectedPrice = currentPrice.toString();
                         
                         if (displayedPrice !== expectedPrice) {
-                            console.log('Mutation observer detected price change, correcting...');
+                            
                             summaryTotalElement.textContent = `$${currentPrice.toLocaleString()}`;
                             this.saveToLocalStorage();
                         }
@@ -735,7 +733,7 @@ class QuoteSystem {
     
     async loadData() {
         try {
-            console.log('Loading quote data...');
+            
             
             // Show loading state
             this.showLoadingState();
@@ -756,20 +754,13 @@ class QuoteSystem {
                 })
             ]);
             
-            console.log('Packages loaded:', packages);
-            console.log('Packages length:', packages.length);
-            console.log('First package:', packages[0]);
-            console.log('All package IDs:', packages.map(p => p.id));
-            console.log('Additional features loaded:', additionalFeatures);
-            console.log('Addon services loaded:', addonServices);
-            console.log('Additional features length:', additionalFeatures ? additionalFeatures.length : 'undefined');
-            console.log('Addon services length:', addonServices ? addonServices.length : 'undefined');
+                    
             
             this.packages = packages;
             this.additionalFeatures = additionalFeatures;
             this.addonServices = addonServices;
             
-            console.log('Rendering packages...');
+            
             
             // Use Virtual Renderer for progressive rendering
             this.virtualRenderer.queueRender(() => this.renderPackages(), 'high');
@@ -783,8 +774,6 @@ class QuoteSystem {
             this.showNotification('Quote system loaded successfully!', 'success');
             
         } catch (error) {
-            console.error('Error loading quote data:', error);
-            
             // Hide loading state
             this.hideLoadingState();
             
@@ -792,7 +781,7 @@ class QuoteSystem {
             this.showNotification(`Failed to load data: ${error.message}`, 'error');
             
             // Fallback: Create some basic packages if API fails
-            console.log('Creating fallback packages...');
+            
             this.createFallbackData();
         }
     }
@@ -1159,19 +1148,16 @@ class QuoteSystem {
     }
     
     renderPackages() {
-        console.log('renderPackages called');
+        
         const packageFeaturesGrid = document.getElementById('packageFeaturesGrid');
-        console.log('packageFeaturesGrid element:', packageFeaturesGrid);
+        
         if (!packageFeaturesGrid) {
-            console.error('packageFeaturesGrid element not found');
             return;
         }
         
-        console.log('this.packages:', this.packages);
-        console.log('this.packages.length:', this.packages ? this.packages.length : 'undefined');
+        
         
         if (!this.packages || this.packages.length === 0) {
-            console.error('No packages data available');
             return;
         }
 
@@ -1185,7 +1171,7 @@ class QuoteSystem {
                     </div>
         `).join('');
         
-        console.log('Generated features HTML:', featuresHTML);
+        
         packageFeaturesGrid.innerHTML = featuresHTML;
         
         // Auto-select the package
@@ -1195,33 +1181,19 @@ class QuoteSystem {
         // Initialize Lucide icons
         lucide.createIcons();
         
-        console.log('Package features rendered and auto-selected successfully');
+        
     }
     
     renderEmergencyServices() {
         const emergencyGrid = document.getElementById('emergencyGrid');
         if (!emergencyGrid) {
-            console.log('Emergency grid not found');
             return;
         }
-        
-        console.log('Rendering emergency services. Available services:', this.emergencyServices);
-        console.log('Selected emergency service:', this.selectedEmergency);
-        console.log('Selected package:', this.selectedPackage);
-        console.log('Available packages:', this.packages);
         
         emergencyGrid.innerHTML = this.emergencyServices.map(service => {
             // Check if this emergency service is included in the package
             const isIncluded = this.isComponentIncluded(service.name);
             const isSelected = this.selectedEmergency === service.id;
-            
-            console.log(`Emergency service ${service.name}: isIncluded = ${isIncluded}, isSelected = ${isSelected}`);
-            
-
-            
-
-            
-
             
             return `
                 <div class="emergency-card ${service.popular ? 'featured' : ''} ${isIncluded ? 'included-in-package' : ''} ${isSelected ? 'selected' : ''}" data-emergency-id="${service.id}">
@@ -1243,14 +1215,11 @@ class QuoteSystem {
         
         // Add click listeners for emergency services
         const emergencyCards = emergencyGrid.querySelectorAll('.emergency-card');
-        console.log(`Found ${emergencyCards.length} emergency cards`);
-        
         emergencyCards.forEach(card => {
             const emergencyId = card.dataset.emergencyId;
             
             // Add click listener to the card itself
             card.addEventListener('click', (e) => {
-                console.log(`Emergency card clicked: ${emergencyId}`);
                 e.preventDefault();
                 e.stopPropagation();
                 
@@ -1273,7 +1242,6 @@ class QuoteSystem {
             // Also add click listeners to all child elements to ensure the entire card is clickable
             card.querySelectorAll('*').forEach(child => {
                 child.addEventListener('click', (e) => {
-                    console.log(`Emergency card child clicked: ${emergencyId}`);
                     e.preventDefault();
                     e.stopPropagation();
                     
@@ -1311,8 +1279,6 @@ class QuoteSystem {
             // Check if this service area is included in the package
             const isIncluded = this.isComponentIncluded(area.name);
             const isSelected = this.selectedServiceArea === area.id;
-            
-            console.log(`Service area ${area.name}: isIncluded = ${isIncluded}, isSelected = ${isSelected}`);
             
             return `
                 <div class="area-card ${isIncluded ? 'included-in-package' : ''} ${isSelected ? 'selected' : ''}" data-area-id="${area.id}">
@@ -1378,16 +1344,13 @@ class QuoteSystem {
     renderHvacFeatures() {
         const hvacGrid = document.getElementById('hvacFeaturesGrid');
         if (!hvacGrid) {
-            console.log('HVAC grid not found');
             return;
         }
         
         // Get HVAC features from dedicated API endpoint
         const hvacFeatures = this.hvacFeatures || [];
         
-        console.log('Rendering HVAC features. Available:', hvacFeatures);
-        console.log('HVAC features length:', hvacFeatures.length);
-        console.log('Selected HVAC features:', Array.from(this.selectedHvacFeatures));
+        );
         
         hvacGrid.innerHTML = hvacFeatures.map(feature => {
             const isSelected = this.selectedHvacFeatures.has(feature.id);
@@ -1456,16 +1419,13 @@ class QuoteSystem {
     renderApplianceFeatures() {
         const applianceGrid = document.getElementById('applianceFeaturesGrid');
         if (!applianceGrid) {
-            console.log('Appliance grid not found');
             return;
         }
         
         // Get Appliance features from dedicated API endpoint
         const applianceFeatures = this.applianceFeatures || [];
         
-        console.log('Rendering Appliance features. Available:', applianceFeatures);
-        console.log('Appliance features length:', applianceFeatures.length);
-        console.log('Selected Appliance features:', Array.from(this.selectedApplianceFeatures));
+        );
         
         applianceGrid.innerHTML = applianceFeatures.map(feature => {
             const isSelected = this.selectedApplianceFeatures.has(feature.id);
@@ -1534,15 +1494,12 @@ class QuoteSystem {
     renderContactFeatures() {
         const contactGrid = document.querySelector('.contact-features-grid');
         if (!contactGrid) {
-            console.log('Contact features grid not found');
             return;
         }
         
-        console.log('Rendering contact features. Available features:', this.contactFeatures);
-        console.log('Selected contact features:', Array.from(this.selectedContactFeatures));
+        );
         
         if (!this.contactFeatures || this.contactFeatures.length === 0) {
-            console.log('No contact features data available');
             contactGrid.innerHTML = '<p>No contact features available</p>';
             return;
         }
@@ -1551,8 +1508,6 @@ class QuoteSystem {
             const isSelected = this.selectedContactFeatures.has(feature.id);
             const isIncluded = this.isComponentIncluded(feature.name);
             const displayPrice = isIncluded ? 0 : feature.price;
-            console.log(`Contact feature ${feature.id}: isSelected = ${isSelected}, isIncluded = ${isIncluded}`);
-            
             return `
                 <div class="contact-feature-card ${isSelected ? 'selected' : ''} ${isIncluded ? 'included-in-package' : ''}" data-feature-id="${feature.id}">
                 <div class="contact-feature-header">
@@ -1569,16 +1524,11 @@ class QuoteSystem {
         
         // Add click listeners
         const contactCards = contactGrid.querySelectorAll('.contact-feature-card');
-        console.log(`Found ${contactCards.length} contact feature cards`);
-        
         contactCards.forEach(card => {
             const featureId = card.dataset.featureId;
             const isIncluded = card.classList.contains('included-in-package');
-            console.log(`Adding click listener for contact feature: ${featureId}`);
-            
             // Add click listener to the entire card
             card.addEventListener('click', (e) => {
-                console.log(`Contact feature clicked: ${featureId}`);
                 e.preventDefault();
                 e.stopPropagation();
                 
@@ -1595,8 +1545,6 @@ class QuoteSystem {
             card.querySelectorAll('*').forEach(child => {
                 child.addEventListener('click', (e) => {
                     e.stopPropagation(); // Prevent bubbling
-                    console.log(`Contact feature child clicked: ${featureId}`);
-                    
                     // Don't allow toggling if feature is included in package
                     if (isIncluded) {
                         this.showNotification('This feature is already included in your package!', 'info');
@@ -1613,13 +1561,8 @@ class QuoteSystem {
     }
     
     renderAdditionalFeatures() {
-        console.log('=== RENDERING ADDITIONAL FEATURES ===');
-        console.log('Available additional features:', this.additionalFeatures);
-        console.log('Selected additional features:', this.selectedAdditionalFeatures);
-        
         const additionalFeaturesGrid = document.getElementById('additionalFeaturesGrid');
         if (!additionalFeaturesGrid) {
-            console.log('Additional Features grid not found: additionalFeaturesGrid');
             return;
         }
         
@@ -1633,9 +1576,7 @@ class QuoteSystem {
             const isIncluded = this.isComponentIncluded(feature.name);
             const displayPrice = isIncluded ? 0 : feature.price;
             
-            console.log('Feature timeline:', feature.name, feature.timeline, 'Using fallback:', !feature.timeline);
-                            
-                            return `
+            return `
                 <div class="feature-card ${isSelected ? 'selected' : ''} ${isIncluded ? 'included-in-package' : ''}" data-feature-id="${feature.id}">
                                     <div class="feature-header">
                         <i data-lucide="${feature.icon || 'settings'}" aria-hidden="true"></i>
@@ -1669,12 +1610,11 @@ class QuoteSystem {
     renderFeatureCategory(gridId, features, categoryName) {
         const featureGrid = document.getElementById(gridId);
         if (!featureGrid) {
-            console.log(`${categoryName} grid not found: ${gridId}`);
             return;
         }
         
         if (!features || features.length === 0) {
-            console.log(`No ${categoryName.toLowerCase()} available`);
+            } available`);
             featureGrid.innerHTML = `<div class="no-features"><i data-lucide="info"></i><p>No ${categoryName.toLowerCase()} available</p></div>`;
             return;
         }
@@ -1683,9 +1623,7 @@ class QuoteSystem {
             const isSelected = this.selectedAdditionalFeatures.has(feature.id);
             const isIncluded = this.isComponentIncluded(feature.name);
             const displayPrice = isIncluded ? 0 : feature.price;
-            console.log(`${categoryName} feature ${feature.id}: isSelected = ${isSelected}, isIncluded = ${isIncluded}`);
-                            
-                            return `
+            return `
                 <div class="feature-card ${isSelected ? 'selected' : ''} ${isIncluded ? 'included-in-package' : ''}" data-feature-id="${feature.id}">
                                     <div class="feature-header">
                                         <h4>${feature.name}</h4>
@@ -1706,7 +1644,6 @@ class QuoteSystem {
             
             // Add click listener to the card itself
             card.addEventListener('click', (e) => {
-                console.log(`${categoryName} feature clicked: ${featureId}`);
                 e.preventDefault();
                 e.stopPropagation();
                 
@@ -1725,8 +1662,6 @@ class QuoteSystem {
                 child.addEventListener('click', (e) => {
                     e.preventDefault();
                     e.stopPropagation();
-                    console.log(`${categoryName} feature child clicked: ${featureId}`);
-                    
                     // Don't allow toggling if feature is included in package
                     const feature = features.find(f => f.id === featureId);
                     if (feature && this.isComponentIncluded(feature.name)) {
@@ -1780,24 +1715,16 @@ class QuoteSystem {
     renderAddonServices() {
         const addonServicesGrid = document.getElementById('addonServicesGrid');
         if (!addonServicesGrid) {
-            console.log('Addon Services grid not found: addonServicesGrid');
             return;
         }
         
-        console.log('Rendering addon services. Available services:', this.addonServices);
-        console.log('Selected addon services:', this.selectedAddonServices);
-        
         if (!this.addonServices || this.addonServices.length === 0) {
-            console.log('No addon services data available');
             addonServicesGrid.innerHTML = '<p class="no-services">No addon services available</p>';
             return;
         }
         
         addonServicesGrid.innerHTML = this.addonServices.map(service => {
             const isSelected = this.selectedAddonServices.has(service.id);
-            console.log(`Addon service ${service.id}: isSelected = ${isSelected}`);
-            console.log('Addon timeline:', service.name, service.timeline, 'Using fallback:', !service.timeline);
-            
             return `
                 <div class="addon-card ${isSelected ? 'selected' : ''}" data-service-id="${service.id}">
                 <div class="addon-header">
@@ -1819,15 +1746,10 @@ class QuoteSystem {
         
         // Add click listeners
         const addonCards = addonServicesGrid.querySelectorAll('.addon-card');
-        console.log(`Found ${addonCards.length} addon service cards`);
-        
         addonCards.forEach(card => {
             const serviceId = card.dataset.serviceId;
-            console.log(`Adding click listener for addon service: ${serviceId}`);
-            
             // Add click listener to the entire card
             card.addEventListener('click', (e) => {
-                console.log(`Addon service clicked: ${serviceId}`);
                 this.toggleAddonService(serviceId, card);
             });
             
@@ -1835,7 +1757,6 @@ class QuoteSystem {
             card.querySelectorAll('*').forEach(child => {
                 child.addEventListener('click', (e) => {
                     e.stopPropagation(); // Prevent bubbling
-                    console.log(`Addon service child clicked: ${serviceId}`);
                     this.toggleAddonService(serviceId, card);
                 });
             });
@@ -1846,13 +1767,7 @@ class QuoteSystem {
     }
     
     renderComponents() {
-        console.log('=== RENDERING COMPONENTS ===');
-        console.log('Available components:', this.components);
-        console.log('Selected components:', Array.from(this.selectedComponents));
-        console.log('Pages components:', this.components?.pages);
-        console.log('Features components:', this.components?.features);
-        console.log('Technical components:', this.components?.technical);
-        
+        );
         // Update tab counts
         this.updateComponentTabCounts();
         
@@ -1860,15 +1775,12 @@ class QuoteSystem {
         const pagesGrid = document.getElementById('pagesGrid');
         if (pagesGrid) {
             if (!this.components.pages || this.components.pages.length === 0) {
-                console.log('No pages components available');
                 pagesGrid.innerHTML = '<div class="no-components"><i data-lucide="file-text"></i><p>No pages components available</p></div>';
             } else {
                 pagesGrid.innerHTML = this.components.pages.map(component => {
                     const isSelected = this.selectedComponents.has(component.id);
                     const isIncluded = this.isComponentIncluded(component.name);
                     const displayPrice = isIncluded ? 0 : component.price;
-                    console.log(`Component ${component.id}: isSelected = ${isSelected}, isIncluded = ${isIncluded}`);
-                    
                     return `
                         <div class="component-card ${isSelected ? 'selected' : ''} ${isIncluded ? 'included-in-package' : ''}" data-component-id="${component.id}">
                             <div class="component-header">
@@ -1892,15 +1804,10 @@ class QuoteSystem {
             
             // Add click listeners for pages
                 const pageCards = pagesGrid.querySelectorAll('.component-card');
-                console.log(`Found ${pageCards.length} page component cards`);
-                
                 pageCards.forEach(card => {
                     const componentId = card.dataset.componentId;
-                    console.log(`Adding click listener for page component: ${componentId}`);
-                    
                     // Add click listener to the card itself
                     card.addEventListener('click', (e) => {
-                        console.log(`Page component clicked: ${componentId}`);
                         e.preventDefault();
                         e.stopPropagation();
                         
@@ -1919,8 +1826,6 @@ class QuoteSystem {
                         child.addEventListener('click', (e) => {
                             e.preventDefault();
                             e.stopPropagation();
-                            console.log(`Page component child clicked: ${componentId}`);
-                            
                             // Don't allow toggling if component is included in package
                             const component = this.findComponentById(componentId);
                             if (component && this.isComponentIncluded(component.name)) {
@@ -1939,15 +1844,12 @@ class QuoteSystem {
         const featuresGrid = document.getElementById('featuresGrid');
         if (featuresGrid) {
             if (!this.components.features || this.components.features.length === 0) {
-                console.log('No features components available');
                 featuresGrid.innerHTML = '<div class="no-components"><i data-lucide="settings"></i><p>No features components available</p></div>';
             } else {
                 featuresGrid.innerHTML = this.components.features.map(component => {
                     const isSelected = this.selectedComponents.has(component.id);
                     const isIncluded = this.isComponentIncluded(component.name);
                     const displayPrice = isIncluded ? 0 : component.price;
-                    console.log(`Component ${component.id}: isSelected = ${isSelected}, isIncluded = ${isIncluded}`);
-                    
                     return `
                         <div class="component-card ${isSelected ? 'selected' : ''} ${isIncluded ? 'included-in-package' : ''}" data-component-id="${component.id}">
                             <div class="component-header">
@@ -1971,15 +1873,10 @@ class QuoteSystem {
             
             // Add click listeners for features
                 const featureCards = featuresGrid.querySelectorAll('.component-card');
-                console.log(`Found ${featureCards.length} feature component cards`);
-                
                 featureCards.forEach(card => {
                     const componentId = card.dataset.componentId;
-                    console.log(`Adding click listener for feature component: ${componentId}`);
-                    
                     // Add click listener to the card itself
                     card.addEventListener('click', (e) => {
-                        console.log(`Feature component clicked: ${componentId}`);
                         e.preventDefault();
                         e.stopPropagation();
                         
@@ -1998,8 +1895,6 @@ class QuoteSystem {
                         child.addEventListener('click', (e) => {
                             e.preventDefault();
                             e.stopPropagation();
-                            console.log(`Feature component child clicked: ${componentId}`);
-                            
                             // Don't allow toggling if component is included in package
                             const component = this.findComponentById(componentId);
                             if (component && this.isComponentIncluded(component.name)) {
@@ -2018,15 +1913,12 @@ class QuoteSystem {
         const technicalGrid = document.getElementById('technicalGrid');
         if (technicalGrid) {
             if (!this.components.technical || this.components.technical.length === 0) {
-                console.log('No technical components available');
                 technicalGrid.innerHTML = '<div class="no-components"><i data-lucide="server"></i><p>No technical components available</p></div>';
             } else {
                 technicalGrid.innerHTML = this.components.technical.map(component => {
                     const isSelected = this.selectedComponents.has(component.id);
                     const isIncluded = this.isComponentIncluded(component.name);
                     const displayPrice = isIncluded ? 0 : component.price;
-                    console.log(`Component ${component.id}: isSelected = ${isSelected}, isIncluded = ${isIncluded}`);
-                    
                     return `
                         <div class="component-card ${isSelected ? 'selected' : ''} ${isIncluded ? 'included-in-package' : ''}" data-component-id="${component.id}">
                             <div class="component-header">
@@ -2050,15 +1942,10 @@ class QuoteSystem {
             
             // Add click listeners for technical
                 const technicalCards = technicalGrid.querySelectorAll('.component-card');
-                console.log(`Found ${technicalCards.length} technical component cards`);
-                
                 technicalCards.forEach(card => {
                     const componentId = card.dataset.componentId;
-                    console.log(`Adding click listener for technical component: ${componentId}`);
-                    
                     // Add click listener to the card itself
                     card.addEventListener('click', (e) => {
-                        console.log(`Technical component clicked: ${componentId}`);
                         e.preventDefault();
                         e.stopPropagation();
                         
@@ -2077,8 +1964,6 @@ class QuoteSystem {
                         child.addEventListener('click', (e) => {
                             e.preventDefault();
                             e.stopPropagation();
-                            console.log(`Technical component child clicked: ${componentId}`);
-                            
                             // Don't allow toggling if component is included in package
                             const component = this.findComponentById(componentId);
                             if (component && this.isComponentIncluded(component.name)) {
@@ -2119,15 +2004,13 @@ class QuoteSystem {
         const standardEmergency = this.emergencyServices.find(s => s.id === 'standard-emergency');
         if (standardEmergency && this.isComponentIncluded(standardEmergency.name)) {
             this.selectedEmergency = 'standard-emergency';
-            console.log('Auto-selected Standard Emergency Service');
-        }
+            }
         
         // Auto-select Primary Service Zone when package is selected
         const primaryZone = this.serviceAreas.find(s => s.id === 'primary-zone');
         if (primaryZone && this.isComponentIncluded(primaryZone.name)) {
             this.selectedServiceArea = 'primary-zone';
-            console.log('Auto-selected Primary Service Zone');
-        }
+            }
         
         this.saveToLocalStorage(); // Save to localStorage
         
@@ -2149,16 +2032,12 @@ class QuoteSystem {
     
     selectEmergencyService(card) {
         const emergencyId = card.dataset.emergencyId;
-        console.log(`selectEmergencyService called with: ${emergencyId}`);
-        
         // Toggle selection - if already selected, deselect it
         if (this.selectedEmergency === emergencyId) {
             this.selectedEmergency = null;
-            console.log(`Deselected emergency service: ${emergencyId}`);
-        } else {
+            } else {
         this.selectedEmergency = emergencyId;
-            console.log(`Selected emergency service: ${emergencyId}`);
-        }
+            }
         
         // Re-render to update the UI
         this.virtualRenderer.queueRender(() => this.renderEmergencyServices(), 'normal');
@@ -2180,11 +2059,9 @@ class QuoteSystem {
         // Toggle selection - if already selected, deselect it
         if (this.selectedServiceArea === areaId) {
             this.selectedServiceArea = null;
-            console.log(`Deselected service area: ${areaId}`);
-        } else {
+            } else {
         this.selectedServiceArea = areaId;
-            console.log(`Selected service area: ${areaId}`);
-        }
+            }
         
         // Re-render to update the UI
         this.virtualRenderer.queueRender(() => this.renderServiceAreas(), 'normal');
@@ -2212,15 +2089,13 @@ class QuoteSystem {
             return;
         }
         
-        console.log(`Toggle feature: ${featureId}, current state:`, this.selectedAdditionalFeatures.has(featureId));
+        );
         
         if (this.selectedAdditionalFeatures.has(featureId)) {
             this.selectedAdditionalFeatures.delete(featureId);
-            console.log(`Deselected feature: ${featureId}`);
-        } else {
+            } else {
             this.selectedAdditionalFeatures.add(featureId);
-            console.log(`Selected feature: ${featureId}`);
-        }
+            }
         
         // Update visual state immediately
         this.updateFeatureVisualState(card, featureId);
@@ -2247,15 +2122,14 @@ class QuoteSystem {
         const feature = this.hvacFeatures?.find(f => f.id === featureId);
         if (!feature) return;
         
-        console.log(`Toggle HVAC feature: ${featureId}, current state:`, this.selectedHvacFeatures.has(featureId));
+        );
         
         // Handle mutually exclusive logic for HVAC Brand Support
         if (featureId === 'hvac-brand-support' || featureId === 'commercial-hvac-support') {
             if (this.selectedHvacFeatures.has(featureId)) {
                 // If already selected, deselect it
                 this.selectedHvacFeatures.delete(featureId);
-                console.log(`Deselected HVAC feature: ${featureId}`);
-            } else {
+                } else {
                 // If selecting one, deselect the other
                 if (featureId === 'hvac-brand-support') {
                     this.selectedHvacFeatures.delete('commercial-hvac-support');
@@ -2265,19 +2139,16 @@ class QuoteSystem {
                 
                 // Add selection to clicked card
                 this.selectedHvacFeatures.add(featureId);
-                console.log(`Selected HVAC feature: ${featureId}`);
-            }
+                }
         } else {
             // Regular multi-selection behavior for other features
         if (this.selectedHvacFeatures.has(featureId)) {
             // If already selected, deselect it
             this.selectedHvacFeatures.delete(featureId);
-                console.log(`Deselected HVAC feature: ${featureId}`);
-        } else {
+                } else {
             // Add selection to clicked card
             this.selectedHvacFeatures.add(featureId);
-                console.log(`Selected HVAC feature: ${featureId}`);
-            }
+                }
         }
         
         // Update visual state immediately
@@ -2331,15 +2202,14 @@ class QuoteSystem {
         const feature = this.applianceFeatures?.find(f => f.id === featureId);
         if (!feature) return;
         
-        console.log(`Toggle Appliance feature: ${featureId}, current state:`, this.selectedApplianceFeatures.has(featureId));
+        );
         
         // Handle mutually exclusive logic for Appliance Brand Support
         if (featureId === 'appliance-brand-support' || featureId === 'commercial-appliance-support') {
             if (this.selectedApplianceFeatures.has(featureId)) {
                 // If already selected, deselect it
                 this.selectedApplianceFeatures.delete(featureId);
-                console.log(`Deselected Appliance feature: ${featureId}`);
-            } else {
+                } else {
                 // If selecting one, deselect the other
                 if (featureId === 'appliance-brand-support') {
                     this.selectedApplianceFeatures.delete('commercial-appliance-support');
@@ -2349,19 +2219,16 @@ class QuoteSystem {
                 
                 // Add selection to clicked card
                 this.selectedApplianceFeatures.add(featureId);
-                console.log(`Selected Appliance feature: ${featureId}`);
-            }
+                }
         } else {
             // Regular multi-selection behavior for other features
         if (this.selectedApplianceFeatures.has(featureId)) {
             // If already selected, deselect it
             this.selectedApplianceFeatures.delete(featureId);
-                console.log(`Deselected Appliance feature: ${featureId}`);
-        } else {
+                } else {
             // Add selection to clicked card
             this.selectedApplianceFeatures.add(featureId);
-                console.log(`Selected Appliance feature: ${featureId}`);
-            }
+                }
         }
         
         // Update visual state immediately
@@ -2408,27 +2275,22 @@ class QuoteSystem {
     }
     
     toggleContactFeature(card) {
-        console.log(`toggleContactFeature called with card:`, card);
-        
         const featureId = card.dataset.featureId;
         if (!featureId) {
-            console.log('No featureId found in card dataset');
             return;
         }
         
-        console.log('Current selectedContactFeatures before toggle:', Array.from(this.selectedContactFeatures));
+        );
         
         if (this.selectedContactFeatures.has(featureId)) {
             this.selectedContactFeatures.delete(featureId);
             card.classList.remove('selected');
-            console.log(`Removed contact feature ${featureId} from selection`);
-        } else {
+            } else {
             this.selectedContactFeatures.add(featureId);
             card.classList.add('selected');
-            console.log(`Added contact feature ${featureId} to selection`);
-        }
+            }
         
-        console.log('Current selectedContactFeatures after toggle:', Array.from(this.selectedContactFeatures));
+        );
         
         // Re-render to update the UI
         this.virtualRenderer.queueRender(() => this.renderContactFeatures(), 'normal');
@@ -2438,30 +2300,25 @@ class QuoteSystem {
     }
     
     toggleAddon(addonId, card = null) {
-        console.log(`toggleAddon called with addonId: ${addonId}`);
-        
         // If no card provided, try to find it
         if (!card) {
             card = document.querySelector(`[data-addon-id="${addonId}"]`);
         }
         if (!card) {
-            console.log('Card not found for addonId:', addonId);
             return;
         }
         
-        console.log('Current selectedAddons before toggle:', Array.from(this.selectedAddons));
+        );
         
         if (this.selectedAddons.has(addonId)) {
             this.selectedAddons.delete(addonId);
             card.classList.remove('selected');
-            console.log(`Removed addon ${addonId} from selection`);
-        } else {
+            } else {
             this.selectedAddons.add(addonId);
             card.classList.add('selected');
-            console.log(`Added addon ${addonId} to selection`);
-        }
+            }
         
-        console.log('Current selectedAddons after toggle:', Array.from(this.selectedAddons));
+        );
         
         // Re-render to update the UI
         this.virtualRenderer.queueRender(() => this.renderAddons(), 'normal');
@@ -2471,36 +2328,30 @@ class QuoteSystem {
     }
     
     toggleComponent(componentId, card = null) {
-        console.log(`toggleComponent called with componentId: ${componentId}`);
-        
         // If no card provided, try to find it
         if (!card) {
             card = document.querySelector(`[data-component-id="${componentId}"]`);
         }
         if (!card) {
-            console.log('Card not found for componentId:', componentId);
             return;
         }
         
         // Check if component is included in package
         const component = this.findComponentById(componentId);
         if (component && this.isComponentIncluded(component.name)) {
-            console.log(`Component ${componentId} is included in package, cannot toggle`);
             this.showNotification('This component is already included in your package!', 'info');
             return;
         }
         
-        console.log('Current selectedComponents before toggle:', Array.from(this.selectedComponents));
+        );
         
         if (this.selectedComponents.has(componentId)) {
             this.selectedComponents.delete(componentId);
-            console.log(`Removed component ${componentId} from selection`);
-        } else {
+            } else {
             this.selectedComponents.add(componentId);
-            console.log(`Added component ${componentId} to selection`);
-        }
+            }
         
-        console.log('Current selectedComponents after toggle:', Array.from(this.selectedComponents));
+        );
         
         // Update the card's visual state immediately
         if (this.selectedComponents.has(componentId)) {
@@ -2595,12 +2446,8 @@ class QuoteSystem {
         // Check for includedFeatures first (new structure), then fallback to includedComponents
         const includedFeatures = selectedPackage.includedFeatures || selectedPackage.includedComponents || [];
         
-        console.log(`Checking if "${componentName}" is included in package. Included features:`, includedFeatures);
-        
         // Check if the component name exactly matches any included feature
         const isIncluded = includedFeatures.includes(componentName);
-        console.log(`Result: ${isIncluded}`);
-        
         return isIncluded;
     }
     
@@ -2941,7 +2788,6 @@ class QuoteSystem {
         
         // Prevent deletion of base package
         if (item.type === 'package') {
-            console.log('Cannot remove base package - it is required');
             return;
         }
         
@@ -2964,8 +2810,7 @@ class QuoteSystem {
         this.updateGenerateButton();
         this.saveToLocalStorage();
         
-        console.log(`Removed ${item.type}: ${item.name}`);
-    }
+        }
     
     deselectFeature(featureId) {
         // Remove selected class from feature card
@@ -3018,10 +2863,8 @@ class QuoteSystem {
                 selectedBadge.remove();
             }
             
-            console.log(`Deselected addon: ${addonId}`);
-        } else {
-            console.log(`Addon card not found for ID: ${addonId}`);
-        }
+            } else {
+            }
     }
     
     updateGenerateButton() {
@@ -3045,15 +2888,7 @@ class QuoteSystem {
                 generateBtn.title = 'Please select at least one package or additional feature to continue';
             }
             
-            console.log('Generate button update:', {
-                selectedPackage: this.selectedPackage,
-                additionalFeatures: this.selectedAdditionalFeatures.size,
-                addonServices: this.selectedAddonServices.size,
-                hasSelection: hasSelection,
-                shouldEnable: shouldEnable,
-                buttonDisabled: generateBtn.disabled
-            });
-        }
+            }
     }
     
     validatePersonalInfo() {
@@ -3107,15 +2942,10 @@ class QuoteSystem {
         const modal = document.getElementById('customerInfoModal');
         const isModalMode = modal && !modal.hasAttribute('hidden') && modal.classList.contains('show');
         
-        console.log('Modal element:', modal);
-        console.log('Modal has hidden:', modal ? modal.hasAttribute('hidden') : 'no modal');
-        console.log('Modal has show class:', modal ? modal.classList.contains('show') : 'no modal');
-        console.log('Is modal mode:', isModalMode);
-        
+        : 'no modal');
+        : 'no modal');
         // Use modal fields if modal is open, otherwise use main form fields
         const fieldPrefix = isModalMode ? 'modal' : '';
-        console.log('Field prefix:', fieldPrefix);
-        
         // Clear all previous errors first
         this.clearAllFieldErrors(fieldPrefix);
         
@@ -3124,10 +2954,7 @@ class QuoteSystem {
         
         // 1. Validate name (required) - FIRST PRIORITY
         const nameField = document.getElementById(fieldPrefix + 'CustomerName');
-        console.log('Name field ID:', fieldPrefix + 'CustomerName');
-        console.log('Name field found:', !!nameField);
-        console.log('Name field value:', nameField ? nameField.value : 'no field');
-        console.log('Name field trimmed:', nameField ? nameField.value.trim() : 'no field');
+        : 'no field');
         if (!nameField || !nameField.value.trim()) {
             isValid = false;
             const errorMsg = 'Full name is required';
@@ -3349,7 +3176,6 @@ function clearAllSelections() {
 }
 
 function generateQuote() {
-    console.log('Generate quote function called');
     if (!window.quoteSystem) {
         alert('Quote system not available');
         return;
@@ -3360,12 +3186,8 @@ function generateQuote() {
 }
 
 function showCustomerInfoModal() {
-    console.log('showCustomerInfoModal function called');
     const modal = document.getElementById('customerInfoModal');
-    console.log('Modal element found:', modal);
-    
     if (modal) {
-        console.log('Showing modal...');
         modal.removeAttribute('hidden');
         modal.classList.add('show');
         document.body.style.overflow = 'hidden';
@@ -3378,10 +3200,8 @@ function showCustomerInfoModal() {
         
         // Initialize country selector for modal
         initializeModalCountrySelector();
-        console.log('Modal should now be visible');
-    } else {
-        console.error('Modal element not found!');
-    }
+        } else {
+        }
 }
 
 function closeCustomerInfoModal() {
@@ -3394,7 +3214,6 @@ function closeCustomerInfoModal() {
 }
 
 function submitCustomerInfo() {
-    console.log('Submit customer info function called');
     if (!window.quoteSystem) {
         alert('Quote system not available');
         return;
@@ -3435,18 +3254,11 @@ function submitCustomerInfo() {
     // Add phone number to customer info
     customerInfo.phone = fullPhoneNumber;
     
-    console.log('Customer info collected:', customerInfo);
-    
     // Comprehensive form validation with error display
     const validationErrors = [];
     
-    console.log('Starting form validation...');
-    console.log('Customer info:', customerInfo);
-    
     // Show validation errors for form submission
     if (!window.quoteSystem.validateAndShowErrors()) {
-        console.log('Form validation failed - showing errors');
-        
         // Hide form loader overlay
         if (formLoader) {
             formLoader.classList.remove('show');
@@ -3474,8 +3286,6 @@ function submitCustomerInfo() {
         window.quoteSystem.showNotification(errorMessage, 'error');
         return;
     }
-    
-    console.log('Validation passed, proceeding with quote generation...');
     
     // Close the modal first
     closeCustomerInfoModal();
@@ -3536,7 +3346,6 @@ function initializeModalCountrySelector() {
     const hiddenSelect = document.getElementById('modalCountryCode');
     
     if (!trigger || !dropdown || !searchInput || !countryList || !hiddenSelect) {
-        console.warn('Modal country selector elements not found');
         return;
     }
     
@@ -3601,8 +3410,6 @@ function initializeModalCountrySelector() {
 
 
 function displayThankYouPopup(quoteData) {
-    console.log('Display thank you popup with data:', quoteData);
-    
     // Get selected package and features
     const selectedPackage = window.quoteSystem.packages.find(p => p.id === quoteData.selectedPackage);
     const selectedFeatures = quoteData.selectedAdditionalFeatures.map(featureId => {
@@ -3774,8 +3581,6 @@ function scrollToTop() {
 }
 
 function downloadQuote() {
-    console.log('Download quote function called');
-    
     // Get current quote data
     const quoteData = {
         selectedPackage: window.quoteSystem.selectedPackage,
@@ -4723,10 +4528,7 @@ window.addEventListener('scroll', function() {
 });
 
 document.addEventListener('DOMContentLoaded', function() {
-    console.log('DOMContentLoaded event fired');
-    
     // Initialize quote system
-    console.log('Initializing QuoteSystem...');
     window.quoteSystem = new QuoteSystem();
     
     // Ensure summary is updated after everything is loaded
@@ -4742,8 +4544,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 summaryTotalElement.textContent = `$${currentPrice.toLocaleString()}`;
             }
             
-            console.log('Forced summary update after DOMContentLoaded');
-        }
+            }
     }, 100);
     
     // Also update summary when window is fully loaded
@@ -4760,8 +4561,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     summaryTotalElement.textContent = `$${currentPrice.toLocaleString()}`;
                 }
                 
-                console.log('Forced summary update after window load');
-            }
+                }
         }, 200);
     });
     
@@ -4782,8 +4582,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     summaryTotalElement.textContent = `$${currentPrice.toLocaleString()}`;
                 }
                 
-                console.log('Forced summary update after page visibility change');
-            }, 100);
+                }, 100);
         }
     });
     
@@ -4804,8 +4603,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     summaryTotalElement.textContent = `$${currentPrice.toLocaleString()}`;
                 }
                 
-                console.log('Forced summary update after window focus');
-            }, 100);
+                }, 100);
         }
     });
     
@@ -4826,8 +4624,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     summaryTotalElement.textContent = `$${currentPrice.toLocaleString()}`;
                 }
                 
-                console.log('Forced summary update after pageshow event');
-            }, 100);
+                }, 100);
         }
     });
     
@@ -4900,8 +4697,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 setTimeout(() => {
                     if (window.quoteSystem) {
                         window.quoteSystem.updateSummary();
-                        console.log('Quote summary updated after Get Started click');
-                    }
+                        }
                 }, 500);
             }
         });
@@ -4935,17 +4731,15 @@ QuoteSystem.prototype.toggleAdditionalFeature = function(card) {
     const featureId = card.dataset.featureId;
     if (!featureId) return;
     
-    console.log(`Toggle additional feature: ${featureId}, current state:`, this.selectedAdditionalFeatures.has(featureId));
+    );
     
     if (this.selectedAdditionalFeatures.has(featureId)) {
         this.selectedAdditionalFeatures.delete(featureId);
         card.classList.remove('selected');
-        console.log(`Deselected additional feature: ${featureId}`);
-    } else {
+        } else {
         this.selectedAdditionalFeatures.add(featureId);
         card.classList.add('selected');
-        console.log(`Selected additional feature: ${featureId}`);
-    }
+        }
     
     // Update visual state
     this.updateAdditionalFeatureVisualState(card, featureId);
@@ -4991,30 +4785,25 @@ QuoteSystem.prototype.updateAdditionalFeatureVisualState = function(card, featur
 };
 
 QuoteSystem.prototype.toggleAddonService = function(serviceId, card = null) {
-    console.log(`toggleAddonService called with serviceId: ${serviceId}`);
-    
     // If no card provided, try to find it
     if (!card) {
         card = document.querySelector(`[data-service-id="${serviceId}"]`);
     }
     if (!card) {
-        console.log('Card not found for serviceId:', serviceId);
         return;
     }
     
-    console.log('Current selectedAddonServices before toggle:', Array.from(this.selectedAddonServices));
+    );
     
     if (this.selectedAddonServices.has(serviceId)) {
         this.selectedAddonServices.delete(serviceId);
         card.classList.remove('selected');
-        console.log(`Removed addon service ${serviceId} from selection`);
-    } else {
+        } else {
         this.selectedAddonServices.add(serviceId);
         card.classList.add('selected');
-        console.log(`Added addon service ${serviceId} to selection`);
-    }
+        }
     
-    console.log('Current selectedAddonServices after toggle:', Array.from(this.selectedAddonServices));
+    );
     
     // Re-render to update the UI
     this.virtualRenderer.queueRender(() => this.renderAddonServices(), 'normal');
@@ -5085,7 +4874,6 @@ document.addEventListener('DOMContentLoaded', function() {
                 fixedQuoteSummary.style.boxShadow = '';
             }, 2000);
             
-            console.log('Mobile scroll: Showing fixed quote summary');
             return;
         }
         
@@ -5093,12 +4881,8 @@ document.addEventListener('DOMContentLoaded', function() {
         
         // Desktop behavior
         const targetPosition = quoteSidebar.offsetTop - 20;
-        console.log('Desktop scroll: Scrolling to quote sidebar top');
-        
         // Ensure we don't scroll beyond the document bounds
         const finalTargetPosition = Math.max(0, Math.min(targetPosition, document.body.scrollHeight - window.innerHeight));
-        console.log('Final target position:', finalTargetPosition);
-        
         // Smooth scroll to the target position
         window.scrollTo({
             top: finalTargetPosition,

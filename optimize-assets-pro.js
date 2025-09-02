@@ -59,11 +59,11 @@ function processFile(filePath, minifyFunction) {
         const minifiedSize = (minified.length / 1024).toFixed(2);
         const savings = ((content.length - minified.length) / content.length * 100).toFixed(1);
         
-        console.log(`✅ ${path.basename(filePath)}: ${originalSize}KB → ${minifiedSize}KB (${savings}% smaller)`);
+        
         
         return { originalSize, minifiedSize, savings };
     } catch (error) {
-        console.error(`❌ Error processing ${filePath}:`, error.message);
+        
         return null;
     }
 }
@@ -73,17 +73,17 @@ function validateJavaScript(jsContent, fileName) {
     try {
         // Basic syntax check - try to parse the JavaScript
         new Function(jsContent);
-        console.log(`✅ ${fileName}: JavaScript syntax is valid`);
+        
         return true;
     } catch (error) {
-        console.error(`❌ ${fileName}: JavaScript syntax error - ${error.message}`);
+        
         return false;
     }
 }
 
 // Main optimization function
 function optimizeAssets() {
-    console.log('🚀 Starting safe asset optimization...\n');
+    
     
     const cssFiles = [
         'assets/css/style.css',
@@ -117,7 +117,7 @@ function optimizeAssets() {
     let totalMinifiedSize = 0;
     let jsValidationPassed = true;
     
-    console.log('📁 Processing CSS files...');
+    
     cssFiles.forEach(file => {
         if (fs.existsSync(file)) {
             const result = processFile(file, safeMinifyCSS);
@@ -128,7 +128,7 @@ function optimizeAssets() {
         }
     });
     
-    console.log('\n📁 Processing JavaScript files...');
+    
     jsFiles.forEach(file => {
         if (fs.existsSync(file)) {
             const result = processFile(file, safeMinifyJS);
@@ -148,18 +148,7 @@ function optimizeAssets() {
         }
     });
     
-    console.log('\n📊 Optimization Summary:');
-    console.log(`Total Original Size: ${totalOriginalSize.toFixed(2)}KB`);
-    console.log(`Total Minified Size: ${totalMinifiedSize.toFixed(2)}KB`);
-    console.log(`Total Savings: ${((totalOriginalSize - totalMinifiedSize) / totalOriginalSize * 100).toFixed(1)}%`);
     
-    if (jsValidationPassed) {
-        console.log('\n🎉 Asset optimization complete! All JavaScript files are syntactically valid.');
-        console.log('💡 Update your HTML files to use the .min versions for better performance.');
-    } else {
-        console.log('\n⚠️  Asset optimization complete, but some JavaScript files have syntax errors.');
-        console.log('💡 Check the errors above and fix them before using the minified versions.');
-    }
 }
 
 // Run optimization

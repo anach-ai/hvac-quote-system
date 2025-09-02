@@ -20,7 +20,6 @@ export class EventManager {
      */
     addListener(element, eventType, handler, options = {}, context = 'default') {
         if (this.isDestroyed) {
-            console.warn('EventManager is destroyed, cannot add listener');
             return () => {};
         }
 
@@ -64,7 +63,6 @@ export class EventManager {
      */
     addDelegatedListener(container, selector, eventType, handler, options = {}, context = 'delegated') {
         if (this.isDestroyed) {
-            console.warn('EventManager is destroyed, cannot add delegated listener');
             return () => {};
         }
 
@@ -317,7 +315,6 @@ export class EventManager {
             try {
                 return handler.call(event.target, event);
             } catch (error) {
-                console.error(`Error in event listener ${listenerId}:`, error);
                 // Optionally report to error tracking service
                 if (window.errorHandler) {
                     window.errorHandler.handleError(error, {

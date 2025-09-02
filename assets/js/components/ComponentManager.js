@@ -20,7 +20,6 @@ export class ComponentManager {
      */
     register(name, componentClass, defaultConfig = {}) {
         if (this.isDestroyed) {
-            console.warn('ComponentManager is destroyed, cannot register component');
             return;
         }
         
@@ -31,8 +30,7 @@ export class ComponentManager {
                 registeredAt: Date.now()
             });
             
-            console.log(`Component '${name}' registered successfully`);
-        } catch (error) {
+            } catch (error) {
             errorHandler.handleError(error, {
                 context: 'ComponentManager',
                 method: 'register',
@@ -48,7 +46,6 @@ export class ComponentManager {
      */
     registerFactory(name, factory) {
         if (this.isDestroyed) {
-            console.warn('ComponentManager is destroyed, cannot register factory');
             return;
         }
         
@@ -58,8 +55,7 @@ export class ComponentManager {
                 registeredAt: Date.now()
             });
             
-            console.log(`Factory '${name}' registered successfully`);
-        } catch (error) {
+            } catch (error) {
             errorHandler.handleError(error, {
                 context: 'ComponentManager',
                 method: 'registerFactory',
@@ -76,7 +72,6 @@ export class ComponentManager {
      */
     create(name, config = {}) {
         if (this.isDestroyed) {
-            console.warn('ComponentManager is destroyed, cannot create component');
             return null;
         }
         
@@ -107,7 +102,6 @@ export class ComponentManager {
                 createdAt: Date.now()
             });
             
-            console.log(`Component '${name}' created with ID: ${instanceId}`);
             return instance;
             
         } catch (error) {
@@ -129,7 +123,6 @@ export class ComponentManager {
      */
     createWithFactory(name, config = {}) {
         if (this.isDestroyed) {
-            console.warn('ComponentManager is destroyed, cannot create with factory');
             return null;
         }
         
@@ -200,8 +193,7 @@ export class ComponentManager {
             try {
                 instanceInfo.instance.destroy();
                 this.instances.delete(id);
-                console.log(`Component instance ${id} destroyed`);
-            } catch (error) {
+                } catch (error) {
                 errorHandler.handleError(error, {
                     context: 'ComponentManager',
                     method: 'destroyInstance',
@@ -383,8 +375,7 @@ export class ComponentManager {
             this.instances.delete(id);
         });
         
-        console.log(`Cleaned up ${instancesToRemove.length} destroyed instances`);
-    }
+        }
     
     /**
      * Destroy component manager
@@ -403,8 +394,7 @@ export class ComponentManager {
             
             this.isDestroyed = true;
             
-            console.log('ComponentManager destroyed');
-        } catch (error) {
+            } catch (error) {
             errorHandler.handleError(error, {
                 context: 'ComponentManager',
                 method: 'destroy'

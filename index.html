@@ -928,25 +928,21 @@
         
         // Check if QuoteSystem is available
         if (typeof QuoteSystem !== 'undefined') {
-            console.log('QuoteSystem class is available');
+            // QuoteSystem class is available
         } else {
-            console.error('QuoteSystem class is NOT available');
+            // QuoteSystem class is NOT available
         }
         
         // Check if window.quoteSystem is created
         setTimeout(() => {
             if (window.quoteSystem) {
-                console.log('window.quoteSystem is available:', window.quoteSystem);
-                console.log('Packages loaded:', window.quoteSystem.packages);
-                
                 // Force update the price to $1,200
                 const summaryTotalElement = document.getElementById('summaryTotal');
                 if (summaryTotalElement) {
                     summaryTotalElement.textContent = '$1,200';
-                    console.log('Price updated to $1,200');
                 }
             } else {
-                console.error('window.quoteSystem is NOT available');
+                // window.quoteSystem is NOT available
             }
         }, 2000);
         
@@ -956,7 +952,6 @@
                 const summaryTotalElement = document.getElementById('summaryTotal');
                 if (summaryTotalElement && summaryTotalElement.textContent === '$0') {
                     summaryTotalElement.textContent = '$1,200';
-                    console.log('DOM ready: Price forced to $1,200');
                 }
             }, 100);
         });

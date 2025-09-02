@@ -968,9 +968,7 @@ export class StateManager {
             const result = next(action);
             const endTime = performance.now();
             
-            console.log(`Action: ${action.type}`, {
-                action,
-                duration: `${(endTime - startTime).toFixed(2)}ms`,
+            .toFixed(2)}ms`,
                 timestamp: new Date().toISOString()
             });
             

@@ -86,9 +86,7 @@ export function createAnalyticsMiddleware(analyticsConfig = {}) {
         if (trackActions && !excludeActions.includes(action.type)) {
             try {
                 // Simulate analytics tracking
-                console.log('Analytics: Action tracked', {
-                    action: action.type,
-                    timestamp: new Date().toISOString(),
+                .toISOString(),
                     payload: action.payload
                 });
                 
@@ -111,9 +109,7 @@ export function createAnalyticsMiddleware(analyticsConfig = {}) {
         if (trackPerformance) {
             const duration = endTime - startTime;
             if (duration > 16) { // Log slow actions (>16ms)
-                console.warn('Slow action detected:', {
-                    action: action.type,
-                    duration: `${duration.toFixed(2)}ms`
+                }ms`
                 });
             }
         }
@@ -121,9 +117,7 @@ export function createAnalyticsMiddleware(analyticsConfig = {}) {
         // Track state changes
         if (trackStateChanges) {
             const newState = store.getState();
-            console.log('State changed:', {
-                action: action.type,
-                stateKeys: Object.keys(newState).length
+            .length
             });
         }
         
@@ -177,7 +171,6 @@ export function createThrottleMiddleware(throttleConfig = {}) {
             const now = Date.now();
             
             if (now - lastTimestamp < throttleMs) {
-                console.warn(`Action ${action.type} throttled`);
                 return store.getState(); // Return current state without executing action
             }
             
@@ -213,7 +206,7 @@ export function createRetryMiddleware(retryConfig = {}) {
                 retryCount++;
                 
                 if (retryCount <= maxRetries && shouldRetry(error, action)) {
-                    console.log(`Retrying action ${action.type} (attempt ${retryCount}/${maxRetries})`);
+                    `);
                     
                     await new Promise(resolve => setTimeout(resolve, retryDelay * retryCount));
                     return attemptAction();
@@ -248,7 +241,6 @@ export function createCacheMiddleware(cacheConfig = {}) {
         const cached = cache.get(key);
         
         if (cached && Date.now() - cached.timestamp < cacheDuration) {
-            console.log(`Using cached result for action ${action.type}`);
             return cached.result;
         }
         
@@ -282,11 +274,9 @@ export function createDebugMiddleware(debugConfig = {}) {
             if (groupActions) {
                 console.group(`Action: ${action.type}`);
             } else {
-                console.log(`Action: ${action.type}`);
-            }
+                }
             
-            console.log('Payload:', action.payload);
-            console.log('Timestamp:', new Date().toISOString());
+            .toISOString());
             
             if (logStackTraces) {
                 console.trace('Action stack trace');
@@ -298,12 +288,12 @@ export function createDebugMiddleware(debugConfig = {}) {
         
         if (logPerformance) {
             const duration = endTime - startTime;
-            console.log(`Duration: ${duration.toFixed(2)}ms`);
+            }ms`);
         }
         
         if (logStateChanges) {
             const newState = store.getState();
-            console.log('New state keys:', Object.keys(newState));
+            );
         }
         
         if (logActions && groupActions) {
@@ -329,15 +319,13 @@ export function createSyncMiddleware(syncConfig = {}) {
     try {
         broadcastChannel = new BroadcastChannel(channel);
     } catch (error) {
-        console.warn('BroadcastChannel not supported, sync disabled');
-    }
+        }
     
     if (broadcastChannel) {
         broadcastChannel.onmessage = (event) => {
             if (event.data.type === 'STATE_UPDATE') {
                 // Handle incoming state updates
-                console.log('Received state update from another tab');
-            }
+                }
         };
     }
     
@@ -422,8 +410,7 @@ export function createPerformanceMiddleware(perfConfig = {}) {
             }
             
             if (duration > alertThreshold) {
-                console.warn('Performance alert:', metric);
-            }
+                }
         }
         
         return result;
@@ -465,16 +452,13 @@ export function createErrorRecoveryMiddleware(recoveryConfig = {}) {
             
             // Check if too many errors
             if (errorHistory.length > maxErrors) {
-                console.error('Too many errors, triggering recovery');
-                
                 // Execute recovery strategy
                 const strategy = recoveryStrategies[action.type] || recoveryStrategies.default;
                 if (strategy) {
                     try {
                         strategy(store, action, error);
                     } catch (recoveryError) {
-                        console.error('Recovery strategy failed:', recoveryError);
-                    }
+                        }
                 }
             }
             

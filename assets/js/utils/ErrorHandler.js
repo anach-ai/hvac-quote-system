@@ -171,8 +171,7 @@ export class ErrorHandler {
                 // Wait between notifications to avoid spam
                 await new Promise(resolve => setTimeout(resolve, 100));
             } catch (error) {
-                console.error('Error showing notification:', error);
-            }
+                }
         }
 
         this.isProcessingNotifications = false;
@@ -308,8 +307,7 @@ export class ErrorHandler {
             try {
                 recoveryStrategy(errorInfo);
             } catch (recoveryError) {
-                console.error('Recovery attempt failed:', recoveryError);
-            }
+                }
         }
     }
 
@@ -329,14 +327,7 @@ export class ErrorHandler {
     reportToAnalytics(errorInfo) {
         // In a real application, this would send to monitoring service
         // For now, we'll just log it
-        console.error('CRITICAL ERROR REPORT:', {
-            message: errorInfo.message,
-            context: errorInfo.context,
-            timestamp: errorInfo.timestamp,
-            userAgent: navigator.userAgent,
-            url: window.location.href
-        });
-    }
+        }
 
     /**
      * Create specific error types

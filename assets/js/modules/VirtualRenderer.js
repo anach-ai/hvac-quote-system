@@ -85,7 +85,6 @@ export class VirtualRenderer {
                 // Small delay to prevent UI blocking
                 await new Promise(resolve => setTimeout(resolve, this.processingDelay));
             } catch (error) {
-                console.error('Error in virtual render:', error);
                 this.completedRenders++;
                 this.updateProgress();
             }

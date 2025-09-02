@@ -63,8 +63,7 @@ export function useState(selector, initialValue = null) {
                 try {
                     callback(currentValue);
                 } catch (error) {
-                    console.error('Hook subscriber error:', error);
-                }
+                    }
             });
         }
     });
@@ -87,8 +86,7 @@ export function useState(selector, initialValue = null) {
                 try {
                     callback(currentValue);
                 } catch (error) {
-                    console.error('Hook subscriber error:', error);
-                }
+                    }
             });
         },
         {
@@ -151,16 +149,14 @@ export function useEffect(effect, dependencies = []) {
             try {
                 cleanup();
             } catch (error) {
-                console.error('Effect cleanup error:', error);
-            }
+                }
         }
         
         // Execute new effect
         try {
             cleanup = effect();
         } catch (error) {
-            console.error('Effect execution error:', error);
-        }
+            }
     };
     
     // Execute effect immediately
@@ -183,8 +179,7 @@ export function useEffect(effect, dependencies = []) {
                 try {
                     cleanup();
                 } catch (error) {
-                    console.error('Effect cleanup error:', error);
-                }
+                    }
             }
             cleanupHook(hookId);
         }
@@ -333,7 +328,6 @@ export function useLocalStorage(key, initialValue) {
             const item = window.localStorage.getItem(key);
             return item ? JSON.parse(item) : initialValue;
         } catch (error) {
-            console.error('Error reading from localStorage:', error);
             return initialValue;
         }
     });
@@ -344,8 +338,7 @@ export function useLocalStorage(key, initialValue) {
             setStoredValue(valueToStore);
             window.localStorage.setItem(key, JSON.stringify(valueToStore));
         } catch (error) {
-            console.error('Error writing to localStorage:', error);
-        }
+            }
     };
     
     return [storedValue, setValue];
@@ -360,7 +353,6 @@ export function useSessionStorage(key, initialValue) {
             const item = window.sessionStorage.getItem(key);
             return item ? JSON.parse(item) : initialValue;
         } catch (error) {
-            console.error('Error reading from sessionStorage:', error);
             return initialValue;
         }
     });
@@ -371,8 +363,7 @@ export function useSessionStorage(key, initialValue) {
             setStoredValue(valueToStore);
             window.sessionStorage.setItem(key, JSON.stringify(valueToStore));
         } catch (error) {
-            console.error('Error writing to sessionStorage:', error);
-        }
+            }
     };
     
     return [storedValue, setValue];
@@ -769,8 +760,7 @@ export function useClipboard() {
             await navigator.clipboard.writeText(text);
             setCopiedText(text);
         } catch (error) {
-            console.error('Failed to copy text:', error);
-        }
+            }
     }, []);
     
     return { copiedText, copy };

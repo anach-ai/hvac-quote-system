@@ -107,8 +107,7 @@ export const registerComponents = () => {
         });
     });
     
-    console.log('All components registered successfully');
-};
+    };
 
 // Auto-register components when this module is imported
 if (typeof window !== 'undefined') {

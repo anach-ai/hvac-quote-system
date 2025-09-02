@@ -51,18 +51,18 @@ function processFile(filePath, minifyFunction) {
         const minifiedSize = (minified.length / 1024).toFixed(2);
         const savings = ((content.length - minified.length) / content.length * 100).toFixed(1);
         
-        console.log(`✅ ${path.basename(filePath)}: ${originalSize}KB → ${minifiedSize}KB (${savings}% smaller)`);
+        
         
         return { originalSize, minifiedSize, savings };
     } catch (error) {
-        console.error(`❌ Error processing ${filePath}:`, error.message);
+        
         return null;
     }
 }
 
 // Main optimization function
 function optimizeAssets() {
-    console.log('🚀 Starting asset optimization...\n');
+    
     
     const cssFiles = [
         'assets/css/style.css',
@@ -95,7 +95,7 @@ function optimizeAssets() {
     let totalOriginalSize = 0;
     let totalMinifiedSize = 0;
     
-    console.log('📁 Processing CSS files...');
+    
     cssFiles.forEach(file => {
         if (fs.existsSync(file)) {
             const result = processFile(file, minifyCSS);
@@ -106,7 +106,7 @@ function optimizeAssets() {
         }
     });
     
-    console.log('\n📁 Processing JavaScript files...');
+    
     jsFiles.forEach(file => {
         if (fs.existsSync(file)) {
             const result = processFile(file, minifyJS);
@@ -117,12 +117,7 @@ function optimizeAssets() {
         }
     });
     
-    console.log('\n📊 Optimization Summary:');
-    console.log(`Total Original Size: ${totalOriginalSize.toFixed(2)}KB`);
-    console.log(`Total Minified Size: ${totalMinifiedSize.toFixed(2)}KB`);
-    console.log(`Total Savings: ${((totalOriginalSize - totalMinifiedSize) / totalOriginalSize * 100).toFixed(1)}%`);
-    console.log('\n🎉 Asset optimization complete!');
-    console.log('💡 Update your HTML files to use the .min versions for better performance.');
+    
 }
 
 // Run optimization
