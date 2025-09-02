@@ -4,9 +4,33 @@
     {
       "src": "server.js",
       "use": "@vercel/node"
+    },
+    {
+      "src": "**/*.html",
+      "use": "@vercel/static"
+    },
+    {
+      "src": "assets/**/*",
+      "use": "@vercel/static"
     }
   ],
   "routes": [
+    {
+      "src": "/clear-cache.html",
+      "dest": "/clear-cache.html"
+    },
+    {
+      "src": "/about-us.html",
+      "dest": "/about-us.html"
+    },
+    {
+      "src": "/success.html",
+      "dest": "/success.html"
+    },
+    {
+      "src": "/assets/(.*)",
+      "dest": "/assets/$1"
+    },
     {
       "src": "/(.*)",
       "dest": "/server.js"

@@ -758,6 +758,40 @@
             }
         });
         
+        // Cache clearing function for JavaScript errors
+        function clearBrowserCache() {
+            // Clear localStorage and sessionStorage
+            localStorage.clear();
+            sessionStorage.clear();
+            
+            // Clear cache using Cache API if available
+            if ('caches' in window) {
+                caches.keys().then(function(names) {
+                    for (let name of names) {
+                        caches.delete(name);
+                    }
+                });
+            }
+            
+            // Force reload with cache busting
+            window.location.reload(true);
+        }
+        
+        // Add cache clear button to page if there are JavaScript errors
+        setTimeout(function() {
+            if (typeof window.quoteSystem === 'undefined') {
+                const errorDiv = document.createElement('div');
+                errorDiv.style.cssText = 'position:fixed;top:20px;right:20px;background:#dc3545;color:white;padding:15px;border-radius:5px;z-index:9999;box-shadow:0 2px 10px rgba(0,0,0,0.3);';
+                errorDiv.innerHTML = `
+                    <div style="margin-bottom:10px;"><strong>⚠️ JavaScript Error Detected</strong></strong></div>
+                    <button onclick="clearBrowserCache()" style="background:#fff;color:#dc3545;border:none;padding:8px 16px;border-radius:3px;cursor:pointer;font-size:14px;">
+                        🔄 Clear Cache & Reload
+                    </button>
+                `;
+                document.body.appendChild(errorDiv);
+            }
+        }, 3000);
+        
         // Accessibility enhancements
         document.addEventListener('DOMContentLoaded', function() {
             // Add keyboard navigation for tabs
