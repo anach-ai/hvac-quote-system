@@ -18,8 +18,22 @@
     <link rel="dns-prefetch" href="//unpkg.com">
     
     <!-- Preload critical resources -->
-    <link rel="preload" href="assets/css/style.css?v=1.0.1" as="style">
-    <link rel="preload" href="assets/js/quote.js?v=1.0.1" as="script">
+    <script>
+        // Dynamic preload with cache busting
+        const preloadTimestamp = Date.now();
+        const preloadLinks = [
+            { href: `assets/css/style.css?v=1.0.2&t=${preloadTimestamp}`, as: 'style' },
+            { href: `assets/js/quote.js?v=1.0.2&t=${preloadTimestamp}`, as: 'script' }
+        ];
+        
+        preloadLinks.forEach(link => {
+            const preloadLink = document.createElement('link');
+            preloadLink.rel = 'preload';
+            preloadLink.href = link.href;
+            preloadLink.as = link.as;
+            document.head.appendChild(preloadLink);
+        });
+    </script>
     
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -35,15 +49,30 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     
     <!-- Styles -->
-    <link rel="stylesheet" href="assets/css/style.css?v=1.0.1" media="print" onload="this.media='all'">
-    <link rel="stylesheet" href="assets/css/components.css?v=1.0.1" media="print" onload="this.media='all'">
-    <link rel="stylesheet" href="assets/css/fixed-quote-summary.css?v=1.0.1" media="print" onload="this.media='all'">
+    <script>
+        // Dynamic cache busting for CSS
+        const cssTimestamp = Date.now();
+        const cssFiles = [
+            'assets/css/style.css',
+            'assets/css/components.css',
+            'assets/css/fixed-quote-summary.css'
+        ];
+        
+        cssFiles.forEach(cssFile => {
+            const link = document.createElement('link');
+            link.rel = 'stylesheet';
+            link.href = `${cssFile}?v=1.0.2&t=${cssTimestamp}`;
+            link.media = 'print';
+            link.onload = function() { this.media = 'all'; };
+            document.head.appendChild(link);
+        });
+    </script>
     
     <!-- Fallback for browsers that don't support onload -->
     <noscript>
-        <link rel="stylesheet" href="assets/css/style.css?v=1.0.1">
-        <link rel="stylesheet" href="assets/css/components.css?v=1.0.1">
-        <link rel="stylesheet" href="assets/css/fixed-quote-summary.css?v=1.0.1">
+        <link rel="stylesheet" href="assets/css/style.css?v=1.0.2">
+        <link rel="stylesheet" href="assets/css/components.css?v=1.0.2">
+        <link rel="stylesheet" href="assets/css/fixed-quote-summary.css?v=1.0.2">
     </noscript>
     
     <!-- Favicon -->
@@ -681,7 +710,14 @@
     <!-- Admin functionality removed -->
 
     <!-- Scripts -->
-    <script src="assets/js/quote.js?v=1.0.1" defer></script>
+    <script>
+        // Dynamic cache busting for JavaScript
+        const timestamp = Date.now();
+        const script = document.createElement('script');
+        script.src = `assets/js/quote.js?v=1.0.2&t=${timestamp}`;
+        script.defer = true;
+        document.head.appendChild(script);
+    </script>
     <script>
         // Initialize Lucide icons
         lucide.createIcons();
@@ -758,7 +794,7 @@
             }
         });
         
-        // Cache clearing function for JavaScript errors
+        // Aggressive cache clearing function for JavaScript errors
         function clearBrowserCache() {
             // Clear localStorage and sessionStorage
             localStorage.clear();
@@ -773,9 +809,35 @@
                 });
             }
             
-            // Force reload with cache busting
-            window.location.reload(true);
+            // Clear any indexedDB
+            if ('indexedDB' in window) {
+                indexedDB.databases().then(databases => {
+                    databases.forEach(db => {
+                        indexedDB.deleteDatabase(db.name);
+                    });
+                });
+            }
+            
+            // Force reload with cache busting and timestamp
+            const timestamp = Date.now();
+            window.location.href = `index.html?v=1.0.2&t=${timestamp}`;
         }
+        
+        // Immediate cache clearing on page load
+        (function() {
+            // Clear any existing caches immediately
+            if ('caches' in window) {
+                caches.keys().then(function(names) {
+                    for (let name of names) {
+                        caches.delete(name);
+                    }
+                });
+            }
+            
+            // Clear localStorage and sessionStorage
+            localStorage.clear();
+            sessionStorage.clear();
+        })();
         
         // Add cache clear button to page if there are JavaScript errors
         setTimeout(function() {
@@ -783,7 +845,7 @@
                 const errorDiv = document.createElement('div');
                 errorDiv.style.cssText = 'position:fixed;top:20px;right:20px;background:#dc3545;color:white;padding:15px;border-radius:5px;z-index:9999;box-shadow:0 2px 10px rgba(0,0,0,0.3);';
                 errorDiv.innerHTML = `
-                    <div style="margin-bottom:10px;"><strong>⚠️ JavaScript Error Detected</strong></strong></div>
+                    <div style="margin-bottom:10px;"><strong>⚠️ JavaScript Error Detected</strong></div>
                     <button onclick="clearBrowserCache()" style="background:#fff;color:#dc3545;border:none;padding:8px 16px;border-radius:3px;cursor:pointer;font-size:14px;">
                         🔄 Clear Cache & Reload
                     </button>
