@@ -4,7 +4,7 @@
 const SecurityUtils = {
     // Safely create text content
     createTextElement: (tagName, className, textContent) => {
-        const element = document.createElement(tagName);
+        const element = document.createElement(tagName
         if (className) element.className = className;
         if (textContent) element.textContent = textContent;
         return element;
@@ -12,26 +12,26 @@ const SecurityUtils = {
     
     // Safely create element with attributes
     createElement: (tagName, className, attributes = {}) => {
-        const element = document.createElement(tagName);
+        const element = document.createElement(tagName
         if (className) element.className = className;
         Object.entries(attributes).forEach(([key, value]) => {
-            element.setAttribute(key, value);
-        });
+            element.setAttribute(key, value
+        }
         return element;
     },
     
     // Safely append children
     appendChildren: (parent, ...children) => {
         children.forEach(child => {
-            if (child) parent.appendChild(child);
-        });
+            if (child) parent.appendChild(child
+        }
         return parent;
     },
     
     // Sanitize user input
     sanitizeInput: (input) => {
         if (typeof input !== 'string') return '';
-        return input.replace(/[<>\"'&]/g, '');
+        return input.replace(/[<>\"'&]/g, ''
     }
 };
 
@@ -44,60 +44,60 @@ class VirtualRenderer {
         this.totalRenders = 0;
         this.completedRenders = 0;
         this.progressElement = null;
-        this.setupProgressIndicator();
+        this.setupProgressIndicator(
     }
     
     setupProgressIndicator() {
         // Create progress indicator if it doesn't exist
         if (!document.querySelector('.virtual-render-progress')) {
-            this.progressElement = document.createElement('div');
+            this.progressElement = document.createElement('div'
             this.progressElement.className = 'virtual-render-progress';
             
             // Create elements safely without innerHTML
-            const progressText = document.createElement('div');
+            const progressText = document.createElement('div'
             progressText.className = 'progress-text';
             
-            const loaderIcon = document.createElement('i');
-            loaderIcon.setAttribute('data-lucide', 'loader-2');
+            const loaderIcon = document.createElement('i'
+            loaderIcon.setAttribute('data-lucide', 'loader-2'
             
-            const span = document.createElement('span');
+            const span = document.createElement('span'
             span.textContent = 'Rendering...';
             
-            const progressBar = document.createElement('div');
+            const progressBar = document.createElement('div'
             progressBar.className = 'progress-bar';
             
-            const progressFill = document.createElement('div');
+            const progressFill = document.createElement('div'
             progressFill.className = 'progress-fill';
             
             // Assemble DOM safely
-            progressText.appendChild(loaderIcon);
-            progressText.appendChild(span);
-            progressBar.appendChild(progressFill);
-            this.progressElement.appendChild(progressText);
-            this.progressElement.appendChild(progressBar);
+            progressText.appendChild(loaderIcon
+            progressText.appendChild(span
+            progressBar.appendChild(progressFill
+            this.progressElement.appendChild(progressText
+            this.progressElement.appendChild(progressBar
             
-            document.body.appendChild(this.progressElement);
+            document.body.appendChild(this.progressElement
         } else {
-            this.progressElement = document.querySelector('.virtual-render-progress');
+            this.progressElement = document.querySelector('.virtual-render-progress'
         }
     }
     
     showProgress() {
         if (this.progressElement) {
-            this.progressElement.classList.add('show');
+            this.progressElement.classList.add('show'
         }
     }
     
     hideProgress() {
         if (this.progressElement) {
-            this.progressElement.classList.remove('show');
+            this.progressElement.classList.remove('show'
         }
     }
     
     updateProgress() {
         if (this.progressElement && this.totalRenders > 0) {
             const percentage = (this.completedRenders / this.totalRenders) * 100;
-            const progressFill = this.progressElement.querySelector('.progress-fill');
+            const progressFill = this.progressElement.querySelector('.progress-fill'
             if (progressFill) {
                 progressFill.style.width = `${percentage}%`;
             }
@@ -105,58 +105,58 @@ class VirtualRenderer {
     }
     
     queueRender(renderFunction, priority = 'normal') {
-        this.renderQueue.push({ fn: renderFunction, priority });
+        this.renderQueue.push({ fn: renderFunction, priority }
         this.totalRenders++;
-        this.processQueue();
+        this.processQueue(
     }
     
     async processQueue() {
         if (this.isRendering) return;
         this.isRendering = true;
-        this.showProgress();
+        this.showProgress(
         
         // Sort by priority
         this.renderQueue.sort((a, b) => {
             const priorities = { high: 3, normal: 2, low: 1 };
             return priorities[b.priority] - priorities[a.priority];
-        });
+        }
         
         while (this.renderQueue.length > 0) {
-            const { fn } = this.renderQueue.shift();
+            const { fn } = this.renderQueue.shift(
             
             try {
                 await new Promise(resolve => {
                     requestAnimationFrame(() => {
-                        fn();
+                        fn(
                         this.completedRenders++;
-                        this.updateProgress();
-                        resolve();
-                    });
-                });
+                        this.updateProgress(
+                        resolve(
+                    }
+                }
                 
                 // Small delay to prevent UI blocking
-                await new Promise(resolve => setTimeout(resolve, this.processingDelay));
+                await new Promise(resolve => setTimeout(resolve, this.processingDelay)
             } catch (error) {
                 this.completedRenders++;
-                this.updateProgress();
+                this.updateProgress(
             }
         }
         
         this.isRendering = false;
-        this.hideProgress();
+        this.hideProgress(
         
         // Reset counters after a short delay
         setTimeout(() => {
             this.totalRenders = 0;
             this.completedRenders = 0;
-        }, 1000);
+        }, 1000
     }
     
     clearQueue() {
         this.renderQueue = [];
         this.totalRenders = 0;
         this.completedRenders = 0;
-        this.hideProgress();
+        this.hideProgress(
     }
     
     getQueueLength() {
@@ -173,11 +173,11 @@ class QuoteSystem {
         
         
         // Initialize Virtual Renderer
-        this.virtualRenderer = new VirtualRenderer();
+        this.virtualRenderer = new VirtualRenderer(
         
         this.selectedPackage = null;
-        this.selectedAdditionalFeatures = new Set();
-        this.selectedAddonServices = new Set();
+        this.selectedAdditionalFeatures = new Set(
+        this.selectedAddonServices = new Set(
         this.totalPrice = 0;
         
         // Country data - Complete list of all countries in the world
@@ -375,7 +375,7 @@ class QuoteSystem {
 
         
         
-        this.init();
+        this.init(
     }
     
     // Data persistence methods
@@ -388,39 +388,39 @@ class QuoteSystem {
             timestamp: Date.now()
         };
         
-        localStorage.setItem('hvacQuoteData', JSON.stringify(data));
+        localStorage.setItem('hvacQuoteData', JSON.stringify(data)
     }
     
     loadFromLocalStorage() {
         try {
-            const savedData = localStorage.getItem('hvacQuoteData');
+            const savedData = localStorage.getItem('hvacQuoteData'
             if (savedData) {
-                const data = JSON.parse(savedData);
+                const data = JSON.parse(savedData
                 
                 // Check if data is not too old (24 hours)
-                const isDataFresh = (Date.now() - data.timestamp) < (24 * 60 * 60 * 1000);
+                const isDataFresh = (Date.now() - data.timestamp) < (24 * 60 * 60 * 1000
                 
                 if (isDataFresh) {
                     this.selectedPackage = data.selectedPackage;
-                    this.selectedAdditionalFeatures = new Set(data.selectedAdditionalFeatures || []);
-                    this.selectedAddonServices = new Set(data.selectedAddonServices || []);
+                    this.selectedAdditionalFeatures = new Set(data.selectedAdditionalFeatures || []
+                    this.selectedAddonServices = new Set(data.selectedAddonServices || []
                     this.totalPrice = data.totalPrice || 0;
                     
                     
                     return true;
                 } else {
                     // Clear old data
-                    localStorage.removeItem('hvacQuoteData');
+                    localStorage.removeItem('hvacQuoteData'
                 }
             }
         } catch (error) {
-            localStorage.removeItem('hvacQuoteData');
+            localStorage.removeItem('hvacQuoteData'
         }
         return false;
     }
     
     clearLocalStorage() {
-        localStorage.removeItem('hvacQuoteData');
+        localStorage.removeItem('hvacQuoteData'
     }
     
 
@@ -431,78 +431,78 @@ class QuoteSystem {
     
     showNotification(message, type = 'info') {
         // Create notification element safely without innerHTML
-        const notification = document.createElement('div');
+        const notification = document.createElement('div'
         notification.className = `notification notification-${type}`;
         
-        const notificationContent = document.createElement('div');
+        const notificationContent = document.createElement('div'
         notificationContent.className = 'notification-content';
         
-        const icon = document.createElement('i');
+        const icon = document.createElement('i'
         const iconType = type === 'success' ? 'check-circle' : type === 'error' ? 'alert-circle' : 'info';
-        icon.setAttribute('data-lucide', iconType);
+        icon.setAttribute('data-lucide', iconType
         
-        const notificationText = document.createElement('div');
+        const notificationText = document.createElement('div'
         notificationText.className = 'notification-text';
         // Handle multi-line messages safely
-        const formattedMessage = message.replace(/\n/g, ' ');
+        const formattedMessage = message.replace(/\n/g, ' '
         notificationText.textContent = formattedMessage;
         
         // Assemble DOM safely
-        notificationContent.appendChild(icon);
-        notificationContent.appendChild(notificationText);
-        notification.appendChild(notificationContent);
+        notificationContent.appendChild(icon
+        notificationContent.appendChild(notificationText
+        notification.appendChild(notificationContent
         
         // Add to page
-        document.body.appendChild(notification);
+        document.body.appendChild(notification
         
         // Animate in
-        setTimeout(() => notification.classList.add('show'), 100);
+        setTimeout(() => notification.classList.add('show'), 100
         
         // Remove after 5 seconds for error messages (longer for detailed errors)
         const duration = type === 'error' ? 5000 : 3000;
         setTimeout(() => {
-            notification.classList.remove('show');
-            setTimeout(() => notification.remove(), 300);
-        }, duration);
+            notification.classList.remove('show'
+            setTimeout(() => notification.remove(), 300
+        }, duration
         
         // Initialize icons
-        lucide.createIcons();
+        lucide.createIcons(
     }
     
     showLoadingState() {
         // Create loading overlay safely without innerHTML
-        const loadingOverlay = document.createElement('div');
+        const loadingOverlay = document.createElement('div'
         loadingOverlay.className = 'loading-overlay';
         
-        const loadingSpinner = document.createElement('div');
+        const loadingSpinner = document.createElement('div'
         loadingSpinner.className = 'loading-spinner';
         
-        const icon = document.createElement('i');
-        icon.setAttribute('data-lucide', 'loader-2');
+        const icon = document.createElement('i'
+        icon.setAttribute('data-lucide', 'loader-2'
         
-        const paragraph = document.createElement('p');
+        const paragraph = document.createElement('p'
         paragraph.textContent = 'Loading quote system...';
         
         // Assemble DOM safely
-        loadingSpinner.appendChild(icon);
-        loadingSpinner.appendChild(paragraph);
-        loadingOverlay.appendChild(loadingSpinner);
+        loadingSpinner.appendChild(icon
+        loadingSpinner.appendChild(paragraph
+        loadingOverlay.appendChild(loadingSpinner
         
-        document.body.appendChild(loadingOverlay);
+        document.body.appendChild(loadingOverlay
         
         // Initialize icons
-        lucide.createIcons();
+        lucide.createIcons(
     }
     
     hideLoadingState() {
-        const loadingOverlay = document.querySelector('.loading-overlay');
+        const loadingOverlay = document.querySelector('.loading-overlay'
         if (loadingOverlay) {
-            loadingOverlay.remove();
+            loadingOverlay.remove(
         }
     }
     
     showSkeletonLoading(containerId, type = 'card') {
-        const container = document.getElementById(containerId);
+        const container = document.getElementById(containerId
         if (!container) return;
         
         const skeletonTemplates = {
@@ -538,10 +538,10 @@ class QuoteSystem {
     }
     
     clearSkeletonLoading(containerId) {
-        const container = document.getElementById(containerId);
+        const container = document.getElementById(containerId
         if (container) {
-            const skeletonElements = container.querySelectorAll('.skeleton-card, .skeleton-grid');
-            skeletonElements.forEach(element => element.remove());
+            const skeletonElements = container.querySelectorAll('.skeleton-card, .skeleton-grid'
+            skeletonElements.forEach(element => element.remove()
         }
     }
     
@@ -591,144 +591,144 @@ class QuoteSystem {
         this.contactFeatures = [];
         
         // Use Virtual Renderer for progressive rendering
-        this.virtualRenderer.queueRender(() => this.renderPackages(), 'high');
-        this.virtualRenderer.queueRender(() => this.renderAdditionalFeatures(), 'normal');
-        this.virtualRenderer.queueRender(() => this.renderAddonServices(), 'normal');
+        this.virtualRenderer.queueRender(() => this.renderPackages(), 'high'
+        this.virtualRenderer.queueRender(() => this.renderAdditionalFeatures(), 'normal'
+        this.virtualRenderer.queueRender(() => this.renderAddonServices(), 'normal'
     }
     
     async init() {
         // Try to load saved data first
-        const hasSavedData = this.loadFromLocalStorage();
+        const hasSavedData = this.loadFromLocalStorage(
         
-        await this.loadData();
-        this.setupEventListeners();
+        await this.loadData(
+        this.setupEventListeners(
         
         // Auto-select the package if not already selected
         if (!this.selectedPackage && this.packages && this.packages.length > 0) {
             this.selectedPackage = this.packages[0].id;
-            this.saveToLocalStorage();
+            this.saveToLocalStorage(
         }
         
         // Set default selections if no saved data
         if (!hasSavedData) {
-            this.saveToLocalStorage();
+            this.saveToLocalStorage(
         }
         
         // If we had saved data, restore the UI state
         if (hasSavedData) {
-            this.restoreUIState();
-            this.showNotification('Your previous selections have been restored', 'info');
+            this.restoreUIState(
+            this.showNotification('Your previous selections have been restored', 'info'
         }
         
         // Ensure all features are rendered with current selections
-        this.virtualRenderer.queueRender(() => this.renderAdditionalFeatures(), 'normal');
-        this.virtualRenderer.queueRender(() => this.renderAddonServices(), 'normal');
+        this.virtualRenderer.queueRender(() => this.renderAdditionalFeatures(), 'normal'
+        this.virtualRenderer.queueRender(() => this.renderAddonServices(), 'normal'
         
         // Multiple updates to ensure correct display
-        this.updateSummary();
+        this.updateSummary(
         
         // Force update after rendering
         setTimeout(() => {
-            this.updateSummary();
+            this.updateSummary(
             // Ensure base price is always shown
-            const summaryTotalElement = document.getElementById('summaryTotal');
+            const summaryTotalElement = document.getElementById('summaryTotal'
             if (summaryTotalElement) {
-                const currentPrice = this.calculateTotalPrice();
+                const currentPrice = this.calculateTotalPrice(
                 summaryTotalElement.textContent = `$${currentPrice.toLocaleString()}`;
             }
-        }, 200);
+        }, 200
         
         // Additional safety check
         setTimeout(() => {
-            this.updateSummary();
-            const summaryTotalElement = document.getElementById('summaryTotal');
+            this.updateSummary(
+            const summaryTotalElement = document.getElementById('summaryTotal'
             if (summaryTotalElement) {
-                const currentPrice = this.calculateTotalPrice();
+                const currentPrice = this.calculateTotalPrice(
                 summaryTotalElement.textContent = `$${currentPrice.toLocaleString()}`;
             }
-        }, 500);
+        }, 500
         
         // Final check after everything is loaded
         setTimeout(() => {
-            this.updateSummary();
-            this.updateGenerateButton();
-        }, 1000);
+            this.updateSummary(
+            this.updateGenerateButton(
+        }, 1000
         
         // Continuous monitoring to ensure price persistence
         setInterval(() => {
-            const summaryTotalElement = document.getElementById('summaryTotal');
+            const summaryTotalElement = document.getElementById('summaryTotal'
             if (summaryTotalElement) {
-                const currentPrice = this.calculateTotalPrice();
-                const displayedPrice = summaryTotalElement.textContent.replace(/[$,]/g, '');
-                const expectedPrice = currentPrice.toString();
+                const currentPrice = this.calculateTotalPrice(
+                const displayedPrice = summaryTotalElement.textContent.replace(/[$,]/g, ''
+                const expectedPrice = currentPrice.toString(
                 
                 if (displayedPrice !== expectedPrice) {
                     
                     summaryTotalElement.textContent = `$${currentPrice.toLocaleString()}`;
-                    this.saveToLocalStorage();
+                    this.saveToLocalStorage(
                 }
             }
-        }, 2000); // Check every 2 seconds
+        }, 2000 // Check every 2 seconds
         
         // Set up mutation observer to watch for changes to the summary element
-        const summaryTotalElement = document.getElementById('summaryTotal');
+        const summaryTotalElement = document.getElementById('summaryTotal'
         if (summaryTotalElement && window.MutationObserver) {
             const observer = new MutationObserver((mutations) => {
                 mutations.forEach((mutation) => {
                     if (mutation.type === 'childList' || mutation.type === 'characterData') {
-                        const currentPrice = this.calculateTotalPrice();
-                        const displayedPrice = summaryTotalElement.textContent.replace(/[$,]/g, '');
-                        const expectedPrice = currentPrice.toString();
+                        const currentPrice = this.calculateTotalPrice(
+                        const displayedPrice = summaryTotalElement.textContent.replace(/[$,]/g, ''
+                        const expectedPrice = currentPrice.toString(
                         
                         if (displayedPrice !== expectedPrice) {
                             
                             summaryTotalElement.textContent = `$${currentPrice.toLocaleString()}`;
-                            this.saveToLocalStorage();
+                            this.saveToLocalStorage(
                         }
                     }
-                });
-            });
+                }
+            }
             
             observer.observe(summaryTotalElement, {
                 childList: true,
                 characterData: true,
                 subtree: true
-            });
+            }
         }
     }
     
     restoreUIState() {
         // Restore package selection
         if (this.selectedPackage) {
-            const packageCard = document.querySelector(`[data-package-id="${this.selectedPackage}"]`);
+            const packageCard = document.querySelector(`[data-package-id="${this.selectedPackage}"]`
             if (packageCard) {
-                packageCard.classList.add('selected');
+                packageCard.classList.add('selected'
             }
         }
         
         // Restore additional feature selections
         if (this.selectedAdditionalFeatures && this.selectedAdditionalFeatures.size > 0) {
             this.selectedAdditionalFeatures.forEach(featureId => {
-            const featureCard = document.querySelector(`[data-feature-id="${featureId}"]`);
+            const featureCard = document.querySelector(`[data-feature-id="${featureId}"]`
             if (featureCard) {
-                featureCard.classList.add('selected');
+                featureCard.classList.add('selected'
             }
-        });
+        }
         }
         
         // Restore addon service selections
         if (this.selectedAddonServices && this.selectedAddonServices.size > 0) {
             this.selectedAddonServices.forEach(serviceId => {
-                const serviceCard = document.querySelector(`[data-service-id="${serviceId}"]`);
+                const serviceCard = document.querySelector(`[data-service-id="${serviceId}"]`
                 if (serviceCard) {
-                    serviceCard.classList.add('selected');
+                    serviceCard.classList.add('selected'
                 }
-            });
+            }
         }
         
         // Update summary after restoring UI state
-        this.updateSummary();
-        this.updateGenerateButton();
+        this.updateSummary(
+        this.updateGenerateButton(
     }
     
     async loadData() {
@@ -736,23 +736,23 @@ class QuoteSystem {
             
             
             // Show loading state
-            this.showLoadingState();
+            this.showLoadingState(
             
             // Load all data in parallel
             const [packages, additionalFeatures, addonServices] = await Promise.all([
                 fetch('/api/quote/packages').then(res => {
-                    if (!res.ok) throw new Error(`Failed to load packages: ${res.status}`);
-                    return res.json();
+                    if (!res.ok) throw new Error(`Failed to load packages: ${res.status}`
+                    return res.json(
                 }),
                 fetch('/api/quote/additional-features').then(res => {
-                    if (!res.ok) throw new Error(`Failed to load additional features: ${res.status}`);
-                    return res.json();
+                    if (!res.ok) throw new Error(`Failed to load additional features: ${res.status}`
+                    return res.json(
                 }),
                 fetch('/api/quote/addon-services').then(res => {
-                    if (!res.ok) throw new Error(`Failed to load addon services: ${res.status}`);
-                    return res.json();
+                    if (!res.ok) throw new Error(`Failed to load addon services: ${res.status}`
+                    return res.json(
                 })
-            ]);
+            ]
             
                     
             
@@ -763,26 +763,26 @@ class QuoteSystem {
             
             
             // Use Virtual Renderer for progressive rendering
-            this.virtualRenderer.queueRender(() => this.renderPackages(), 'high');
-            this.virtualRenderer.queueRender(() => this.renderAdditionalFeatures(), 'normal');
-            this.virtualRenderer.queueRender(() => this.renderAddonServices(), 'normal');
+            this.virtualRenderer.queueRender(() => this.renderPackages(), 'high'
+            this.virtualRenderer.queueRender(() => this.renderAdditionalFeatures(), 'normal'
+            this.virtualRenderer.queueRender(() => this.renderAddonServices(), 'normal'
             
             // Hide loading state
-            this.hideLoadingState();
+            this.hideLoadingState(
             
             // Show success notification
-            this.showNotification('Quote system loaded successfully!', 'success');
+            this.showNotification('Quote system loaded successfully!', 'success'
             
         } catch (error) {
             // Hide loading state
-            this.hideLoadingState();
+            this.hideLoadingState(
             
             // Show error notification
-            this.showNotification(`Failed to load data: ${error.message}`, 'error');
+            this.showNotification(`Failed to load data: ${error.message}`, 'error'
             
             // Fallback: Create some basic packages if API fails
             
-            this.createFallbackData();
+            this.createFallbackData(
         }
     }
     
@@ -790,95 +790,95 @@ class QuoteSystem {
         // Emergency service selection
         document.addEventListener('click', (e) => {
             if (e.target.closest('.emergency-card')) {
-                const card = e.target.closest('.emergency-card');
-                this.selectEmergencyService(card);
+                const card = e.target.closest('.emergency-card'
+                this.selectEmergencyService(card
             }
-        });
+        }
         
         // Service area selection
         document.addEventListener('click', (e) => {
             if (e.target.closest('.area-card')) {
-                const card = e.target.closest('.area-card');
-                this.selectServiceArea(card);
+                const card = e.target.closest('.area-card'
+                this.selectServiceArea(card
             }
-        });
+        }
         
         // HVAC features selection
         document.addEventListener('click', (e) => {
             if (e.target.closest('#hvacFeaturesGrid .feature-card')) {
-                const card = e.target.closest('.feature-card');
-                this.toggleHvacFeature(card);
+                const card = e.target.closest('.feature-card'
+                this.toggleHvacFeature(card
             }
-        });
+        }
         
         // Appliance features selection
         document.addEventListener('click', (e) => {
             if (e.target.closest('#applianceFeaturesGrid .feature-card')) {
-                const card = e.target.closest('.feature-card');
-                this.toggleApplianceFeature(card);
+                const card = e.target.closest('.feature-card'
+                this.toggleApplianceFeature(card
             }
-        });
+        }
         
         // Contact features selection - handled by individual click listeners in renderContactFeatures()
         
         // Main features selection (for features outside of HVAC/Appliance grids)
         document.addEventListener('click', (e) => {
             if (e.target.closest('#featureGrid .feature-card')) {
-                const card = e.target.closest('.feature-card');
-                const isIncluded = card.classList.contains('included-in-package');
+                const card = e.target.closest('.feature-card'
+                const isIncluded = card.classList.contains('included-in-package'
                 if (!isIncluded) {
-                    this.toggleFeature(card.dataset.featureId, card);
+                    this.toggleFeature(card.dataset.featureId, card
                 }
             }
-        });
+        }
         
         // Addons selection
         document.addEventListener('click', (e) => {
             if (e.target.closest('.addon-card')) {
-                const card = e.target.closest('.addon-card');
-                this.toggleAddon(card.dataset.addonId, card);
+                const card = e.target.closest('.addon-card'
+                this.toggleAddon(card.dataset.addonId, card
             }
-        });
+        }
         
         // Components selection - handled by individual click listeners in renderComponents()
         
         // Service area dropdown change
-        const serviceAreaSelect = document.getElementById('customerServiceArea');
+        const serviceAreaSelect = document.getElementById('customerServiceArea'
         if (serviceAreaSelect) {
             serviceAreaSelect.addEventListener('change', (e) => {
                 this.selectedServiceArea = e.target.value;
-                this.updateSummary();
-            });
+                this.updateSummary(
+            }
         }
         
         // Form field validation listeners
         const formFields = ['customerName', 'customerEmail', 'customerPhone', 'customerCompany', 'customerLocation', 'customerMessage'];
         formFields.forEach(fieldId => {
-            const field = document.getElementById(fieldId);
+            const field = document.getElementById(fieldId
             if (field) {
                 field.addEventListener('input', () => {
-                    this.updateGenerateButton();
-                });
+                    this.updateGenerateButton(
+                }
                 
                 field.addEventListener('blur', () => {
-                    this.updateGenerateButton();
-                });
+                    this.updateGenerateButton(
+                }
             }
-        });
+        }
         
         // Initialize searchable country selector
-        this.initializeCountrySelector();
+        this.initializeCountrySelector(
     }
     
     initializeCountrySelector() {
-        const trigger = document.getElementById('countrySelectTrigger');
-        const dropdown = document.getElementById('countrySelectDropdown');
-        const searchInput = document.getElementById('countrySearch');
-        const countryList = document.getElementById('countryList');
-        const selectedFlag = document.getElementById('selectedFlag');
-        const selectedCountryCode = document.getElementById('selectedCountryCode');
-        const chevronIcon = document.getElementById('chevronIcon');
-        const hiddenSelect = document.getElementById('countryCode');
+        const trigger = document.getElementById('countrySelectTrigger'
+        const dropdown = document.getElementById('countrySelectDropdown'
+        const searchInput = document.getElementById('countrySearch'
+        const countryList = document.getElementById('countryList'
+        const selectedFlag = document.getElementById('selectedFlag'
+        const selectedCountryCode = document.getElementById('selectedCountryCode'
+        const chevronIcon = document.getElementById('chevronIcon'
+        const hiddenSelect = document.getElementById('countryCode'
         
         // Country data - Complete list of all countries in the world
         const countries = [
@@ -1077,37 +1077,37 @@ class QuoteSystem {
                     <img src="https://flagcdn.com/w20/${country.flag}.png" alt="${country.name}" loading="lazy">
                     <span class="country-code">${country.code}</span>
                 </div>
-            `).join('');
+            `).join(''
         }
         
         // Initialize with all countries
-        renderCountries();
+        renderCountries(
         
         // Toggle dropdown
         trigger.addEventListener('click', () => {
             const isOpen = !dropdown.hidden;
             dropdown.hidden = isOpen;
-            trigger.classList.toggle('active', !isOpen);
+            trigger.classList.toggle('active', !isOpen
             
             if (!isOpen) {
-                searchInput.focus();
+                searchInput.focus(
             }
-        });
+        }
         
         // Search functionality
         searchInput.addEventListener('input', (e) => {
-            const searchTerm = e.target.value.toLowerCase();
+            const searchTerm = e.target.value.toLowerCase(
             const filteredCountries = window.quoteSystem.countries.filter(country => 
                 country.name.toLowerCase().includes(searchTerm) ||
                 country.code.includes(searchTerm) ||
                 country.flag.toLowerCase().includes(searchTerm)
-            );
-            renderCountries(filteredCountries);
-        });
+
+            renderCountries(filteredCountries
+        }
         
         // Select country
         countryList.addEventListener('click', (e) => {
-            const countryItem = e.target.closest('.country-item');
+            const countryItem = e.target.closest('.country-item'
             if (!countryItem) return;
             
             const code = countryItem.dataset.code;
@@ -1121,35 +1121,35 @@ class QuoteSystem {
             
             // Update hidden select
             hiddenSelect.value = code;
-            hiddenSelect.dispatchEvent(new Event('change'));
+            hiddenSelect.dispatchEvent(new Event('change')
             
             // Close dropdown
             dropdown.hidden = true;
-            trigger.classList.remove('active');
+            trigger.classList.remove('active'
             searchInput.value = '';
-            renderCountries();
-        });
+            renderCountries(
+        }
         
         // Close dropdown when clicking outside
         document.addEventListener('click', (e) => {
             if (!trigger.contains(e.target) && !dropdown.contains(e.target)) {
                 dropdown.hidden = true;
-                trigger.classList.remove('active');
+                trigger.classList.remove('active'
             }
-        });
+        }
         
         // Keyboard navigation
         searchInput.addEventListener('keydown', (e) => {
             if (e.key === 'Escape') {
                 dropdown.hidden = true;
-                trigger.classList.remove('active');
+                trigger.classList.remove('active'
             }
-        });
+        }
     }
     
     renderPackages() {
         
-        const packageFeaturesGrid = document.getElementById('packageFeaturesGrid');
+        const packageFeaturesGrid = document.getElementById('packageFeaturesGrid'
         
         if (!packageFeaturesGrid) {
             return;
@@ -1169,30 +1169,30 @@ class QuoteSystem {
                 <i data-lucide="check"></i>
                 <span>${component}</span>
                     </div>
-        `).join('');
+        `).join(''
         
         
         packageFeaturesGrid.innerHTML = featuresHTML;
         
         // Auto-select the package
         this.selectedPackage = pkg.id;
-        this.saveToLocalStorage();
+        this.saveToLocalStorage(
         
         // Initialize Lucide icons
-        lucide.createIcons();
+        lucide.createIcons(
         
         
     }
     
     renderEmergencyServices() {
-        const emergencyGrid = document.getElementById('emergencyGrid');
+        const emergencyGrid = document.getElementById('emergencyGrid'
         if (!emergencyGrid) {
             return;
         }
         
         emergencyGrid.innerHTML = this.emergencyServices.map(service => {
             // Check if this emergency service is included in the package
-            const isIncluded = this.isComponentIncluded(service.name);
+            const isIncluded = this.isComponentIncluded(service.name
             const isSelected = this.selectedEmergency === service.id;
             
             return `
@@ -1211,22 +1211,22 @@ class QuoteSystem {
                       isSelected ? '<div class="selected-badge">Selected</div>' : ''}
                 </div>
             `;
-        }).join('');
+        }).join(''
         
         // Add click listeners for emergency services
-        const emergencyCards = emergencyGrid.querySelectorAll('.emergency-card');
+        const emergencyCards = emergencyGrid.querySelectorAll('.emergency-card'
         emergencyCards.forEach(card => {
             const emergencyId = card.dataset.emergencyId;
             
             // Add click listener to the card itself
             card.addEventListener('click', (e) => {
-                e.preventDefault();
-                e.stopPropagation();
+                e.preventDefault(
+                e.stopPropagation(
                 
                 // Don't allow toggling if emergency service is included in package
-                const service = this.emergencyServices.find(s => s.id === emergencyId);
+                const service = this.emergencyServices.find(s => s.id === emergencyId
                 if (service && this.isComponentIncluded(service.name)) {
-                    this.showNotification('This emergency service is already included in your package!', 'info');
+                    this.showNotification('This emergency service is already included in your package!', 'info'
                     return;
                 }
                 
@@ -1234,35 +1234,35 @@ class QuoteSystem {
                 card.style.transform = 'scale(0.98)';
                 setTimeout(() => {
                     card.style.transform = '';
-                }, 150);
+                }, 150
                 
-                this.selectEmergencyService(card);
-            });
+                this.selectEmergencyService(card
+            }
             
             // Also add click listeners to all child elements to ensure the entire card is clickable
             card.querySelectorAll('*').forEach(child => {
                 child.addEventListener('click', (e) => {
-                    e.preventDefault();
-                    e.stopPropagation();
+                    e.preventDefault(
+                    e.stopPropagation(
                     
                     // Don't allow toggling if emergency service is included in package
-                    const service = this.emergencyServices.find(s => s.id === emergencyId);
+                    const service = this.emergencyServices.find(s => s.id === emergencyId
                     if (service && this.isComponentIncluded(service.name)) {
-                        this.showNotification('This emergency service is already included in your package!', 'info');
+                        this.showNotification('This emergency service is already included in your package!', 'info'
                         return;
                     }
                     
-                    this.selectEmergencyService(card);
-                });
-            });
-        });
+                    this.selectEmergencyService(card
+                }
+            }
+        }
         
         // Initialize Lucide icons
-        lucide.createIcons();
+        lucide.createIcons(
     }
     
     renderServiceAreas() {
-        const serviceAreaGrid = document.getElementById('serviceAreaGrid');
+        const serviceAreaGrid = document.getElementById('serviceAreaGrid'
         if (!serviceAreaGrid) return;
         
         // Get selected package components to check if service areas are included
@@ -1273,11 +1273,11 @@ class QuoteSystem {
         const hasServiceAreaManagement = selectedPackageComponents.some(pkgComponent => 
             pkgComponent.toLowerCase().includes('service area') ||
             pkgComponent.toLowerCase().includes('coverage map')
-        );
+
         
         serviceAreaGrid.innerHTML = this.serviceAreas.map(area => {
             // Check if this service area is included in the package
-            const isIncluded = this.isComponentIncluded(area.name);
+            const isIncluded = this.isComponentIncluded(area.name
             const isSelected = this.selectedServiceArea === area.id;
             
             return `
@@ -1295,7 +1295,7 @@ class QuoteSystem {
                       isSelected ? '<div class="selected-badge">Selected</div>' : ''}
                 </div>
             `;
-        }).join('');
+        }).join(''
         
         // Add click listeners for service areas
         serviceAreaGrid.querySelectorAll('.area-card').forEach(card => {
@@ -1304,45 +1304,45 @@ class QuoteSystem {
             // Ensure all service areas are selectable for upgrading
             if (areaId === 'extended-zone' || areaId === 'premium-zone') {
                 card.style.cursor = 'pointer';
-                card.classList.remove('included-in-package');
+                card.classList.remove('included-in-package'
             }
             
             // Add click listener to the card itself
             card.addEventListener('click', (e) => {
-                e.preventDefault();
-                e.stopPropagation();
+                e.preventDefault(
+                e.stopPropagation(
                 
                 // Don't allow toggling if service area is included in package
-                const area = this.serviceAreas.find(a => a.id === areaId);
+                const area = this.serviceAreas.find(a => a.id === areaId
                 if (area && this.isComponentIncluded(area.name)) {
-                    this.showNotification('This service area is already included in your package!', 'info');
+                    this.showNotification('This service area is already included in your package!', 'info'
                     return;
                 }
                 
-                this.selectServiceArea(card);
-            });
+                this.selectServiceArea(card
+            }
             
             // Also add click listeners to all child elements to ensure the entire card is clickable
             card.querySelectorAll('*').forEach(child => {
                 child.addEventListener('click', (e) => {
-                    e.preventDefault();
-                    e.stopPropagation();
+                    e.preventDefault(
+                    e.stopPropagation(
                     
                     // Don't allow toggling if service area is included in package
-                    const area = this.serviceAreas.find(a => a.id === areaId);
+                    const area = this.serviceAreas.find(a => a.id === areaId
                     if (area && this.isComponentIncluded(area.name)) {
-                        this.showNotification('This service area is already included in your package!', 'info');
+                        this.showNotification('This service area is already included in your package!', 'info'
                         return;
                     }
                     
-                    this.selectServiceArea(card);
-                });
-            });
-        });
+                    this.selectServiceArea(card
+                }
+            }
+        }
     }
     
     renderHvacFeatures() {
-        const hvacGrid = document.getElementById('hvacFeaturesGrid');
+        const hvacGrid = document.getElementById('hvacFeaturesGrid'
         if (!hvacGrid) {
             return;
         }
@@ -1350,11 +1350,9 @@ class QuoteSystem {
         // Get HVAC features from dedicated API endpoint
         const hvacFeatures = this.hvacFeatures || [];
         
-        );
-        
         hvacGrid.innerHTML = hvacFeatures.map(feature => {
-            const isSelected = this.selectedHvacFeatures.has(feature.id);
-            const isIncluded = this.isComponentIncluded(feature.name);
+            const isSelected = this.selectedHvacFeatures.has(feature.id
+            const isIncluded = this.isComponentIncluded(feature.name
             const displayPrice = isIncluded ? 0 : feature.price;
             
             return `
@@ -1373,7 +1371,7 @@ class QuoteSystem {
                       isSelected ? '<div class="selected-badge">Selected</div>' : ''}
                 </div>
             `;
-        }).join('');
+        }).join(''
         
         // Add click listeners for HVAC features
         hvacGrid.querySelectorAll('.hvac-feature-card').forEach(card => {
@@ -1381,43 +1379,43 @@ class QuoteSystem {
             
             // Add click listener to the card itself
             card.addEventListener('click', (e) => {
-                e.preventDefault();
-                e.stopPropagation();
+                e.preventDefault(
+                e.stopPropagation(
                 
                 // Don't allow toggling if feature is included in package
-                const feature = this.hvacFeatures?.find(f => f.id === featureId);
+                const feature = this.hvacFeatures?.find(f => f.id === featureId
                 if (feature && this.isComponentIncluded(feature.name)) {
-                    this.showNotification('This feature is already included in your package!', 'info');
+                    this.showNotification('This feature is already included in your package!', 'info'
                     return;
                 }
                 
-                this.toggleHvacFeature(card);
-            });
+                this.toggleHvacFeature(card
+            }
             
             // Also add click listeners to all child elements to ensure the entire card is clickable
             card.querySelectorAll('*').forEach(child => {
                 child.addEventListener('click', (e) => {
-                    e.preventDefault();
-                    e.stopPropagation();
+                    e.preventDefault(
+                    e.stopPropagation(
                     
                     // Don't allow toggling if feature is included in package
-                    const feature = this.hvacFeatures?.find(f => f.id === featureId);
+                    const feature = this.hvacFeatures?.find(f => f.id === featureId
                     if (feature && this.isComponentIncluded(feature.name)) {
-                        this.showNotification('This feature is already included in your package!', 'info');
+                        this.showNotification('This feature is already included in your package!', 'info'
                         return;
                     }
                     
-                    this.toggleHvacFeature(card);
-                });
-            });
-        });
+                    this.toggleHvacFeature(card
+                }
+            }
+        }
         
         // Initialize Lucide icons
-        lucide.createIcons();
+        lucide.createIcons(
     }
     
     renderApplianceFeatures() {
-        const applianceGrid = document.getElementById('applianceFeaturesGrid');
+        const applianceGrid = document.getElementById('applianceFeaturesGrid'
         if (!applianceGrid) {
             return;
         }
@@ -1425,11 +1423,9 @@ class QuoteSystem {
         // Get Appliance features from dedicated API endpoint
         const applianceFeatures = this.applianceFeatures || [];
         
-        );
-        
         applianceGrid.innerHTML = applianceFeatures.map(feature => {
-            const isSelected = this.selectedApplianceFeatures.has(feature.id);
-            const isIncluded = this.isComponentIncluded(feature.name);
+            const isSelected = this.selectedApplianceFeatures.has(feature.id
+            const isIncluded = this.isComponentIncluded(feature.name
             const displayPrice = isIncluded ? 0 : feature.price;
             
             return `
@@ -1448,7 +1444,7 @@ class QuoteSystem {
                       isSelected ? '<div class="selected-badge">Selected</div>' : ''}
                 </div>
             `;
-        }).join('');
+        }).join(''
         
         // Add click listeners for appliance features
         applianceGrid.querySelectorAll('.appliance-feature-card').forEach(card => {
@@ -1456,48 +1452,47 @@ class QuoteSystem {
             
             // Add click listener to the card itself
             card.addEventListener('click', (e) => {
-                e.preventDefault();
-                e.stopPropagation();
+                e.preventDefault(
+                e.stopPropagation(
                 
                 // Don't allow toggling if feature is included in package
-                const feature = this.applianceFeatures?.find(f => f.id === featureId);
+                const feature = this.applianceFeatures?.find(f => f.id === featureId
                 if (feature && this.isComponentIncluded(feature.name)) {
-                    this.showNotification('This feature is already included in your package!', 'info');
+                    this.showNotification('This feature is already included in your package!', 'info'
                     return;
                 }
                 
-                this.toggleApplianceFeature(card);
-            });
+                this.toggleApplianceFeature(card
+            }
             
             // Also add click listeners to all child elements to ensure the entire card is clickable
             card.querySelectorAll('*').forEach(child => {
                 child.addEventListener('click', (e) => {
-                    e.preventDefault();
-                    e.stopPropagation();
+                    e.preventDefault(
+                    e.stopPropagation(
                     
                     // Don't allow toggling if feature is included in package
-                    const feature = this.applianceFeatures?.find(f => f.id === featureId);
+                    const feature = this.applianceFeatures?.find(f => f.id === featureId
                     if (feature && this.isComponentIncluded(feature.name)) {
-                        this.showNotification('This feature is already included in your package!', 'info');
+                        this.showNotification('This feature is already included in your package!', 'info'
                         return;
                     }
                     
-                    this.toggleApplianceFeature(card);
-                });
-            });
-        });
+                    this.toggleApplianceFeature(card
+                }
+            }
+        }
         
         // Initialize Lucide icons
-        lucide.createIcons();
+        lucide.createIcons(
     }
     
     renderContactFeatures() {
-        const contactGrid = document.querySelector('.contact-features-grid');
+        const contactGrid = document.querySelector('.contact-features-grid'
         if (!contactGrid) {
             return;
         }
-        
-        );
+
         
         if (!this.contactFeatures || this.contactFeatures.length === 0) {
             contactGrid.innerHTML = '<p>No contact features available</p>';
@@ -1505,8 +1500,8 @@ class QuoteSystem {
         }
         
         contactGrid.innerHTML = this.contactFeatures.map(feature => {
-            const isSelected = this.selectedContactFeatures.has(feature.id);
-            const isIncluded = this.isComponentIncluded(feature.name);
+            const isSelected = this.selectedContactFeatures.has(feature.id
+            const isIncluded = this.isComponentIncluded(feature.name
             const displayPrice = isIncluded ? 0 : feature.price;
             return `
                 <div class="contact-feature-card ${isSelected ? 'selected' : ''} ${isIncluded ? 'included-in-package' : ''}" data-feature-id="${feature.id}">
@@ -1520,48 +1515,48 @@ class QuoteSystem {
                       isSelected ? '<div class="selected-badge">Selected</div>' : ''}
             </div>
             `;
-        }).join('');
+        }).join(''
         
         // Add click listeners
-        const contactCards = contactGrid.querySelectorAll('.contact-feature-card');
+        const contactCards = contactGrid.querySelectorAll('.contact-feature-card'
         contactCards.forEach(card => {
             const featureId = card.dataset.featureId;
-            const isIncluded = card.classList.contains('included-in-package');
+            const isIncluded = card.classList.contains('included-in-package'
             // Add click listener to the entire card
             card.addEventListener('click', (e) => {
-                e.preventDefault();
-                e.stopPropagation();
+                e.preventDefault(
+                e.stopPropagation(
                 
                 // Don't allow toggling if feature is included in package
                 if (isIncluded) {
-                    this.showNotification('This feature is already included in your package!', 'info');
+                    this.showNotification('This feature is already included in your package!', 'info'
                     return;
                 }
                 
-                this.toggleContactFeature(card);
-            });
+                this.toggleContactFeature(card
+            }
             
             // Also add click listeners to child elements to ensure clicks work
             card.querySelectorAll('*').forEach(child => {
                 child.addEventListener('click', (e) => {
-                    e.stopPropagation(); // Prevent bubbling
+                    e.stopPropagation( // Prevent bubbling
                     // Don't allow toggling if feature is included in package
                     if (isIncluded) {
-                        this.showNotification('This feature is already included in your package!', 'info');
+                        this.showNotification('This feature is already included in your package!', 'info'
                         return;
                     }
                     
-                    this.toggleContactFeature(card);
-                });
-            });
-        });
+                    this.toggleContactFeature(card
+                }
+            }
+        }
         
         // Initialize Lucide icons
-        lucide.createIcons();
+        lucide.createIcons(
     }
     
     renderAdditionalFeatures() {
-        const additionalFeaturesGrid = document.getElementById('additionalFeaturesGrid');
+        const additionalFeaturesGrid = document.getElementById('additionalFeaturesGrid'
         if (!additionalFeaturesGrid) {
             return;
         }
@@ -1572,8 +1567,8 @@ class QuoteSystem {
         }
         
         const featuresHTML = this.additionalFeatures.map(feature => {
-            const isSelected = this.selectedAdditionalFeatures.has(feature.id);
-            const isIncluded = this.isComponentIncluded(feature.name);
+            const isSelected = this.selectedAdditionalFeatures.has(feature.id
+            const isIncluded = this.isComponentIncluded(feature.name
             const displayPrice = isIncluded ? 0 : feature.price;
             
             return `
@@ -1594,34 +1589,34 @@ class QuoteSystem {
                     </div>
                 </div>
             `;
-        }).join('');
+        }).join(''
         
         additionalFeaturesGrid.innerHTML = featuresHTML;
         
         // Add click listeners
         additionalFeaturesGrid.querySelectorAll('.feature-card').forEach(card => {
-            card.addEventListener('click', () => this.toggleAdditionalFeature(card));
-        });
+            card.addEventListener('click', () => this.toggleAdditionalFeature(card)
+        }
         
         // Update Lucide icons
-        lucide.createIcons();
+        lucide.createIcons(
     }
     
     renderFeatureCategory(gridId, features, categoryName) {
-        const featureGrid = document.getElementById(gridId);
+        const featureGrid = document.getElementById(gridId
         if (!featureGrid) {
             return;
         }
         
         if (!features || features.length === 0) {
-            } available`);
+            } available`
             featureGrid.innerHTML = `<div class="no-features"><i data-lucide="info"></i><p>No ${categoryName.toLowerCase()} available</p></div>`;
             return;
         }
         
         featureGrid.innerHTML = features.map(feature => {
-            const isSelected = this.selectedAdditionalFeatures.has(feature.id);
-            const isIncluded = this.isComponentIncluded(feature.name);
+            const isSelected = this.selectedAdditionalFeatures.has(feature.id
+            const isIncluded = this.isComponentIncluded(feature.name
             const displayPrice = isIncluded ? 0 : feature.price;
             return `
                 <div class="feature-card ${isSelected ? 'selected' : ''} ${isIncluded ? 'included-in-package' : ''}" data-feature-id="${feature.id}">
@@ -1636,7 +1631,7 @@ class QuoteSystem {
                                     </div>
                 </div>
             `;
-        }).join('');
+        }).join(''
         
         // Add click listeners for features
         featureGrid.querySelectorAll('.feature-card').forEach(card => {
@@ -1644,35 +1639,35 @@ class QuoteSystem {
             
             // Add click listener to the card itself
             card.addEventListener('click', (e) => {
-                e.preventDefault();
-                e.stopPropagation();
+                e.preventDefault(
+                e.stopPropagation(
                 
                 // Don't allow toggling if feature is included in package
-                const feature = features.find(f => f.id === featureId);
+                const feature = features.find(f => f.id === featureId
                 if (feature && this.isComponentIncluded(feature.name)) {
-                    this.showNotification('This feature is already included in your package!', 'info');
+                    this.showNotification('This feature is already included in your package!', 'info'
                     return;
                 }
                 
-                this.toggleFeature(card);
-            });
+                this.toggleFeature(card
+            }
             
             // Also add click listeners to all child elements to ensure the entire card is clickable
             card.querySelectorAll('*').forEach(child => {
                 child.addEventListener('click', (e) => {
-                    e.preventDefault();
-                    e.stopPropagation();
+                    e.preventDefault(
+                    e.stopPropagation(
                     // Don't allow toggling if feature is included in package
-                    const feature = features.find(f => f.id === featureId);
+                    const feature = features.find(f => f.id === featureId
                     if (feature && this.isComponentIncluded(feature.name)) {
-                        this.showNotification('This feature is already included in your package!', 'info');
+                        this.showNotification('This feature is already included in your package!', 'info'
                         return;
                     }
                     
-                    this.toggleFeature(card);
-                });
-            });
-        });
+                    this.toggleFeature(card
+                }
+            }
+        }
     }
     
     getCategoryDisplayName(category) {
@@ -1702,18 +1697,18 @@ class QuoteSystem {
     isFeatureIncluded(feature, selectedPackageFeatures) {
         // Check if feature has includedIn property (new format)
         if (feature.includedIn && this.selectedPackage) {
-            return feature.includedIn.includes(this.selectedPackage);
+            return feature.includedIn.includes(this.selectedPackage
         }
         
         // Fallback to old format
         return selectedPackageFeatures.some(pkgFeature => 
             pkgFeature.toLowerCase().includes(feature.name.toLowerCase()) ||
             feature.name.toLowerCase().includes(pkgFeature.toLowerCase())
-        );
+
     }
     
     renderAddonServices() {
-        const addonServicesGrid = document.getElementById('addonServicesGrid');
+        const addonServicesGrid = document.getElementById('addonServicesGrid'
         if (!addonServicesGrid) {
             return;
         }
@@ -1724,7 +1719,7 @@ class QuoteSystem {
         }
         
         addonServicesGrid.innerHTML = this.addonServices.map(service => {
-            const isSelected = this.selectedAddonServices.has(service.id);
+            const isSelected = this.selectedAddonServices.has(service.id
             return `
                 <div class="addon-card ${isSelected ? 'selected' : ''}" data-service-id="${service.id}">
                 <div class="addon-header">
@@ -1742,44 +1737,44 @@ class QuoteSystem {
             </div>
             </div>
             `;
-        }).join('');
+        }).join(''
         
         // Add click listeners
-        const addonCards = addonServicesGrid.querySelectorAll('.addon-card');
+        const addonCards = addonServicesGrid.querySelectorAll('.addon-card'
         addonCards.forEach(card => {
             const serviceId = card.dataset.serviceId;
             // Add click listener to the entire card
             card.addEventListener('click', (e) => {
-                this.toggleAddonService(serviceId, card);
-            });
+                this.toggleAddonService(serviceId, card
+            }
             
             // Also add click listeners to child elements to ensure clicks work
             card.querySelectorAll('*').forEach(child => {
                 child.addEventListener('click', (e) => {
-                    e.stopPropagation(); // Prevent bubbling
-                    this.toggleAddonService(serviceId, card);
-                });
-            });
-        });
+                    e.stopPropagation( // Prevent bubbling
+                    this.toggleAddonService(serviceId, card
+                }
+            }
+        }
         
         // Update Lucide icons
-        lucide.createIcons();
+        lucide.createIcons(
     }
     
     renderComponents() {
-        );
+
         // Update tab counts
-        this.updateComponentTabCounts();
+        this.updateComponentTabCounts(
         
         // Render pages
-        const pagesGrid = document.getElementById('pagesGrid');
+        const pagesGrid = document.getElementById('pagesGrid'
         if (pagesGrid) {
             if (!this.components.pages || this.components.pages.length === 0) {
                 pagesGrid.innerHTML = '<div class="no-components"><i data-lucide="file-text"></i><p>No pages components available</p></div>';
             } else {
                 pagesGrid.innerHTML = this.components.pages.map(component => {
-                    const isSelected = this.selectedComponents.has(component.id);
-                    const isIncluded = this.isComponentIncluded(component.name);
+                    const isSelected = this.selectedComponents.has(component.id
+                    const isIncluded = this.isComponentIncluded(component.name
                     const displayPrice = isIncluded ? 0 : component.price;
                     return `
                         <div class="component-card ${isSelected ? 'selected' : ''} ${isIncluded ? 'included-in-package' : ''}" data-component-id="${component.id}">
@@ -1800,55 +1795,55 @@ class QuoteSystem {
                             </div>
                         </div>
                     `;
-                }).join('');
+                }).join(''
             
             // Add click listeners for pages
-                const pageCards = pagesGrid.querySelectorAll('.component-card');
+                const pageCards = pagesGrid.querySelectorAll('.component-card'
                 pageCards.forEach(card => {
                     const componentId = card.dataset.componentId;
                     // Add click listener to the card itself
                     card.addEventListener('click', (e) => {
-                        e.preventDefault();
-                        e.stopPropagation();
+                        e.preventDefault(
+                        e.stopPropagation(
                         
                         // Don't allow toggling if component is included in package
-                        const component = this.findComponentById(componentId);
+                        const component = this.findComponentById(componentId
                         if (component && this.isComponentIncluded(component.name)) {
-                            this.showNotification('This component is already included in your package!', 'info');
+                            this.showNotification('This component is already included in your package!', 'info'
                             return;
                         }
                         
-                        this.toggleComponent(componentId, card);
-                    });
+                        this.toggleComponent(componentId, card
+                    }
                     
                     // Also add click listeners to all child elements to ensure the entire card is clickable
                     card.querySelectorAll('*').forEach(child => {
                         child.addEventListener('click', (e) => {
-                            e.preventDefault();
-                            e.stopPropagation();
+                            e.preventDefault(
+                            e.stopPropagation(
                             // Don't allow toggling if component is included in package
-                            const component = this.findComponentById(componentId);
+                            const component = this.findComponentById(componentId
                             if (component && this.isComponentIncluded(component.name)) {
-                                this.showNotification('This component is already included in your package!', 'info');
+                                this.showNotification('This component is already included in your package!', 'info'
                                 return;
                             }
                             
-                            this.toggleComponent(componentId, card);
-                        });
-                    });
-                });
+                            this.toggleComponent(componentId, card
+                        }
+                    }
+                }
             }
         }
         
         // Render features
-        const featuresGrid = document.getElementById('featuresGrid');
+        const featuresGrid = document.getElementById('featuresGrid'
         if (featuresGrid) {
             if (!this.components.features || this.components.features.length === 0) {
                 featuresGrid.innerHTML = '<div class="no-components"><i data-lucide="settings"></i><p>No features components available</p></div>';
             } else {
                 featuresGrid.innerHTML = this.components.features.map(component => {
-                    const isSelected = this.selectedComponents.has(component.id);
-                    const isIncluded = this.isComponentIncluded(component.name);
+                    const isSelected = this.selectedComponents.has(component.id
+                    const isIncluded = this.isComponentIncluded(component.name
                     const displayPrice = isIncluded ? 0 : component.price;
                     return `
                         <div class="component-card ${isSelected ? 'selected' : ''} ${isIncluded ? 'included-in-package' : ''}" data-component-id="${component.id}">
@@ -1869,55 +1864,55 @@ class QuoteSystem {
                             </div>
                         </div>
                     `;
-                }).join('');
+                }).join(''
             
             // Add click listeners for features
-                const featureCards = featuresGrid.querySelectorAll('.component-card');
+                const featureCards = featuresGrid.querySelectorAll('.component-card'
                 featureCards.forEach(card => {
                     const componentId = card.dataset.componentId;
                     // Add click listener to the card itself
                     card.addEventListener('click', (e) => {
-                        e.preventDefault();
-                        e.stopPropagation();
+                        e.preventDefault(
+                        e.stopPropagation(
                         
                         // Don't allow toggling if component is included in package
-                        const component = this.findComponentById(componentId);
+                        const component = this.findComponentById(componentId
                         if (component && this.isComponentIncluded(component.name)) {
-                            this.showNotification('This component is already included in your package!', 'info');
+                            this.showNotification('This component is already included in your package!', 'info'
                             return;
                         }
                         
-                        this.toggleComponent(componentId, card);
-                    });
+                        this.toggleComponent(componentId, card
+                    }
                     
                     // Also add click listeners to all child elements to ensure the entire card is clickable
                     card.querySelectorAll('*').forEach(child => {
                         child.addEventListener('click', (e) => {
-                            e.preventDefault();
-                            e.stopPropagation();
+                            e.preventDefault(
+                            e.stopPropagation(
                             // Don't allow toggling if component is included in package
-                            const component = this.findComponentById(componentId);
+                            const component = this.findComponentById(componentId
                             if (component && this.isComponentIncluded(component.name)) {
-                                this.showNotification('This component is already included in your package!', 'info');
+                                this.showNotification('This component is already included in your package!', 'info'
                                 return;
                             }
                             
-                            this.toggleComponent(componentId, card);
-                        });
-                    });
-                });
+                            this.toggleComponent(componentId, card
+                        }
+                    }
+                }
             }
         }
         
         // Render technical
-        const technicalGrid = document.getElementById('technicalGrid');
+        const technicalGrid = document.getElementById('technicalGrid'
         if (technicalGrid) {
             if (!this.components.technical || this.components.technical.length === 0) {
                 technicalGrid.innerHTML = '<div class="no-components"><i data-lucide="server"></i><p>No technical components available</p></div>';
             } else {
                 technicalGrid.innerHTML = this.components.technical.map(component => {
-                    const isSelected = this.selectedComponents.has(component.id);
-                    const isIncluded = this.isComponentIncluded(component.name);
+                    const isSelected = this.selectedComponents.has(component.id
+                    const isIncluded = this.isComponentIncluded(component.name
                     const displayPrice = isIncluded ? 0 : component.price;
                     return `
                         <div class="component-card ${isSelected ? 'selected' : ''} ${isIncluded ? 'included-in-package' : ''}" data-component-id="${component.id}">
@@ -1938,48 +1933,48 @@ class QuoteSystem {
                             </div>
                         </div>
                     `;
-                }).join('');
+                }).join(''
             
             // Add click listeners for technical
-                const technicalCards = technicalGrid.querySelectorAll('.component-card');
+                const technicalCards = technicalGrid.querySelectorAll('.component-card'
                 technicalCards.forEach(card => {
                     const componentId = card.dataset.componentId;
                     // Add click listener to the card itself
                     card.addEventListener('click', (e) => {
-                        e.preventDefault();
-                        e.stopPropagation();
+                        e.preventDefault(
+                        e.stopPropagation(
                         
                         // Don't allow toggling if component is included in package
-                        const component = this.findComponentById(componentId);
+                        const component = this.findComponentById(componentId
                         if (component && this.isComponentIncluded(component.name)) {
-                            this.showNotification('This component is already included in your package!', 'info');
+                            this.showNotification('This component is already included in your package!', 'info'
                             return;
                         }
                         
-                        this.toggleComponent(componentId, card);
-                    });
+                        this.toggleComponent(componentId, card
+                    }
                     
                     // Also add click listeners to all child elements to ensure the entire card is clickable
                     card.querySelectorAll('*').forEach(child => {
                         child.addEventListener('click', (e) => {
-                            e.preventDefault();
-                            e.stopPropagation();
+                            e.preventDefault(
+                            e.stopPropagation(
                             // Don't allow toggling if component is included in package
-                            const component = this.findComponentById(componentId);
+                            const component = this.findComponentById(componentId
                             if (component && this.isComponentIncluded(component.name)) {
-                                this.showNotification('This component is already included in your package!', 'info');
+                                this.showNotification('This component is already included in your package!', 'info'
                                 return;
                             }
                             
-                            this.toggleComponent(componentId, card);
-                        });
-                    });
-                });
+                            this.toggleComponent(componentId, card
+                        }
+                    }
+                }
             }
         }
         
         // Initialize Lucide icons
-        lucide.createIcons();
+        lucide.createIcons(
     }
     
     updateComponentTabCounts() {
@@ -1987,9 +1982,9 @@ class QuoteSystem {
         const featuresCount = this.components?.features?.length || 0;
         const technicalCount = this.components?.technical?.length || 0;
         
-        const pagesCountEl = document.getElementById('pages-count');
-        const featuresCountEl = document.getElementById('features-count');
-        const technicalCountEl = document.getElementById('technical-count');
+        const pagesCountEl = document.getElementById('pages-count'
+        const featuresCountEl = document.getElementById('features-count'
+        const technicalCountEl = document.getElementById('technical-count'
         
         if (pagesCountEl) pagesCountEl.textContent = pagesCount;
         if (featuresCountEl) featuresCountEl.textContent = featuresCount;
@@ -2001,33 +1996,33 @@ class QuoteSystem {
         this.selectedPackage = packageId;
         
         // Auto-select Standard Emergency Service when package is selected
-        const standardEmergency = this.emergencyServices.find(s => s.id === 'standard-emergency');
+        const standardEmergency = this.emergencyServices.find(s => s.id === 'standard-emergency'
         if (standardEmergency && this.isComponentIncluded(standardEmergency.name)) {
             this.selectedEmergency = 'standard-emergency';
             }
         
         // Auto-select Primary Service Zone when package is selected
-        const primaryZone = this.serviceAreas.find(s => s.id === 'primary-zone');
+        const primaryZone = this.serviceAreas.find(s => s.id === 'primary-zone'
         if (primaryZone && this.isComponentIncluded(primaryZone.name)) {
             this.selectedServiceArea = 'primary-zone';
             }
         
-        this.saveToLocalStorage(); // Save to localStorage
+        this.saveToLocalStorage( // Save to localStorage
         
         // Update all sections based on package selection
-        this.virtualRenderer.queueRender(() => this.renderEmergencyServices(), 'normal');
-        this.virtualRenderer.queueRender(() => this.renderServiceAreas(), 'normal');
-        this.virtualRenderer.queueRender(() => this.renderFeatures(), 'normal');
-        this.virtualRenderer.queueRender(() => this.renderHvacFeatures(), 'normal');
-        this.virtualRenderer.queueRender(() => this.renderApplianceFeatures(), 'normal');
-        this.updateSummary();
-        this.updateGenerateButton();
+        this.virtualRenderer.queueRender(() => this.renderEmergencyServices(), 'normal'
+        this.virtualRenderer.queueRender(() => this.renderServiceAreas(), 'normal'
+        this.virtualRenderer.queueRender(() => this.renderFeatures(), 'normal'
+        this.virtualRenderer.queueRender(() => this.renderHvacFeatures(), 'normal'
+        this.virtualRenderer.queueRender(() => this.renderApplianceFeatures(), 'normal'
+        this.updateSummary(
+        this.updateGenerateButton(
         
 
         
         // Show success notification
         const packageName = this.packages.find(p => p.id === packageId)?.name || 'Package';
-        this.showNotification(`${packageName} is ready! Add extra features to customize your website.`, 'success');
+        this.showNotification(`${packageName} is ready! Add extra features to customize your website.`, 'success'
     }
     
     selectEmergencyService(card) {
@@ -2040,16 +2035,16 @@ class QuoteSystem {
             }
         
         // Re-render to update the UI
-        this.virtualRenderer.queueRender(() => this.renderEmergencyServices(), 'normal');
-        this.saveToLocalStorage(); // Save to localStorage
-        this.updateSummary();
-        this.updateGenerateButton();
+        this.virtualRenderer.queueRender(() => this.renderEmergencyServices(), 'normal'
+        this.saveToLocalStorage( // Save to localStorage
+        this.updateSummary(
+        this.updateGenerateButton(
         
         // Show user feedback
-        const service = this.emergencyServices.find(s => s.id === emergencyId);
+        const service = this.emergencyServices.find(s => s.id === emergencyId
         if (service) {
             const action = this.selectedEmergency === emergencyId ? 'added' : 'removed';
-            this.showNotification(`${service.name} ${action} to your quote`, 'success');
+            this.showNotification(`${service.name} ${action} to your quote`, 'success'
         }
     }
     
@@ -2064,23 +2059,23 @@ class QuoteSystem {
             }
         
         // Re-render to update the UI
-        this.virtualRenderer.queueRender(() => this.renderServiceAreas(), 'normal');
-        this.saveToLocalStorage(); // Save to localStorage
-        this.updateSummary();
-        this.updateGenerateButton();
+        this.virtualRenderer.queueRender(() => this.renderServiceAreas(), 'normal'
+        this.saveToLocalStorage( // Save to localStorage
+        this.updateSummary(
+        this.updateGenerateButton(
         
         // Show user feedback
-        const area = this.serviceAreas.find(a => a.id === areaId);
+        const area = this.serviceAreas.find(a => a.id === areaId
         if (area) {
             const action = this.selectedServiceArea === areaId ? 'added' : 'removed';
-            this.showNotification(`${area.name} ${action} to your quote`, 'success');
+            this.showNotification(`${area.name} ${action} to your quote`, 'success'
         }
     }
     
     toggleFeature(featureId, card = null) {
         // If no card provided, try to find it
         if (!card) {
-            card = document.querySelector(`[data-feature-id="${featureId}"]`);
+            card = document.querySelector(`[data-feature-id="${featureId}"]`
         }
         if (!card) return;
         
@@ -2088,29 +2083,28 @@ class QuoteSystem {
         if (card.classList.contains('included-in-package')) {
             return;
         }
-        
-        );
+
         
         if (this.selectedAdditionalFeatures.has(featureId)) {
-            this.selectedAdditionalFeatures.delete(featureId);
+            this.selectedAdditionalFeatures.delete(featureId
             } else {
-            this.selectedAdditionalFeatures.add(featureId);
+            this.selectedAdditionalFeatures.add(featureId
             }
         
         // Update visual state immediately
-        this.updateFeatureVisualState(card, featureId);
+        this.updateFeatureVisualState(card, featureId
         
         // Re-render to update the UI
-        this.virtualRenderer.queueRender(() => this.renderFeatures(), 'normal');
-        this.saveToLocalStorage(); // Save to localStorage
-        this.updateSummary();
-        this.updateGenerateButton();
+        this.virtualRenderer.queueRender(() => this.renderFeatures(), 'normal'
+        this.saveToLocalStorage( // Save to localStorage
+        this.updateSummary(
+        this.updateGenerateButton(
         
         // Show user feedback
-        const feature = this.findFeatureById(featureId);
+        const feature = this.findFeatureById(featureId
         if (feature) {
             const action = this.selectedAdditionalFeatures.has(featureId) ? 'added' : 'removed';
-            this.showNotification(`${feature.name} ${action} to your quote`, 'success');
+            this.showNotification(`${feature.name} ${action} to your quote`, 'success'
         }
     }
     
@@ -2119,78 +2113,77 @@ class QuoteSystem {
         if (!featureId) return;
         
         // Get the current feature
-        const feature = this.hvacFeatures?.find(f => f.id === featureId);
+        const feature = this.hvacFeatures?.find(f => f.id === featureId
         if (!feature) return;
-        
-        );
+
         
         // Handle mutually exclusive logic for HVAC Brand Support
         if (featureId === 'hvac-brand-support' || featureId === 'commercial-hvac-support') {
             if (this.selectedHvacFeatures.has(featureId)) {
                 // If already selected, deselect it
-                this.selectedHvacFeatures.delete(featureId);
+                this.selectedHvacFeatures.delete(featureId
                 } else {
                 // If selecting one, deselect the other
                 if (featureId === 'hvac-brand-support') {
-                    this.selectedHvacFeatures.delete('commercial-hvac-support');
+                    this.selectedHvacFeatures.delete('commercial-hvac-support'
                 } else {
-                    this.selectedHvacFeatures.delete('hvac-brand-support');
+                    this.selectedHvacFeatures.delete('hvac-brand-support'
                 }
                 
                 // Add selection to clicked card
-                this.selectedHvacFeatures.add(featureId);
+                this.selectedHvacFeatures.add(featureId
                 }
         } else {
             // Regular multi-selection behavior for other features
         if (this.selectedHvacFeatures.has(featureId)) {
             // If already selected, deselect it
-            this.selectedHvacFeatures.delete(featureId);
+            this.selectedHvacFeatures.delete(featureId
                 } else {
             // Add selection to clicked card
-            this.selectedHvacFeatures.add(featureId);
+            this.selectedHvacFeatures.add(featureId
                 }
         }
         
         // Update visual state immediately
-        this.updateHvacFeatureVisualState(card, featureId, feature);
+        this.updateHvacFeatureVisualState(card, featureId, feature
         
         // Re-render to update the UI
-        this.virtualRenderer.queueRender(() => this.renderHvacFeatures(), 'normal');
-        this.saveToLocalStorage(); // Save to localStorage
-        this.updateSummary();
-        this.updateGenerateButton();
+        this.virtualRenderer.queueRender(() => this.renderHvacFeatures(), 'normal'
+        this.saveToLocalStorage( // Save to localStorage
+        this.updateSummary(
+        this.updateGenerateButton(
         
         // Show user feedback
         const action = this.selectedHvacFeatures.has(featureId) ? 'added' : 'removed';
-        this.showNotification(`${feature.name} ${action} to your quote`, 'success');
+        this.showNotification(`${feature.name} ${action} to your quote`, 'success'
     }
     
     updateHvacFeatureVisualState(card, featureId, feature) {
-        const isSelected = this.selectedHvacFeatures.has(featureId);
+        const isSelected = this.selectedHvacFeatures.has(featureId
         const isDefault = featureId === 'hvac-brand-support';
         const isDefaultSelected = isDefault && isSelected;
         
         // Update card classes
         if (isSelected) {
-            card.classList.add('selected');
-            card.classList.remove('not-selected');
+            card.classList.add('selected'
+            card.classList.remove('not-selected'
         } else {
-            card.classList.remove('selected');
-            card.classList.add('not-selected');
+            card.classList.remove('selected'
+            card.classList.add('not-selected'
         }
         
         // Update badges
-        const existingBadges = card.querySelectorAll('.included-badge, .selected-badge, .default-badge, .not-selected-badge');
-        existingBadges.forEach(badge => badge.remove());
+        const existingBadges = card.querySelectorAll('.included-badge, .selected-badge, .default-badge, .not-selected-badge'
+        existingBadges.forEach(badge => badge.remove()
         
         if (isDefaultSelected) {
-            card.insertAdjacentHTML('beforeend', '<div class="included-badge">Included</div>');
+            card.insertAdjacentHTML('beforeend', '<div class="included-badge">Included</div>'
         } else if (isSelected && !isDefault) {
-            card.insertAdjacentHTML('beforeend', '<div class="selected-badge">Selected</div>');
+            card.insertAdjacentHTML('beforeend', '<div class="selected-badge">Selected</div>'
         } else if (isDefault && !isSelected) {
-            card.insertAdjacentHTML('beforeend', '<div class="default-badge">Default</div>');
+            card.insertAdjacentHTML('beforeend', '<div class="default-badge">Default</div>'
         } else if (!isDefault && !isSelected) {
-            card.insertAdjacentHTML('beforeend', '<div class="not-selected-badge">Not Selected</div>');
+            card.insertAdjacentHTML('beforeend', '<div class="not-selected-badge">Not Selected</div>'
         }
     }
     
@@ -2199,78 +2192,77 @@ class QuoteSystem {
         if (!featureId) return;
         
         // Get the current feature
-        const feature = this.applianceFeatures?.find(f => f.id === featureId);
+        const feature = this.applianceFeatures?.find(f => f.id === featureId
         if (!feature) return;
-        
-        );
+
         
         // Handle mutually exclusive logic for Appliance Brand Support
         if (featureId === 'appliance-brand-support' || featureId === 'commercial-appliance-support') {
             if (this.selectedApplianceFeatures.has(featureId)) {
                 // If already selected, deselect it
-                this.selectedApplianceFeatures.delete(featureId);
+                this.selectedApplianceFeatures.delete(featureId
                 } else {
                 // If selecting one, deselect the other
                 if (featureId === 'appliance-brand-support') {
-                    this.selectedApplianceFeatures.delete('commercial-appliance-support');
+                    this.selectedApplianceFeatures.delete('commercial-appliance-support'
                 } else {
-                    this.selectedApplianceFeatures.delete('appliance-brand-support');
+                    this.selectedApplianceFeatures.delete('appliance-brand-support'
                 }
                 
                 // Add selection to clicked card
-                this.selectedApplianceFeatures.add(featureId);
+                this.selectedApplianceFeatures.add(featureId
                 }
         } else {
             // Regular multi-selection behavior for other features
         if (this.selectedApplianceFeatures.has(featureId)) {
             // If already selected, deselect it
-            this.selectedApplianceFeatures.delete(featureId);
+            this.selectedApplianceFeatures.delete(featureId
                 } else {
             // Add selection to clicked card
-            this.selectedApplianceFeatures.add(featureId);
+            this.selectedApplianceFeatures.add(featureId
                 }
         }
         
         // Update visual state immediately
-        this.updateApplianceFeatureVisualState(card, featureId, feature);
+        this.updateApplianceFeatureVisualState(card, featureId, feature
         
         // Re-render to update the UI
-        this.virtualRenderer.queueRender(() => this.renderApplianceFeatures(), 'normal');
-        this.saveToLocalStorage(); // Save to localStorage
-        this.updateSummary();
-        this.updateGenerateButton();
+        this.virtualRenderer.queueRender(() => this.renderApplianceFeatures(), 'normal'
+        this.saveToLocalStorage( // Save to localStorage
+        this.updateSummary(
+        this.updateGenerateButton(
         
         // Show user feedback
         const action = this.selectedApplianceFeatures.has(featureId) ? 'added' : 'removed';
-        this.showNotification(`${feature.name} ${action} to your quote`, 'success');
+        this.showNotification(`${feature.name} ${action} to your quote`, 'success'
     }
     
     updateApplianceFeatureVisualState(card, featureId, feature) {
-        const isSelected = this.selectedApplianceFeatures.has(featureId);
+        const isSelected = this.selectedApplianceFeatures.has(featureId
         const isDefault = featureId === 'appliance-brand-support';
         const isDefaultSelected = isDefault && isSelected;
         
         // Update card classes
         if (isSelected) {
-            card.classList.add('selected');
-            card.classList.remove('not-selected');
+            card.classList.add('selected'
+            card.classList.remove('not-selected'
         } else {
-            card.classList.remove('selected');
-            card.classList.add('not-selected');
+            card.classList.remove('selected'
+            card.classList.add('not-selected'
         }
         
         // Update badges
-        const existingBadges = card.querySelectorAll('.included-badge, .selected-badge, .default-badge, .not-selected-badge');
-        existingBadges.forEach(badge => badge.remove());
+        const existingBadges = card.querySelectorAll('.included-badge, .selected-badge, .default-badge, .not-selected-badge'
+        existingBadges.forEach(badge => badge.remove()
         
         if (isDefaultSelected) {
-            card.insertAdjacentHTML('beforeend', '<div class="included-badge">Included</div>');
+            card.insertAdjacentHTML('beforeend', '<div class="included-badge">Included</div>'
         } else if (isSelected && !isDefault) {
-            card.insertAdjacentHTML('beforeend', '<div class="selected-badge">Selected</div>');
+            card.insertAdjacentHTML('beforeend', '<div class="selected-badge">Selected</div>'
         } else if (isDefault && !isSelected) {
-            card.insertAdjacentHTML('beforeend', '<div class="default-badge">Default</div>');
+            card.insertAdjacentHTML('beforeend', '<div class="default-badge">Default</div>'
         } else if (!isDefault && !isSelected) {
-            card.insertAdjacentHTML('beforeend', '<div class="not-selected-badge">Not Selected</div>');
+            card.insertAdjacentHTML('beforeend', '<div class="not-selected-badge">Not Selected</div>'
         }
     }
     
@@ -2279,91 +2271,85 @@ class QuoteSystem {
         if (!featureId) {
             return;
         }
-        
-        );
+
         
         if (this.selectedContactFeatures.has(featureId)) {
-            this.selectedContactFeatures.delete(featureId);
-            card.classList.remove('selected');
+            this.selectedContactFeatures.delete(featureId
+            card.classList.remove('selected'
             } else {
-            this.selectedContactFeatures.add(featureId);
-            card.classList.add('selected');
+            this.selectedContactFeatures.add(featureId
+            card.classList.add('selected'
             }
-        
-        );
+
         
         // Re-render to update the UI
-        this.virtualRenderer.queueRender(() => this.renderContactFeatures(), 'normal');
-        this.saveToLocalStorage(); // Save to localStorage
-        this.updateSummary();
-        this.updateGenerateButton();
+        this.virtualRenderer.queueRender(() => this.renderContactFeatures(), 'normal'
+        this.saveToLocalStorage( // Save to localStorage
+        this.updateSummary(
+        this.updateGenerateButton(
     }
     
     toggleAddon(addonId, card = null) {
         // If no card provided, try to find it
         if (!card) {
-            card = document.querySelector(`[data-addon-id="${addonId}"]`);
+            card = document.querySelector(`[data-addon-id="${addonId}"]`
         }
         if (!card) {
             return;
         }
-        
-        );
+
         
         if (this.selectedAddons.has(addonId)) {
-            this.selectedAddons.delete(addonId);
-            card.classList.remove('selected');
+            this.selectedAddons.delete(addonId
+            card.classList.remove('selected'
             } else {
-            this.selectedAddons.add(addonId);
-            card.classList.add('selected');
+            this.selectedAddons.add(addonId
+            card.classList.add('selected'
             }
-        
-        );
+
         
         // Re-render to update the UI
-        this.virtualRenderer.queueRender(() => this.renderAddons(), 'normal');
-        this.saveToLocalStorage(); // Save to localStorage
-        this.updateSummary();
-        this.updateGenerateButton();
+        this.virtualRenderer.queueRender(() => this.renderAddons(), 'normal'
+        this.saveToLocalStorage( // Save to localStorage
+        this.updateSummary(
+        this.updateGenerateButton(
     }
     
     toggleComponent(componentId, card = null) {
         // If no card provided, try to find it
         if (!card) {
-            card = document.querySelector(`[data-component-id="${componentId}"]`);
+            card = document.querySelector(`[data-component-id="${componentId}"]`
         }
         if (!card) {
             return;
         }
         
         // Check if component is included in package
-        const component = this.findComponentById(componentId);
+        const component = this.findComponentById(componentId
         if (component && this.isComponentIncluded(component.name)) {
-            this.showNotification('This component is already included in your package!', 'info');
+            this.showNotification('This component is already included in your package!', 'info'
             return;
         }
-        
-        );
+
         
         if (this.selectedComponents.has(componentId)) {
-            this.selectedComponents.delete(componentId);
+            this.selectedComponents.delete(componentId
             } else {
-            this.selectedComponents.add(componentId);
+            this.selectedComponents.add(componentId
             }
-        
-        );
+
         
         // Update the card's visual state immediately
         if (this.selectedComponents.has(componentId)) {
-            card.classList.add('selected');
-            card.classList.remove('not-selected');
+            card.classList.add('selected'
+            card.classList.remove('not-selected'
         } else {
-            card.classList.remove('selected');
-            card.classList.add('not-selected');
+            card.classList.remove('selected'
+            card.classList.add('not-selected'
         }
         
         // Update the badge text
-        const badge = card.querySelector('.selected-badge, .not-selected-badge');
+        const badge = card.querySelector('.selected-badge, .not-selected-badge'
         if (badge) {
             if (this.selectedComponents.has(componentId)) {
                 badge.textContent = 'Selected';
@@ -2375,15 +2361,15 @@ class QuoteSystem {
         }
         
         // Re-render to update the UI
-        this.virtualRenderer.queueRender(() => this.renderComponents(), 'normal');
-        this.saveToLocalStorage(); // Save to localStorage
-        this.updateSummary();
-        this.updateGenerateButton();
+        this.virtualRenderer.queueRender(() => this.renderComponents(), 'normal'
+        this.saveToLocalStorage( // Save to localStorage
+        this.updateSummary(
+        this.updateGenerateButton(
         
         // Show feedback to user
         if (component) {
             const action = this.selectedComponents.has(componentId) ? 'added' : 'removed';
-            this.showNotification(`${component.name} ${action} to your quote`, 'success');
+            this.showNotification(`${component.name} ${action} to your quote`, 'success'
         }
     }
     
@@ -2391,7 +2377,7 @@ class QuoteSystem {
         // Search through all feature categories
         if (this.features && typeof this.features === 'object') {
             for (const categoryFeatures of Object.values(this.features)) {
-                const feature = categoryFeatures.find(f => f.id === featureId);
+                const feature = categoryFeatures.find(f => f.id === featureId
                 if (feature) {
                     return feature;
                 }
@@ -2401,35 +2387,35 @@ class QuoteSystem {
     }
     
     updateFeatureVisualState(card, featureId) {
-        const isSelected = this.selectedAdditionalFeatures.has(featureId);
-        const isIncluded = card.classList.contains('included-in-package');
+        const isSelected = this.selectedAdditionalFeatures.has(featureId
+        const isIncluded = card.classList.contains('included-in-package'
         
         // Update card classes
         if (isSelected) {
-            card.classList.add('selected');
-            card.classList.remove('not-selected');
+            card.classList.add('selected'
+            card.classList.remove('not-selected'
         } else {
-            card.classList.remove('selected');
-            card.classList.add('not-selected');
+            card.classList.remove('selected'
+            card.classList.add('not-selected'
         }
         
         // Update badges
-        const existingBadges = card.querySelectorAll('.included-badge, .selected-badge, .not-selected-badge');
-        existingBadges.forEach(badge => badge.remove());
+        const existingBadges = card.querySelectorAll('.included-badge, .selected-badge, .not-selected-badge'
+        existingBadges.forEach(badge => badge.remove()
         
         if (isIncluded) {
-            card.insertAdjacentHTML('beforeend', '<div class="included-badge">Included</div>');
+            card.insertAdjacentHTML('beforeend', '<div class="included-badge">Included</div>'
         } else if (isSelected) {
-            card.insertAdjacentHTML('beforeend', '<div class="selected-badge">Selected</div>');
+            card.insertAdjacentHTML('beforeend', '<div class="selected-badge">Selected</div>'
         } else {
-            card.insertAdjacentHTML('beforeend', '<div class="not-selected-badge">Not Selected</div>');
+            card.insertAdjacentHTML('beforeend', '<div class="not-selected-badge">Not Selected</div>'
         }
     }
     
     findComponentById(componentId) {
         // Search through all component categories
         for (const category of Object.values(this.components)) {
-            const component = category.find(c => c.id === componentId);
+            const component = category.find(c => c.id === componentId
             if (component) {
                 return component;
             }
@@ -2440,21 +2426,21 @@ class QuoteSystem {
     isComponentIncluded(componentName) {
         if (!this.selectedPackage) return false;
         
-        const selectedPackage = this.packages.find(p => p.id === this.selectedPackage);
+        const selectedPackage = this.packages.find(p => p.id === this.selectedPackage
         if (!selectedPackage) return false;
         
         // Check for includedFeatures first (new structure), then fallback to includedComponents
         const includedFeatures = selectedPackage.includedFeatures || selectedPackage.includedComponents || [];
         
         // Check if the component name exactly matches any included feature
-        const isIncluded = includedFeatures.includes(componentName);
+        const isIncluded = includedFeatures.includes(componentName
         return isIncluded;
     }
     
     getPackageIncludedFeatures() {
         if (!this.selectedPackage) return [];
         
-        const selectedPackage = this.packages.find(p => p.id === this.selectedPackage);
+        const selectedPackage = this.packages.find(p => p.id === this.selectedPackage
         if (!selectedPackage) return [];
         
         // Map package feature names to feature IDs
@@ -2479,7 +2465,7 @@ class QuoteSystem {
             'Backup System': 'backup-system'
         };
         
-        return selectedPackage.features.map(featureName => featureMap[featureName]).filter(Boolean);
+        return selectedPackage.features.map(featureName => featureMap[featureName]).filter(Boolean
     }
     
     calculateTotalPrice() {
@@ -2495,19 +2481,19 @@ class QuoteSystem {
         
         // Additional features price
         this.selectedAdditionalFeatures.forEach(featureId => {
-            const feature = this.additionalFeatures.find(f => f.id === featureId);
+            const feature = this.additionalFeatures.find(f => f.id === featureId
             if (feature) {
                 totalPrice += feature.price;
             }
-        });
+        }
         
         // Addon services price
         this.selectedAddonServices.forEach(serviceId => {
-            const service = this.addonServices.find(s => s.id === serviceId);
+            const service = this.addonServices.find(s => s.id === serviceId
             if (service) {
                 totalPrice += service.price;
             }
-        });
+        }
         
         return totalPrice;
     }
@@ -2519,7 +2505,7 @@ class QuoteSystem {
         // Base package price (always $1200)
         if (this.selectedPackage && this.packages && Array.isArray(this.packages)) {
             totalPrice = 1200; // Base price for all packages
-            const selectedPackage = this.packages.find(p => p.id === this.selectedPackage);
+            const selectedPackage = this.packages.find(p => p.id === this.selectedPackage
             if (selectedPackage) {
                 const includedFeatures = selectedPackage.includedFeatures || [];
                 totalFeatures += includedFeatures.length;
@@ -2540,50 +2526,50 @@ class QuoteSystem {
         // Additional features price
         if (this.selectedAdditionalFeatures && this.additionalFeatures && Array.isArray(this.additionalFeatures)) {
             this.selectedAdditionalFeatures.forEach(featureId => {
-                const feature = this.additionalFeatures.find(f => f.id === featureId);
+                const feature = this.additionalFeatures.find(f => f.id === featureId
             if (feature) {
                 totalPrice += feature.price;
                 totalFeatures++;
             }
-        });
+        }
         }
         
         // Addon services price
         if (this.selectedAddonServices && this.addonServices && Array.isArray(this.addonServices)) {
             this.selectedAddonServices.forEach(serviceId => {
-                const service = this.addonServices.find(s => s.id === serviceId);
+                const service = this.addonServices.find(s => s.id === serviceId
                 if (service) {
                     totalPrice += service.price;
                 }
-            });
+            }
         }
         
         this.totalPrice = totalPrice;
         
         // Save the current state immediately after calculating
-        this.saveToLocalStorage();
+        this.saveToLocalStorage(
         
         // Update UI - only update elements that exist
-        const summaryTotalElement = document.getElementById('summaryTotal');
+        const summaryTotalElement = document.getElementById('summaryTotal'
         if (summaryTotalElement) {
             summaryTotalElement.textContent = `$${totalPrice.toLocaleString()}`;
         }
         
         // Update fixed quote summary (mobile)
-        const fixedSummaryTotalElement = document.getElementById('fixedSummaryTotal');
+        const fixedSummaryTotalElement = document.getElementById('fixedSummaryTotal'
         if (fixedSummaryTotalElement) {
             fixedSummaryTotalElement.textContent = `$${totalPrice.toLocaleString()}`;
         }
         
-        const totalFeaturesElement = document.getElementById('totalFeatures');
+        const totalFeaturesElement = document.getElementById('totalFeatures'
         if (totalFeaturesElement) {
             totalFeaturesElement.textContent = totalFeatures;
         }
         
-        const includedFeaturesElement = document.getElementById('includedFeatures');
+        const includedFeaturesElement = document.getElementById('includedFeatures'
         if (includedFeaturesElement) {
             if (this.packages && Array.isArray(this.packages) && this.selectedPackage) {
-                const selectedPackage = this.packages.find(p => p.id === this.selectedPackage);
+                const selectedPackage = this.packages.find(p => p.id === this.selectedPackage
                 if (selectedPackage && selectedPackage.includedFeatures) {
                     includedFeaturesElement.textContent = selectedPackage.includedFeatures.length;
                 } else {
@@ -2594,28 +2580,28 @@ class QuoteSystem {
             }
         }
         
-        const selectedFeaturesElement = document.getElementById('selectedFeatures');
+        const selectedFeaturesElement = document.getElementById('selectedFeatures'
         if (selectedFeaturesElement) {
             selectedFeaturesElement.textContent = this.selectedAdditionalFeatures.size;
         }
         
-        const selectedAddonsElement = document.getElementById('selectedAddons');
+        const selectedAddonsElement = document.getElementById('selectedAddons'
         if (selectedAddonsElement) {
             selectedAddonsElement.textContent = this.selectedAddonServices.size;
         }
         
         // Update timeline estimate
-        this.updateTimelineEstimate();
+        this.updateTimelineEstimate(
         
         // Update selected items list
-        this.updateSelectedItems();
+        this.updateSelectedItems(
         
         // Force save after UI update
-        setTimeout(() => this.saveToLocalStorage(), 50);
+        setTimeout(() => this.saveToLocalStorage(), 50
     }
     
     updateTimelineEstimate() {
-        const timelineElement = document.getElementById('timelineEstimate');
+        const timelineElement = document.getElementById('timelineEstimate'
         if (!timelineElement) return;
         
         let baseMinDays = 15;
@@ -2623,7 +2609,7 @@ class QuoteSystem {
         
         // Get base package timeline
         if (this.selectedPackage && this.packages && Array.isArray(this.packages)) {
-            const selectedPackage = this.packages.find(p => p.id === this.selectedPackage);
+            const selectedPackage = this.packages.find(p => p.id === this.selectedPackage
             if (selectedPackage) {
                 // Base package is 15-20 days
                 baseMinDays = 15;
@@ -2637,38 +2623,38 @@ class QuoteSystem {
         // Calculate additional days for features
         if (this.selectedAdditionalFeatures && this.additionalFeatures && Array.isArray(this.additionalFeatures)) {
             this.selectedAdditionalFeatures.forEach(featureId => {
-                const feature = this.additionalFeatures.find(f => f.id === featureId);
+                const feature = this.additionalFeatures.find(f => f.id === featureId
                 if (feature && feature.timeline) {
-                    const timelineMatch = feature.timeline.match(/(\d+)-(\d+)/);
+                    const timelineMatch = feature.timeline.match(/(\d+)-(\d+)/
                 if (timelineMatch) {
-                        const minDays = parseInt(timelineMatch[1]);
-                        const maxDays = parseInt(timelineMatch[2]);
+                        const minDays = parseInt(timelineMatch[1]
+                        const maxDays = parseInt(timelineMatch[2]
                         totalMinDays += minDays;
                         totalMaxDays += maxDays;
                     }
                 }
-            });
+            }
         }
         
         // Calculate additional days for addon services
         if (this.selectedAddonServices && this.addonServices && Array.isArray(this.addonServices)) {
             this.selectedAddonServices.forEach(serviceId => {
-                const service = this.addonServices.find(s => s.id === serviceId);
+                const service = this.addonServices.find(s => s.id === serviceId
                 if (service && service.timeline) {
-                    const timelineMatch = service.timeline.match(/(\d+)-(\d+)/);
+                    const timelineMatch = service.timeline.match(/(\d+)-(\d+)/
                     if (timelineMatch) {
-                        const minDays = parseInt(timelineMatch[1]);
-                        const maxDays = parseInt(timelineMatch[2]);
+                        const minDays = parseInt(timelineMatch[1]
+                        const maxDays = parseInt(timelineMatch[2]
                         totalMinDays += minDays;
                         totalMaxDays += maxDays;
                     }
                 }
-            });
+            }
         }
         
         // Add 20% buffer for project management and coordination
-        const bufferMin = Math.ceil(totalMinDays * 0.2);
-        const bufferMax = Math.ceil(totalMaxDays * 0.2);
+        const bufferMin = Math.ceil(totalMinDays * 0.2
+        const bufferMax = Math.ceil(totalMaxDays * 0.2
         
         const finalMinDays = totalMinDays + bufferMin;
         const finalMaxDays = totalMaxDays + bufferMax;
@@ -2676,21 +2662,21 @@ class QuoteSystem {
         timelineElement.textContent = `${finalMinDays}-${finalMaxDays} days`;
         
         // Update fixed timeline (mobile)
-        const fixedTimelineElement = document.getElementById('fixedTimelineEstimate');
+        const fixedTimelineElement = document.getElementById('fixedTimelineEstimate'
         if (fixedTimelineElement) {
             fixedTimelineElement.textContent = `${finalMinDays}-${finalMaxDays} days`;
         }
     }
     
     updateSelectedItems() {
-        const selectedItemsContainer = document.getElementById('selectedItems');
+        const selectedItemsContainer = document.getElementById('selectedItems'
         if (!selectedItemsContainer) return;
         
         const items = [];
         
         // Package
         if (this.selectedPackage && this.packages && Array.isArray(this.packages)) {
-            const selectedPackage = this.packages.find(p => p.id === this.selectedPackage);
+            const selectedPackage = this.packages.find(p => p.id === this.selectedPackage
             if (selectedPackage) {
                 items.push({ 
                     name: selectedPackage.name, 
@@ -2698,14 +2684,14 @@ class QuoteSystem {
                     timeline: '18-24 days',
                     type: 'package', 
                     id: selectedPackage.id 
-                });
+                }
             }
         }
         
         // Additional features
         if (this.selectedAdditionalFeatures && this.additionalFeatures && Array.isArray(this.additionalFeatures)) {
             this.selectedAdditionalFeatures.forEach(featureId => {
-                const feature = this.additionalFeatures.find(f => f.id === featureId);
+                const feature = this.additionalFeatures.find(f => f.id === featureId
                 if (feature) {
                     items.push({ 
                         name: feature.name, 
@@ -2713,15 +2699,15 @@ class QuoteSystem {
                         timeline: feature.timeline || '5-7 days',
                         type: 'feature', 
                         id: feature.id 
-                    });
+                    }
                 }
-            });
+            }
         }
         
         // Addon services
         if (this.selectedAddonServices && this.addonServices && Array.isArray(this.addonServices)) {
             this.selectedAddonServices.forEach(serviceId => {
-                const service = this.addonServices.find(s => s.id === serviceId);
+                const service = this.addonServices.find(s => s.id === serviceId
                 if (service) {
                     items.push({ 
                         name: service.name, 
@@ -2729,9 +2715,9 @@ class QuoteSystem {
                         timeline: service.timeline || '5-7 days',
                         type: 'addon', 
                         id: service.id 
-                    });
+                    }
                 }
-            });
+            }
         }
         
         // Store items for removal functionality
@@ -2752,17 +2738,17 @@ class QuoteSystem {
                     ` : ''}
                 </div>
             </div>
-        `).join('');
+        `).join(''
         
         // Initialize Lucide icons for delete buttons
-        lucide.createIcons();
+        lucide.createIcons(
         
         // Update fixed selected items (mobile)
-        this.updateFixedSelectedItems(items);
+        this.updateFixedSelectedItems(items
     }
     
     updateFixedSelectedItems(items) {
-        const fixedSelectedItemsContainer = document.getElementById('fixedSelectedItems');
+        const fixedSelectedItemsContainer = document.getElementById('fixedSelectedItems'
         if (!fixedSelectedItemsContainer) return;
         
         fixedSelectedItemsContainer.innerHTML = items.map((item, index) => `
@@ -2775,10 +2761,10 @@ class QuoteSystem {
                     </button>
                 ` : ''}
             </div>
-        `).join('');
+        `).join(''
         
         // Initialize Lucide icons for delete buttons
-        lucide.createIcons();
+        lucide.createIcons(
     }
     
     removeSelectedItem(index) {
@@ -2793,59 +2779,59 @@ class QuoteSystem {
         
         switch (item.type) {
             case 'feature':
-                this.selectedAdditionalFeatures.delete(item.id);
+                this.selectedAdditionalFeatures.delete(item.id
                 // Deselect the feature card
-                this.deselectFeature(item.id);
+                this.deselectFeature(item.id
                 break;
             case 'addon':
-                this.selectedAddonServices.delete(item.id);
+                this.selectedAddonServices.delete(item.id
                 // Deselect the addon card
-                this.deselectAddon(item.id);
+                this.deselectAddon(item.id
                 break;
         }
         
         // Update UI
-        this.updateSummary();
-        this.updateSelectedItems();
-        this.updateGenerateButton();
-        this.saveToLocalStorage();
+        this.updateSummary(
+        this.updateSelectedItems(
+        this.updateGenerateButton(
+        this.saveToLocalStorage(
         
         }
     
     deselectFeature(featureId) {
         // Remove selected class from feature card
-        const featureCard = document.querySelector(`[data-feature-id="${featureId}"]`);
+        const featureCard = document.querySelector(`[data-feature-id="${featureId}"]`
         if (featureCard) {
-            featureCard.classList.remove('selected');
+            featureCard.classList.remove('selected'
             
             // Update the select button if it exists
-            const selectBtn = featureCard.querySelector('.select-feature-btn');
+            const selectBtn = featureCard.querySelector('.select-feature-btn'
             if (selectBtn) {
-                selectBtn.classList.remove('selected');
+                selectBtn.classList.remove('selected'
                 selectBtn.textContent = 'Select';
             }
             
             // Remove selected badge if it exists
-            const selectedBadge = featureCard.querySelector('.selected-badge');
+            const selectedBadge = featureCard.querySelector('.selected-badge'
             if (selectedBadge) {
-                selectedBadge.remove();
+                selectedBadge.remove(
             }
             
             // Remove any other selection indicators
-            const notSelectedBadge = featureCard.querySelector('.not-selected-badge');
+            const notSelectedBadge = featureCard.querySelector('.not-selected-badge'
             if (notSelectedBadge) {
-                notSelectedBadge.remove();
+                notSelectedBadge.remove(
             }
             
             // Add default badge if it doesn't exist
-            const defaultBadge = featureCard.querySelector('.default-badge');
+            const defaultBadge = featureCard.querySelector('.default-badge'
             if (!defaultBadge) {
-                const badgeContainer = featureCard.querySelector('.badge-container');
+                const badgeContainer = featureCard.querySelector('.badge-container'
                 if (badgeContainer) {
-                    const newDefaultBadge = document.createElement('div');
+                    const newDefaultBadge = document.createElement('div'
                     newDefaultBadge.className = 'default-badge';
                     newDefaultBadge.textContent = 'Not Selected';
-                    badgeContainer.appendChild(newDefaultBadge);
+                    badgeContainer.appendChild(newDefaultBadge
                 }
             }
         }
@@ -2853,14 +2839,14 @@ class QuoteSystem {
     
     deselectAddon(addonId) {
         // Remove selected class from addon card
-        const addonCard = document.querySelector(`[data-service-id="${addonId}"]`);
+        const addonCard = document.querySelector(`[data-service-id="${addonId}"]`
         if (addonCard) {
-            addonCard.classList.remove('selected');
+            addonCard.classList.remove('selected'
             
             // Remove selected badge if it exists
-            const selectedBadge = addonCard.querySelector('.selected-badge');
+            const selectedBadge = addonCard.querySelector('.selected-badge'
             if (selectedBadge) {
-                selectedBadge.remove();
+                selectedBadge.remove(
             }
             
             } else {
@@ -2868,7 +2854,7 @@ class QuoteSystem {
     }
     
     updateGenerateButton() {
-        const generateBtn = document.getElementById('generateQuoteBtn');
+        const generateBtn = document.getElementById('generateQuoteBtn'
         if (generateBtn) {
             const hasSelection = this.selectedPackage || this.selectedAdditionalFeatures.size > 0 || 
                                this.selectedAddonServices.size > 0;
@@ -2878,13 +2864,13 @@ class QuoteSystem {
             
             if (shouldEnable) {
                 generateBtn.disabled = false;
-                generateBtn.classList.remove('disabled');
-                generateBtn.classList.add('enabled');
+                generateBtn.classList.remove('disabled'
+                generateBtn.classList.add('enabled'
                 generateBtn.title = 'Generate your quote';
             } else {
                 generateBtn.disabled = true;
-                generateBtn.classList.add('disabled');
-                generateBtn.classList.remove('enabled');
+                generateBtn.classList.add('disabled'
+                generateBtn.classList.remove('enabled'
                 generateBtn.title = 'Please select at least one package or additional feature to continue';
             }
             
@@ -2896,7 +2882,7 @@ class QuoteSystem {
         let isValid = true;
         
         // Validate email (required)
-        const emailField = document.getElementById('customerEmail');
+        const emailField = document.getElementById('customerEmail'
         if (!emailField || !emailField.value.trim()) {
             isValid = false;
             } else {
@@ -2907,7 +2893,7 @@ class QuoteSystem {
         }
         
         // Validate name (required)
-        const nameField = document.getElementById('customerName');
+        const nameField = document.getElementById('customerName'
         if (!nameField || !nameField.value.trim()) {
             isValid = false;
         } else if (nameField.value.trim().length < 2) {
@@ -2915,7 +2901,7 @@ class QuoteSystem {
         }
         
         // Validate phone (required)
-        const phoneField = document.getElementById('customerPhone');
+        const phoneField = document.getElementById('customerPhone'
         if (!phoneField || !phoneField.value.trim()) {
             isValid = false;
         } else if (!isValidPhone(phoneField.value.trim())) {
@@ -2923,7 +2909,7 @@ class QuoteSystem {
         }
         
         // Validate location (required)
-        const locationField = document.getElementById('customerLocation');
+        const locationField = document.getElementById('customerLocation'
         if (!locationField || !locationField.value.trim()) {
             isValid = false;
         } else if (locationField.value.trim().length < 2) {
@@ -2939,47 +2925,47 @@ class QuoteSystem {
         const errors = [];
         
         // Check if we're in modal mode
-        const modal = document.getElementById('customerInfoModal');
-        const isModalMode = modal && !modal.hasAttribute('hidden') && modal.classList.contains('show');
+        const modal = document.getElementById('customerInfoModal'
+        const isModalMode = modal && !modal.hasAttribute('hidden') && modal.classList.contains('show'
         
-        : 'no modal');
-        : 'no modal');
+        : 'no modal'
+        : 'no modal'
         // Use modal fields if modal is open, otherwise use main form fields
         const fieldPrefix = isModalMode ? 'modal' : '';
         // Clear all previous errors first
-        this.clearAllFieldErrors(fieldPrefix);
+        this.clearAllFieldErrors(fieldPrefix
         
         // Validate in order: Name -> Email -> Phone -> Location
         // Stop at first error found
         
         // 1. Validate name (required) - FIRST PRIORITY
-        const nameField = document.getElementById(fieldPrefix + 'CustomerName');
-        : 'no field');
+        const nameField = document.getElementById(fieldPrefix + 'CustomerName'
+        : 'no field'
         if (!nameField || !nameField.value.trim()) {
             isValid = false;
             const errorMsg = 'Full name is required';
-            this.showFieldError(fieldPrefix + 'customerName', errorMsg);
-            errors.push('Full name is required');
+            this.showFieldError(fieldPrefix + 'customerName', errorMsg
+            errors.push('Full name is required'
             this.validationErrors = errors;
             return isValid;
         } else if (nameField.value.trim().length < 2) {
             isValid = false;
             const errorMsg = 'Please enter your full name (at least 2 characters)';
-            this.showFieldError(fieldPrefix + 'customerName', errorMsg);
-            errors.push('Please enter your full name (at least 2 characters)');
+            this.showFieldError(fieldPrefix + 'customerName', errorMsg
+            errors.push('Please enter your full name (at least 2 characters)'
             this.validationErrors = errors;
             return isValid;
         } else {
-            this.showFieldValid(fieldPrefix + 'customerName');
+            this.showFieldValid(fieldPrefix + 'customerName'
         }
         
         // 2. Validate email (required) - SECOND PRIORITY
-        const emailField = document.getElementById(fieldPrefix + 'CustomerEmail');
+        const emailField = document.getElementById(fieldPrefix + 'CustomerEmail'
         if (!emailField || !emailField.value.trim()) {
             isValid = false;
             const errorMsg = 'Email address is required';
-            this.showFieldError(fieldPrefix + 'customerEmail', errorMsg);
-            errors.push('Email address is required');
+            this.showFieldError(fieldPrefix + 'customerEmail', errorMsg
+            errors.push('Email address is required'
             this.validationErrors = errors;
             return isValid;
         } else {
@@ -2987,53 +2973,53 @@ class QuoteSystem {
             if (!emailRegex.test(emailField.value.trim())) {
                 isValid = false;
                 const errorMsg = 'Please enter a valid email address (e.g., john@example.com)';
-                this.showFieldError(fieldPrefix + 'customerEmail', errorMsg);
-                errors.push('Please enter a valid email address');
+                this.showFieldError(fieldPrefix + 'customerEmail', errorMsg
+                errors.push('Please enter a valid email address'
                 this.validationErrors = errors;
                 return isValid;
             } else {
-                this.showFieldValid(fieldPrefix + 'customerEmail');
+                this.showFieldValid(fieldPrefix + 'customerEmail'
             }
         }
         
         // 3. Validate phone (required) - THIRD PRIORITY
-        const phoneField = document.getElementById(fieldPrefix + 'CustomerPhone');
+        const phoneField = document.getElementById(fieldPrefix + 'CustomerPhone'
         if (!phoneField || !phoneField.value.trim()) {
             isValid = false;
             const errorMsg = 'Phone number is required';
-            this.showFieldError(fieldPrefix + 'customerPhone', errorMsg);
-            errors.push('Phone number is required');
+            this.showFieldError(fieldPrefix + 'customerPhone', errorMsg
+            errors.push('Phone number is required'
             this.validationErrors = errors;
             return isValid;
         } else if (!isValidPhone(phoneField.value.trim())) {
             isValid = false;
             const errorMsg = 'Please enter a valid phone number (e.g., 5551234567)';
-            this.showFieldError(fieldPrefix + 'customerPhone', errorMsg);
-            errors.push('Please enter a valid phone number');
+            this.showFieldError(fieldPrefix + 'customerPhone', errorMsg
+            errors.push('Please enter a valid phone number'
             this.validationErrors = errors;
             return isValid;
         } else {
-            this.showFieldValid(fieldPrefix + 'customerPhone');
+            this.showFieldValid(fieldPrefix + 'customerPhone'
         }
         
         // 4. Validate location (required) - FOURTH PRIORITY
-        const locationField = document.getElementById(fieldPrefix + 'CustomerLocation');
+        const locationField = document.getElementById(fieldPrefix + 'CustomerLocation'
         if (!locationField || !locationField.value.trim()) {
             isValid = false;
             const errorMsg = 'Service location is required';
-            this.showFieldError(fieldPrefix + 'customerLocation', errorMsg);
-            errors.push('Service location is required');
+            this.showFieldError(fieldPrefix + 'customerLocation', errorMsg
+            errors.push('Service location is required'
             this.validationErrors = errors;
             return isValid;
         } else if (locationField.value.trim().length < 2) {
             isValid = false;
             const errorMsg = 'Please enter your service location (e.g., New York, NY)';
-            this.showFieldError(fieldPrefix + 'customerLocation', errorMsg);
-            errors.push('Please enter your service location');
+            this.showFieldError(fieldPrefix + 'customerLocation', errorMsg
+            errors.push('Please enter your service location'
             this.validationErrors = errors;
             return isValid;
         } else {
-            this.showFieldValid(fieldPrefix + 'customerLocation');
+            this.showFieldValid(fieldPrefix + 'customerLocation'
         }
         
         // All validations passed
@@ -3042,23 +3028,23 @@ class QuoteSystem {
     }
     
     showFieldError(fieldId, message) {
-        const field = document.getElementById(fieldId);
-        const errorElement = document.getElementById(`${fieldId}-error`);
+        const field = document.getElementById(fieldId
+        const errorElement = document.getElementById(`${fieldId}-error`
         
         if (field && errorElement) {
-            field.classList.add('error');
-            field.classList.remove('valid');
+            field.classList.add('error'
+            field.classList.remove('valid'
             errorElement.textContent = message;
             errorElement.hidden = false;
         }
     }
     
     clearFieldError(fieldId) {
-        const field = document.getElementById(fieldId);
-        const errorElement = document.getElementById(`${fieldId}-error`);
+        const field = document.getElementById(fieldId
+        const errorElement = document.getElementById(`${fieldId}-error`
         
         if (field && errorElement) {
-            field.classList.remove('error');
+            field.classList.remove('error'
             errorElement.hidden = true;
         }
     }
@@ -3066,17 +3052,17 @@ class QuoteSystem {
     clearAllFieldErrors(fieldPrefix) {
         const fields = ['CustomerName', 'CustomerEmail', 'CustomerPhone', 'CustomerLocation'];
         fields.forEach(fieldName => {
-            this.clearFieldError(fieldPrefix + fieldName);
-        });
+            this.clearFieldError(fieldPrefix + fieldName
+        }
     }
     
     showFieldValid(fieldId) {
-        const field = document.getElementById(fieldId);
-        const errorElement = document.getElementById(`${fieldId}-error`);
+        const field = document.getElementById(fieldId
+        const errorElement = document.getElementById(`${fieldId}-error`
         
         if (field && errorElement) {
-            field.classList.remove('error');
-            field.classList.add('valid');
+            field.classList.remove('error'
+            field.classList.add('valid'
             errorElement.hidden = true;
         }
     }
@@ -3085,7 +3071,7 @@ class QuoteSystem {
         // Only scroll if user hasn't started scrolling yet
         if (window.scrollY === 0 || !window.userHasScrolled) {
             // Force scroll to top immediately
-            window.scrollTo(0, 0);
+            window.scrollTo(0, 0
             
             // Then smooth scroll to ensure it's at the top
             setTimeout(() => {
@@ -3094,16 +3080,16 @@ class QuoteSystem {
                         top: 0,
                         left: 0,
                         behavior: 'smooth'
-                    });
+                    }
                 }
-            }, 100);
+            }, 100
             
             // Additional force scroll after a delay
             setTimeout(() => {
                 if (!window.userHasScrolled) {
-                    window.scrollTo(0, 0);
+                    window.scrollTo(0, 0
                 }
-            }, 500);
+            }, 500
         }
     }
 }
@@ -3113,18 +3099,18 @@ class QuoteSystem {
 function clearAllSelections() {
     // Clear package selection
     document.querySelectorAll('.package-card').forEach(card => {
-        card.classList.remove('selected');
-    });
+        card.classList.remove('selected'
+    }
     
     // Clear additional feature selections
     document.querySelectorAll('.feature-card').forEach(card => {
-        card.classList.remove('selected');
-    });
+        card.classList.remove('selected'
+    }
     
     // Clear addon service selections
     document.querySelectorAll('.addon-card').forEach(card => {
-        card.classList.remove('selected');
-    });
+        card.classList.remove('selected'
+    }
     
     // Clear all customer information form fields
     const formFields = [
@@ -3137,14 +3123,14 @@ function clearAllSelections() {
     ];
     
     formFields.forEach(fieldId => {
-        const field = document.getElementById(fieldId);
+        const field = document.getElementById(fieldId
         if (field) {
             field.value = '';
         }
-    });
+    }
     
     // Reset service area dropdown to default
-    const serviceAreaSelect = document.getElementById('customerServiceArea');
+    const serviceAreaSelect = document.getElementById('customerServiceArea'
     if (serviceAreaSelect) {
         serviceAreaSelect.value = '15';
     }
@@ -3155,84 +3141,84 @@ function clearAllSelections() {
         // window.quoteSystem.selectedPackage = null;
         
         // Clear all feature selections
-        window.quoteSystem.selectedAdditionalFeatures.clear();
-        window.quoteSystem.selectedAddonServices.clear();
+        window.quoteSystem.selectedAdditionalFeatures.clear(
+        window.quoteSystem.selectedAddonServices.clear(
         window.quoteSystem.currentStep = 1;
         
         // Clear localStorage
-        window.quoteSystem.clearLocalStorage();
+        window.quoteSystem.clearLocalStorage(
         
 
         
         // Re-render the sections
-        window.quoteSystem.virtualRenderer.queueRender(() => window.quoteSystem.renderAdditionalFeatures(), 'normal');
-        window.quoteSystem.virtualRenderer.queueRender(() => window.quoteSystem.renderAddonServices(), 'normal');
-        window.quoteSystem.updateSummary();
-        window.quoteSystem.updateGenerateButton();
+        window.quoteSystem.virtualRenderer.queueRender(() => window.quoteSystem.renderAdditionalFeatures(), 'normal'
+        window.quoteSystem.virtualRenderer.queueRender(() => window.quoteSystem.renderAddonServices(), 'normal'
+        window.quoteSystem.updateSummary(
+        window.quoteSystem.updateGenerateButton(
         
         // Show notification
-        window.quoteSystem.showNotification('All selections have been cleared', 'info');
+        window.quoteSystem.showNotification('All selections have been cleared', 'info'
     }
 }
 
 function generateQuote() {
     if (!window.quoteSystem) {
-        alert('Quote system not available');
+        alert('Quote system not available'
         return;
     }
     
     // Show customer info modal instead of direct validation
-    showCustomerInfoModal();
+    showCustomerInfoModal(
 }
 
 function showCustomerInfoModal() {
-    const modal = document.getElementById('customerInfoModal');
+    const modal = document.getElementById('customerInfoModal'
     if (modal) {
-        modal.removeAttribute('hidden');
-        modal.classList.add('show');
+        modal.removeAttribute('hidden'
+        modal.classList.add('show'
         document.body.style.overflow = 'hidden';
         
         // Focus on first input for accessibility
-        const firstInput = modal.querySelector('input');
+        const firstInput = modal.querySelector('input'
         if (firstInput) {
-            firstInput.focus();
+            firstInput.focus(
         }
         
         // Initialize country selector for modal
-        initializeModalCountrySelector();
+        initializeModalCountrySelector(
         } else {
         }
 }
 
 function closeCustomerInfoModal() {
-    const modal = document.getElementById('customerInfoModal');
+    const modal = document.getElementById('customerInfoModal'
     
     if (modal) {
-        modal.classList.remove('show');
+        modal.classList.remove('show'
         document.body.style.overflow = 'auto';
     }
 }
 
 function submitCustomerInfo() {
     if (!window.quoteSystem) {
-        alert('Quote system not available');
+        alert('Quote system not available'
         return;
     }
     
     // Get the submit button and form loader
-    const submitBtn = document.getElementById('submitCustomerInfoBtn');
-    const formLoader = document.getElementById('formLoader');
+    const submitBtn = document.getElementById('submitCustomerInfoBtn'
+    const formLoader = document.getElementById('formLoader'
     const originalText = submitBtn ? submitBtn.innerHTML : '';
     
     // Set loading state for submit button
     if (submitBtn) {
         submitBtn.disabled = true;
-        submitBtn.classList.add('loading');
+        submitBtn.classList.add('loading'
         submitBtn.innerHTML = '<i data-lucide="loader-2" class="animate-spin"></i> Validating...';
         
         // Reinitialize icons
         if (window.lucide) {
-            lucide.createIcons();
+            lucide.createIcons(
         }
     }
     
@@ -3261,21 +3247,21 @@ function submitCustomerInfo() {
     if (!window.quoteSystem.validateAndShowErrors()) {
         // Hide form loader overlay
         if (formLoader) {
-            formLoader.classList.remove('show');
+            formLoader.classList.remove('show'
             setTimeout(() => {
-                formLoader.setAttribute('hidden', '');
-            }, 300);
+                formLoader.setAttribute('hidden', ''
+            }, 300
         }
         
         // Reset button state
         if (submitBtn) {
             submitBtn.disabled = false;
-            submitBtn.classList.remove('loading');
+            submitBtn.classList.remove('loading'
             submitBtn.innerHTML = originalText;
             
             // Reinitialize icons
             if (window.lucide) {
-                lucide.createIcons();
+                lucide.createIcons(
             }
         }
         
@@ -3283,20 +3269,20 @@ function submitCustomerInfo() {
         const errorMessage = window.quoteSystem.validationErrors && window.quoteSystem.validationErrors.length > 0 
             ? window.quoteSystem.validationErrors[0]
             : 'Please fix the validation errors in the form';
-        window.quoteSystem.showNotification(errorMessage, 'error');
+        window.quoteSystem.showNotification(errorMessage, 'error'
         return;
     }
     
     // Close the modal first
-    closeCustomerInfoModal();
+    closeCustomerInfoModal(
     
     // Show form loader overlay after validation passes
     if (formLoader) {
-        formLoader.removeAttribute('hidden');
+        formLoader.removeAttribute('hidden'
         // Small delay to ensure modal is closed before showing loader
         setTimeout(() => {
-            formLoader.classList.add('show');
-        }, 100);
+            formLoader.classList.add('show'
+        }, 100
     }
     
     // Update button text to show processing
@@ -3305,7 +3291,7 @@ function submitCustomerInfo() {
         
         // Reinitialize icons
         if (window.lucide) {
-            lucide.createIcons();
+            lucide.createIcons(
         }
     }
     
@@ -3320,13 +3306,13 @@ function submitCustomerInfo() {
     };
     
     // Store quote data in localStorage for the success page
-    localStorage.setItem('quoteData', JSON.stringify(quoteData));
+    localStorage.setItem('quoteData', JSON.stringify(quoteData)
     
     // Simulate processing time for better UX
     setTimeout(() => {
         // Hide loader before redirect
         if (formLoader) {
-            formLoader.classList.remove('show');
+            formLoader.classList.remove('show'
         }
         
         // Redirect to success page
@@ -3334,16 +3320,16 @@ function submitCustomerInfo() {
         
         // Note: Button state will be reset when page redirects
         // No need to reset here as we're leaving the page
-    }, 1500); // 1.5 second delay for better UX
+    }, 1500 // 1.5 second delay for better UX
 }
 
 function initializeModalCountrySelector() {
     // Initialize country selector for the modal
-    const trigger = document.getElementById('modalCountrySelectTrigger');
-    const dropdown = document.getElementById('modalCountrySelectDropdown');
-    const searchInput = document.getElementById('modalCountrySearch');
-    const countryList = document.getElementById('modalCountryList');
-    const hiddenSelect = document.getElementById('modalCountryCode');
+    const trigger = document.getElementById('modalCountrySelectTrigger'
+    const dropdown = document.getElementById('modalCountrySelectDropdown'
+    const searchInput = document.getElementById('modalCountrySearch'
+    const countryList = document.getElementById('modalCountryList'
+    const hiddenSelect = document.getElementById('modalCountryCode'
     
     if (!trigger || !dropdown || !searchInput || !countryList || !hiddenSelect) {
         return;
@@ -3359,36 +3345,36 @@ function initializeModalCountrySelector() {
                 <img src="https://flagcdn.com/w20/${country.flag}.png" alt="${country.name}" class="country-flag">
                 <span class="country-code">${country.code}</span>
             </div>
-        `).join('');
+        `).join(''
     }
     
     // Initial render
-    renderCountries();
+    renderCountries(
     
     // Event listeners
     trigger.addEventListener('click', () => {
         const isHidden = dropdown.hidden;
         dropdown.hidden = !isHidden;
         if (!isHidden) {
-            searchInput.focus();
+            searchInput.focus(
         }
-    });
+    }
     
     searchInput.addEventListener('input', (e) => {
-        const searchTerm = e.target.value.toLowerCase();
+        const searchTerm = e.target.value.toLowerCase(
         const filteredCountries = countries.filter(country => 
             country.name.toLowerCase().includes(searchTerm) ||
             country.code.toLowerCase().includes(searchTerm) ||
             country.flag.toLowerCase().includes(searchTerm)
-        );
-        renderCountries(filteredCountries);
-    });
+
+        renderCountries(filteredCountries
+    }
     
     countryList.addEventListener('click', (e) => {
-        const countryItem = e.target.closest('.country-item');
+        const countryItem = e.target.closest('.country-item'
         if (countryItem) {
             const code = countryItem.dataset.code;
-            const country = countries.find(c => c.code === code);
+            const country = countries.find(c => c.code === code
             
             if (country) {
                 document.getElementById('modalSelectedFlag').src = `https://flagcdn.com/w20/${country.flag}.png`;
@@ -3397,28 +3383,28 @@ function initializeModalCountrySelector() {
                 dropdown.hidden = true;
             }
         }
-    });
+    }
     
     // Close dropdown when clicking outside
     document.addEventListener('click', (e) => {
         if (!trigger.contains(e.target) && !dropdown.contains(e.target)) {
             dropdown.hidden = true;
         }
-    });
+    }
 }
 
 
 
 function displayThankYouPopup(quoteData) {
     // Get selected package and features
-    const selectedPackage = window.quoteSystem.packages.find(p => p.id === quoteData.selectedPackage);
+    const selectedPackage = window.quoteSystem.packages.find(p => p.id === quoteData.selectedPackage
     const selectedFeatures = quoteData.selectedAdditionalFeatures.map(featureId => {
-        return window.quoteSystem.additionalFeatures.find(f => f.id === featureId);
-    }).filter(Boolean);
+        return window.quoteSystem.additionalFeatures.find(f => f.id === featureId
+    }).filter(Boolean
     
     const selectedAddons = quoteData.selectedAddonServices.map(addonId => {
-        return window.quoteSystem.addonServices.find(a => a.id === addonId);
-    }).filter(Boolean);
+        return window.quoteSystem.addonServices.find(a => a.id === addonId
+    }).filter(Boolean
     
     // Generate thank you popup content
     const popupContent = `
@@ -3503,18 +3489,18 @@ function displayThankYouPopup(quoteData) {
     `;
     
     // Create and show popup
-    showThankYouPopup(popupContent);
+    showThankYouPopup(popupContent
 }
 
 function showThankYouPopup(content) {
     // Remove existing popup if any
-    const existingPopup = document.querySelector('.thank-you-overlay');
+    const existingPopup = document.querySelector('.thank-you-overlay'
     if (existingPopup) {
-        existingPopup.remove();
+        existingPopup.remove(
     }
     
     // Create overlay
-    const overlay = document.createElement('div');
+    const overlay = document.createElement('div'
     overlay.className = 'thank-you-overlay';
     overlay.innerHTML = `
         <div class="thank-you-modal">
@@ -3523,33 +3509,33 @@ function showThankYouPopup(content) {
     `;
     
     // Add to page
-    document.body.appendChild(overlay);
+    document.body.appendChild(overlay
     
     // Show with animation
     setTimeout(() => {
-        overlay.classList.add('show');
-    }, 10);
+        overlay.classList.add('show'
+    }, 10
     
     // Initialize icons
-    lucide.createIcons();
+    lucide.createIcons(
     
     // Prevent body scroll
     document.body.style.overflow = 'hidden';
 }
 
 function closeThankYouPopup() {
-    const overlay = document.querySelector('.thank-you-overlay');
+    const overlay = document.querySelector('.thank-you-overlay'
     if (overlay) {
-        overlay.classList.remove('show');
+        overlay.classList.remove('show'
         setTimeout(() => {
-            overlay.remove();
+            overlay.remove(
             document.body.style.overflow = 'auto';
-        }, 300);
+        }, 300
     }
 }
 
 function proceedToPayment() {
-    alert('Payment processing would be implemented here. Redirecting to payment gateway...');
+    alert('Payment processing would be implemented here. Redirecting to payment gateway...'
     // Here you would integrate with a payment processor like Stripe, PayPal, etc.
 }
 
@@ -3558,7 +3544,7 @@ function scrollToTop() {
     // Only scroll if user hasn't started scrolling yet
     if (window.scrollY === 0 || !window.userHasScrolled) {
         // Force scroll to top immediately
-        window.scrollTo(0, 0);
+        window.scrollTo(0, 0
         
         // Then smooth scroll to ensure it's at the top
         setTimeout(() => {
@@ -3567,16 +3553,16 @@ function scrollToTop() {
                     top: 0,
                     left: 0,
                     behavior: 'smooth'
-                });
+                }
             }
-        }, 100);
+        }, 100
         
         // Additional force scroll after a delay
         setTimeout(() => {
             if (!window.userHasScrolled) {
-                window.scrollTo(0, 0);
+                window.scrollTo(0, 0
             }
-        }, 500);
+        }, 500
     }
 }
 
@@ -3600,18 +3586,18 @@ function downloadQuote() {
     };
     
     // Generate PDF
-    generatePDF(quoteData);
+    generatePDF(quoteData
 }
 
 function generatePDF(quoteData) {
     // Check if jsPDF is available
     if (typeof window.jsPDF === 'undefined') {
-        alert('PDF generation library not loaded. Please refresh the page and try again.');
+        alert('PDF generation library not loaded. Please refresh the page and try again.'
         return;
     }
     
     const { jsPDF } = window.jsPDF;
-    const doc = new jsPDF();
+    const doc = new jsPDF(
     
     // Set document properties
     doc.setProperties({
@@ -3619,25 +3605,25 @@ function generatePDF(quoteData) {
         subject: 'Professional Quote for Website Development',
         author: 'Anass El - Full-Stack Web Developer',
         creator: 'HVAC Quote System'
-    });
+    }
     
     // Add header
-    addHeader(doc);
+    addHeader(doc
     
     // Add customer information
-    addCustomerInfo(doc, quoteData.customerInfo);
+    addCustomerInfo(doc, quoteData.customerInfo
     
     // Add quote summary
-    addQuoteSummary(doc, quoteData);
+    addQuoteSummary(doc, quoteData
     
     // Add selected items details
-    addSelectedItems(doc, quoteData);
+    addSelectedItems(doc, quoteData
     
     // Add terms and conditions
-    addTermsAndConditions(doc);
+    addTermsAndConditions(doc
     
     // Add footer
-    addFooter(doc);
+    addFooter(doc
     
     // Generate filename
     const customerName = quoteData.customerInfo.name || 'Customer';
@@ -3645,291 +3631,291 @@ function generatePDF(quoteData) {
     const filename = `HVAC_Website_Quote_${customerName.replace(/\s+/g, '_')}_${date}.pdf`;
     
     // Save the PDF
-    doc.save(filename);
+    doc.save(filename
     
     // Show success message
-    window.quoteSystem.showNotification('Quote downloaded successfully!', 'success');
+    window.quoteSystem.showNotification('Quote downloaded successfully!', 'success'
 }
 
 function addHeader(doc) {
     // Title
-    doc.setFontSize(24);
-    doc.setFont('helvetica', 'bold');
-    doc.setTextColor(59, 130, 246); // Blue color
-    doc.text('Professional HVAC & Appliance Repair', 20, 30);
-    doc.text('Website Development Quote', 20, 40);
+    doc.setFontSize(24
+    doc.setFont('helvetica', 'bold'
+    doc.setTextColor(59, 130, 246 // Blue color
+    doc.text('Professional HVAC & Appliance Repair', 20, 30
+    doc.text('Website Development Quote', 20, 40
     
     // Subtitle
-    doc.setFontSize(12);
-    doc.setFont('helvetica', 'normal');
-    doc.setTextColor(107, 114, 128); // Gray color
-    doc.text('Custom website development for your service business', 20, 50);
+    doc.setFontSize(12
+    doc.setFont('helvetica', 'normal'
+    doc.setTextColor(107, 114, 128 // Gray color
+    doc.text('Custom website development for your service business', 20, 50
     
     // Developer info
-    doc.setFontSize(14);
-    doc.setFont('helvetica', 'bold');
-    doc.setTextColor(34, 197, 94); // Green color
-    doc.text('Anass El - Full-Stack Web Developer', 20, 70);
+    doc.setFontSize(14
+    doc.setFont('helvetica', 'bold'
+    doc.setTextColor(34, 197, 94 // Green color
+    doc.text('Anass El - Full-Stack Web Developer', 20, 70
     
     // Date
-    doc.setFontSize(10);
-    doc.setFont('helvetica', 'normal');
-    doc.setTextColor(107, 114, 128);
+    doc.setFontSize(10
+    doc.setFont('helvetica', 'normal'
+    doc.setTextColor(107, 114, 128
     doc.text(`Generated: ${new Date().toLocaleDateString('en-US', { 
         year: 'numeric', 
         month: 'long', 
         day: 'numeric',
         hour: '2-digit',
         minute: '2-digit'
-    })}`, 20, 80);
+    })}`, 20, 80
     
     // Add decorative line
-    doc.setDrawColor(59, 130, 246);
-    doc.setLineWidth(0.5);
-    doc.line(20, 85, 190, 85);
+    doc.setDrawColor(59, 130, 246
+    doc.setLineWidth(0.5
+    doc.line(20, 85, 190, 85
 }
 
 function addCustomerInfo(doc, customerInfo) {
-    doc.addPage();
+    doc.addPage(
     
     // Section title
-    doc.setFontSize(16);
-    doc.setFont('helvetica', 'bold');
-    doc.setTextColor(17, 24, 39); // Dark gray
-    doc.text('Customer Information', 20, 30);
+    doc.setFontSize(16
+    doc.setFont('helvetica', 'bold'
+    doc.setTextColor(17, 24, 39 // Dark gray
+    doc.text('Customer Information', 20, 30
     
     // Customer details
-    doc.setFontSize(11);
-    doc.setFont('helvetica', 'normal');
-    doc.setTextColor(55, 65, 81);
+    doc.setFontSize(11
+    doc.setFont('helvetica', 'normal'
+    doc.setTextColor(55, 65, 81
     
     let yPosition = 50;
     const lineHeight = 8;
     
     if (customerInfo.name) {
-        doc.text(`Name: ${customerInfo.name}`, 20, yPosition);
+        doc.text(`Name: ${customerInfo.name}`, 20, yPosition
         yPosition += lineHeight;
     }
     
     if (customerInfo.email) {
-        doc.text(`Email: ${customerInfo.email}`, 20, yPosition);
+        doc.text(`Email: ${customerInfo.email}`, 20, yPosition
         yPosition += lineHeight;
     }
     
     if (customerInfo.phone) {
-        doc.text(`Phone: ${customerInfo.phone}`, 20, yPosition);
+        doc.text(`Phone: ${customerInfo.phone}`, 20, yPosition
         yPosition += lineHeight;
     }
     
     if (customerInfo.company) {
-        doc.text(`Company: ${customerInfo.company}`, 20, yPosition);
+        doc.text(`Company: ${customerInfo.company}`, 20, yPosition
         yPosition += lineHeight;
     }
     
     if (customerInfo.location) {
-        doc.text(`Location: ${customerInfo.location}`, 20, yPosition);
+        doc.text(`Location: ${customerInfo.location}`, 20, yPosition
         yPosition += lineHeight;
     }
     
     if (customerInfo.serviceArea) {
-        doc.text(`Service Area: ${customerInfo.serviceArea} miles`, 20, yPosition);
+        doc.text(`Service Area: ${customerInfo.serviceArea} miles`, 20, yPosition
         yPosition += lineHeight;
     }
     
     if (customerInfo.message) {
         yPosition += lineHeight;
-        doc.text('Additional Requirements:', 20, yPosition);
+        doc.text('Additional Requirements:', 20, yPosition
         yPosition += lineHeight;
         
         // Handle long messages
-        const words = customerInfo.message.split(' ');
+        const words = customerInfo.message.split(' '
         let line = '';
         for (let word of words) {
             const testLine = line + word + ' ';
             if (doc.getTextWidth(testLine) < 170) {
                 line = testLine;
             } else {
-                doc.text(line, 20, yPosition);
+                doc.text(line, 20, yPosition
                 yPosition += lineHeight;
                 line = word + ' ';
             }
         }
         if (line) {
-            doc.text(line, 20, yPosition);
+            doc.text(line, 20, yPosition
         }
     }
 }
 
 function addQuoteSummary(doc, quoteData) {
     // Section title
-    doc.setFontSize(16);
-    doc.setFont('helvetica', 'bold');
-    doc.setTextColor(17, 24, 39);
-    doc.text('Quote Summary', 20, 30);
+    doc.setFontSize(16
+    doc.setFont('helvetica', 'bold'
+    doc.setTextColor(17, 24, 39
+    doc.text('Quote Summary', 20, 30
     
     // Get selected items
-    const selectedPackage = window.quoteSystem.packages.find(p => p.id === quoteData.selectedPackage);
+    const selectedPackage = window.quoteSystem.packages.find(p => p.id === quoteData.selectedPackage
     const selectedFeatures = quoteData.selectedAdditionalFeatures.map(featureId => {
-        return window.quoteSystem.additionalFeatures.find(f => f.id === featureId);
-    }).filter(Boolean);
+        return window.quoteSystem.additionalFeatures.find(f => f.id === featureId
+    }).filter(Boolean
     
     const selectedAddons = quoteData.selectedAddonServices.map(addonId => {
-        return window.quoteSystem.addonServices.find(a => a.id === addonId);
-    }).filter(Boolean);
+        return window.quoteSystem.addonServices.find(a => a.id === addonId
+    }).filter(Boolean
     
     // Summary table
-    doc.setFontSize(11);
-    doc.setFont('helvetica', 'normal');
-    doc.setTextColor(55, 65, 81);
+    doc.setFontSize(11
+    doc.setFont('helvetica', 'normal'
+    doc.setTextColor(55, 65, 81
     
     let yPosition = 50;
     const lineHeight = 8;
     
     // Base package
-    doc.text('Base Package:', 20, yPosition);
-    doc.text(selectedPackage ? selectedPackage.name : 'Basic Package', 80, yPosition);
-    doc.text('$1,200', 160, yPosition);
+    doc.text('Base Package:', 20, yPosition
+    doc.text(selectedPackage ? selectedPackage.name : 'Basic Package', 80, yPosition
+    doc.text('$1,200', 160, yPosition
     yPosition += lineHeight;
     
     // Additional features
     if (selectedFeatures.length > 0) {
         yPosition += lineHeight;
-        doc.setFont('helvetica', 'bold');
-        doc.text('Additional Features:', 20, yPosition);
+        doc.setFont('helvetica', 'bold'
+        doc.text('Additional Features:', 20, yPosition
         yPosition += lineHeight;
-        doc.setFont('helvetica', 'normal');
+        doc.setFont('helvetica', 'normal'
         
         let featuresTotal = 0;
         for (let feature of selectedFeatures) {
-            doc.text(`• ${feature.name}`, 30, yPosition);
-            doc.text(`$${feature.price}`, 160, yPosition);
+            doc.text(`• ${feature.name}`, 30, yPosition
+            doc.text(`$${feature.price}`, 160, yPosition
             yPosition += lineHeight;
             featuresTotal += feature.price;
         }
         
-        doc.setFont('helvetica', 'bold');
-        doc.text('Features Subtotal:', 20, yPosition);
-        doc.text(`$${featuresTotal}`, 160, yPosition);
+        doc.setFont('helvetica', 'bold'
+        doc.text('Features Subtotal:', 20, yPosition
+        doc.text(`$${featuresTotal}`, 160, yPosition
         yPosition += lineHeight;
     }
     
     // Add-on services
     if (selectedAddons.length > 0) {
         yPosition += lineHeight;
-        doc.setFont('helvetica', 'bold');
-        doc.text('Add-on Services:', 20, yPosition);
+        doc.setFont('helvetica', 'bold'
+        doc.text('Add-on Services:', 20, yPosition
         yPosition += lineHeight;
-        doc.setFont('helvetica', 'normal');
+        doc.setFont('helvetica', 'normal'
         
         let addonsTotal = 0;
         for (let addon of selectedAddons) {
-            doc.text(`• ${addon.name}`, 30, yPosition);
-            doc.text(`$${addon.price}`, 160, yPosition);
+            doc.text(`• ${addon.name}`, 30, yPosition
+            doc.text(`$${addon.price}`, 160, yPosition
             yPosition += lineHeight;
             addonsTotal += addon.price;
         }
         
-        doc.setFont('helvetica', 'bold');
-        doc.text('Add-ons Subtotal:', 20, yPosition);
-        doc.text(`$${addonsTotal}`, 160, yPosition);
+        doc.setFont('helvetica', 'bold'
+        doc.text('Add-ons Subtotal:', 20, yPosition
+        doc.text(`$${addonsTotal}`, 160, yPosition
         yPosition += lineHeight;
     }
     
     // Total
     yPosition += lineHeight;
-    doc.setFontSize(14);
-    doc.setFont('helvetica', 'bold');
-    doc.setTextColor(59, 130, 246);
-    doc.text('TOTAL:', 20, yPosition);
-    doc.text(`$${quoteData.totalPrice.toLocaleString()}`, 160, yPosition);
+    doc.setFontSize(14
+    doc.setFont('helvetica', 'bold'
+    doc.setTextColor(59, 130, 246
+    doc.text('TOTAL:', 20, yPosition
+    doc.text(`$${quoteData.totalPrice.toLocaleString()}`, 160, yPosition
     
     // Add decorative line
-    doc.setDrawColor(59, 130, 246);
-    doc.setLineWidth(0.5);
-    doc.line(20, yPosition + 5, 190, yPosition + 5);
+    doc.setDrawColor(59, 130, 246
+    doc.setLineWidth(0.5
+    doc.line(20, yPosition + 5, 190, yPosition + 5
 }
 
 function addSelectedItems(doc, quoteData) {
-    doc.addPage();
+    doc.addPage(
     
     // Section title
-    doc.setFontSize(16);
-    doc.setFont('helvetica', 'bold');
-    doc.setTextColor(17, 24, 39);
-    doc.text('Selected Services & Features', 20, 30);
+    doc.setFontSize(16
+    doc.setFont('helvetica', 'bold'
+    doc.setTextColor(17, 24, 39
+    doc.text('Selected Services & Features', 20, 30
     
     let yPosition = 50;
     const lineHeight = 8;
     
     // Base package details
-    const selectedPackage = window.quoteSystem.packages.find(p => p.id === quoteData.selectedPackage);
+    const selectedPackage = window.quoteSystem.packages.find(p => p.id === quoteData.selectedPackage
     if (selectedPackage) {
-        doc.setFontSize(12);
-        doc.setFont('helvetica', 'bold');
-        doc.setTextColor(34, 197, 94);
-        doc.text('Base Package:', 20, yPosition);
+        doc.setFontSize(12
+        doc.setFont('helvetica', 'bold'
+        doc.setTextColor(34, 197, 94
+        doc.text('Base Package:', 20, yPosition
         yPosition += lineHeight;
         
-        doc.setFontSize(10);
-        doc.setFont('helvetica', 'normal');
-        doc.setTextColor(55, 65, 81);
-        doc.text(selectedPackage.name, 30, yPosition);
+        doc.setFontSize(10
+        doc.setFont('helvetica', 'normal'
+        doc.setTextColor(55, 65, 81
+        doc.text(selectedPackage.name, 30, yPosition
         yPosition += lineHeight;
         
         // Package description
-        const words = selectedPackage.description.split(' ');
+        const words = selectedPackage.description.split(' '
         let line = '';
         for (let word of words) {
             const testLine = line + word + ' ';
             if (doc.getTextWidth(testLine) < 150) {
                 line = testLine;
             } else {
-                doc.text(line, 30, yPosition);
+                doc.text(line, 30, yPosition
                 yPosition += lineHeight;
                 line = word + ' ';
             }
         }
         if (line) {
-            doc.text(line, 30, yPosition);
+            doc.text(line, 30, yPosition
             yPosition += lineHeight;
         }
     }
     
     // Additional features
     const selectedFeatures = quoteData.selectedAdditionalFeatures.map(featureId => {
-        return window.quoteSystem.additionalFeatures.find(f => f.id === featureId);
-    }).filter(Boolean);
+        return window.quoteSystem.additionalFeatures.find(f => f.id === featureId
+    }).filter(Boolean
     
     if (selectedFeatures.length > 0) {
         yPosition += lineHeight;
-        doc.setFontSize(12);
-        doc.setFont('helvetica', 'bold');
-        doc.setTextColor(59, 130, 246);
-        doc.text('Additional Features:', 20, yPosition);
+        doc.setFontSize(12
+        doc.setFont('helvetica', 'bold'
+        doc.setTextColor(59, 130, 246
+        doc.text('Additional Features:', 20, yPosition
         yPosition += lineHeight;
         
         for (let feature of selectedFeatures) {
-            doc.setFontSize(10);
-            doc.setFont('helvetica', 'bold');
-            doc.setTextColor(55, 65, 81);
-            doc.text(`• ${feature.name} - $${feature.price}`, 30, yPosition);
+            doc.setFontSize(10
+            doc.setFont('helvetica', 'bold'
+            doc.setTextColor(55, 65, 81
+            doc.text(`• ${feature.name} - $${feature.price}`, 30, yPosition
             yPosition += lineHeight;
             
-            doc.setFont('helvetica', 'normal');
-            const words = feature.description.split(' ');
+            doc.setFont('helvetica', 'normal'
+            const words = feature.description.split(' '
             let line = '';
             for (let word of words) {
                 const testLine = line + word + ' ';
                 if (doc.getTextWidth(testLine) < 150) {
                     line = testLine;
                 } else {
-                    doc.text(line, 40, yPosition);
+                    doc.text(line, 40, yPosition
                     yPosition += lineHeight;
                     line = word + ' ';
                 }
             }
             if (line) {
-                doc.text(line, 40, yPosition);
+                doc.text(line, 40, yPosition
                 yPosition += lineHeight;
             }
             yPosition += lineHeight;
@@ -3938,39 +3924,39 @@ function addSelectedItems(doc, quoteData) {
     
     // Add-on services
     const selectedAddons = quoteData.selectedAddonServices.map(addonId => {
-        return window.quoteSystem.addonServices.find(a => a.id === addonId);
-    }).filter(Boolean);
+        return window.quoteSystem.addonServices.find(a => a.id === addonId
+    }).filter(Boolean
     
     if (selectedAddons.length > 0) {
         yPosition += lineHeight;
-        doc.setFontSize(12);
-        doc.setFont('helvetica', 'bold');
-        doc.setTextColor(245, 158, 11); // Orange color
-        doc.text('Add-on Services:', 20, yPosition);
+        doc.setFontSize(12
+        doc.setFont('helvetica', 'bold'
+        doc.setTextColor(245, 158, 11 // Orange color
+        doc.text('Add-on Services:', 20, yPosition
         yPosition += lineHeight;
         
         for (let addon of selectedAddons) {
-            doc.setFontSize(10);
-            doc.setFont('helvetica', 'bold');
-            doc.setTextColor(55, 65, 81);
-            doc.text(`• ${addon.name} - $${addon.price}`, 30, yPosition);
+            doc.setFontSize(10
+            doc.setFont('helvetica', 'bold'
+            doc.setTextColor(55, 65, 81
+            doc.text(`• ${addon.name} - $${addon.price}`, 30, yPosition
             yPosition += lineHeight;
             
-            doc.setFont('helvetica', 'normal');
-            const words = addon.description.split(' ');
+            doc.setFont('helvetica', 'normal'
+            const words = addon.description.split(' '
             let line = '';
             for (let word of words) {
                 const testLine = line + word + ' ';
                 if (doc.getTextWidth(testLine) < 150) {
                     line = testLine;
                 } else {
-                    doc.text(line, 40, yPosition);
+                    doc.text(line, 40, yPosition
                     yPosition += lineHeight;
                     line = word + ' ';
                 }
             }
             if (line) {
-                doc.text(line, 40, yPosition);
+                doc.text(line, 40, yPosition
                 yPosition += lineHeight;
             }
             yPosition += lineHeight;
@@ -3979,18 +3965,18 @@ function addSelectedItems(doc, quoteData) {
 }
 
 function addTermsAndConditions(doc) {
-    doc.addPage();
+    doc.addPage(
     
     // Section title
-    doc.setFontSize(16);
-    doc.setFont('helvetica', 'bold');
-    doc.setTextColor(17, 24, 39);
-    doc.text('Terms & Conditions', 20, 30);
+    doc.setFontSize(16
+    doc.setFont('helvetica', 'bold'
+    doc.setTextColor(17, 24, 39
+    doc.text('Terms & Conditions', 20, 30
     
     // Terms content
-    doc.setFontSize(10);
-    doc.setFont('helvetica', 'normal');
-    doc.setTextColor(55, 65, 81);
+    doc.setFontSize(10
+    doc.setFont('helvetica', 'normal'
+    doc.setTextColor(55, 65, 81
     
     const terms = [
         '1. This quote is valid for 30 days from the date of generation.',
@@ -4009,33 +3995,33 @@ function addTermsAndConditions(doc) {
     const lineHeight = 6;
     
     for (let term of terms) {
-        doc.text(term, 20, yPosition);
+        doc.text(term, 20, yPosition
         yPosition += lineHeight;
     }
 }
 
 function addFooter(doc) {
-    const pageCount = doc.internal.getNumberOfPages();
+    const pageCount = doc.internal.getNumberOfPages(
     
     for (let i = 1; i <= pageCount; i++) {
-        doc.setPage(i);
+        doc.setPage(i
         
         // Footer line
-        doc.setDrawColor(200, 200, 200);
-        doc.setLineWidth(0.1);
-        doc.line(20, 280, 190, 280);
+        doc.setDrawColor(200, 200, 200
+        doc.setLineWidth(0.1
+        doc.line(20, 280, 190, 280
         
         // Footer text
-        doc.setFontSize(8);
-        doc.setFont('helvetica', 'normal');
-        doc.setTextColor(107, 114, 128);
-        doc.text('Anass El - Full-Stack Web Developer | Professional HVAC Website Development', 20, 285);
-        doc.text(`Page ${i} of ${pageCount}`, 170, 285);
+        doc.setFontSize(8
+        doc.setFont('helvetica', 'normal'
+        doc.setTextColor(107, 114, 128
+        doc.text('Anass El - Full-Stack Web Developer | Professional HVAC Website Development', 20, 285
+        doc.text(`Page ${i} of ${pageCount}`, 170, 285
     }
 }
 
 function generateQuoteContent(quoteData) {
-    const selectedPackage = window.quoteSystem.packages.find(p => p.id === quoteData.selectedPackage);
+    const selectedPackage = window.quoteSystem.packages.find(p => p.id === quoteData.selectedPackage
     
     // Calculate timeline based on selections
             let timeline = '18-24 days';
@@ -4046,20 +4032,20 @@ function generateQuoteContent(quoteData) {
     // Add days for additional features
     const additionalFeatures = quoteData.selectedAdditionalFeatures.length;
     if (additionalFeatures > 0) {
-        const additionalDays = Math.ceil(additionalFeatures / 2);
-        const baseDays = parseInt(timeline.match(/(\d+)/)[1]);
+        const additionalDays = Math.ceil(additionalFeatures / 2
+        const baseDays = parseInt(timeline.match(/(\d+)/)[1]
         const totalDays = baseDays + additionalDays;
         timeline = `${totalDays}-${totalDays + 2} days`;
     }
     
     // Get selected features and addon services
     const selectedFeatures = quoteData.selectedAdditionalFeatures.map(featureId => {
-        return window.quoteSystem.additionalFeatures.find(f => f.id === featureId);
-    }).filter(Boolean);
+        return window.quoteSystem.additionalFeatures.find(f => f.id === featureId
+    }).filter(Boolean
     
     const selectedAddons = quoteData.selectedAddonServices.map(addonId => {
-        return window.quoteSystem.addonServices.find(a => a.id === addonId);
-    }).filter(Boolean);
+        return window.quoteSystem.addonServices.find(a => a.id === addonId
+    }).filter(Boolean
     
     return `
         <div class="quote-content">
@@ -4519,303 +4505,300 @@ window.addEventListener('scroll', function() {
     window.userHasScrolled = true;
     
     // Clear existing timeout
-    clearTimeout(scrollTimeout);
+    clearTimeout(scrollTimeout
     
     // Reset the flag after 2 seconds of no scrolling
     scrollTimeout = setTimeout(() => {
         window.userHasScrolled = false;
-    }, 2000);
-});
+    }, 2000
+}
 
 document.addEventListener('DOMContentLoaded', function() {
     // Initialize quote system
-    window.quoteSystem = new QuoteSystem();
+    window.quoteSystem = new QuoteSystem(
     
     // Ensure summary is updated after everything is loaded
     setTimeout(() => {
         if (window.quoteSystem) {
-            window.quoteSystem.updateSummary();
-            window.quoteSystem.updateGenerateButton();
+            window.quoteSystem.updateSummary(
+            window.quoteSystem.updateGenerateButton(
             
             // Force price display
-            const summaryTotalElement = document.getElementById('summaryTotal');
+            const summaryTotalElement = document.getElementById('summaryTotal'
             if (summaryTotalElement) {
-                const currentPrice = window.quoteSystem.calculateTotalPrice();
+                const currentPrice = window.quoteSystem.calculateTotalPrice(
                 summaryTotalElement.textContent = `$${currentPrice.toLocaleString()}`;
             }
             
             }
-    }, 100);
+    }, 100
     
     // Also update summary when window is fully loaded
     window.addEventListener('load', function() {
         setTimeout(() => {
             if (window.quoteSystem) {
-                window.quoteSystem.updateSummary();
-                window.quoteSystem.updateGenerateButton();
+                window.quoteSystem.updateSummary(
+                window.quoteSystem.updateGenerateButton(
                 
                 // Force price display
-                const summaryTotalElement = document.getElementById('summaryTotal');
+                const summaryTotalElement = document.getElementById('summaryTotal'
                 if (summaryTotalElement) {
-                    const currentPrice = window.quoteSystem.calculateTotalPrice();
+                    const currentPrice = window.quoteSystem.calculateTotalPrice(
                     summaryTotalElement.textContent = `$${currentPrice.toLocaleString()}`;
                 }
                 
                 }
-        }, 200);
-    });
+        }, 200
+    }
     
     // Update summary when page becomes visible (returning from About Us page)
     document.addEventListener('visibilitychange', function() {
         if (!document.hidden && window.quoteSystem) {
             setTimeout(() => {
                 // Force reload from localStorage and restore UI state
-                window.quoteSystem.loadFromLocalStorage();
-                window.quoteSystem.restoreUIState();
-                window.quoteSystem.updateSummary();
-                window.quoteSystem.updateGenerateButton();
+                window.quoteSystem.loadFromLocalStorage(
+                window.quoteSystem.restoreUIState(
+                window.quoteSystem.updateSummary(
+                window.quoteSystem.updateGenerateButton(
                 
                 // Force price display
-                const summaryTotalElement = document.getElementById('summaryTotal');
+                const summaryTotalElement = document.getElementById('summaryTotal'
                 if (summaryTotalElement) {
-                    const currentPrice = window.quoteSystem.calculateTotalPrice();
+                    const currentPrice = window.quoteSystem.calculateTotalPrice(
                     summaryTotalElement.textContent = `$${currentPrice.toLocaleString()}`;
                 }
                 
-                }, 100);
+                }, 100
         }
-    });
+    }
     
     // Update summary when page gains focus (alternative method)
     window.addEventListener('focus', function() {
         if (window.quoteSystem) {
             setTimeout(() => {
                 // Force reload from localStorage and restore UI state
-                window.quoteSystem.loadFromLocalStorage();
-                window.quoteSystem.restoreUIState();
-                window.quoteSystem.updateSummary();
-                window.quoteSystem.updateGenerateButton();
+                window.quoteSystem.loadFromLocalStorage(
+                window.quoteSystem.restoreUIState(
+                window.quoteSystem.updateSummary(
+                window.quoteSystem.updateGenerateButton(
                 
                 // Force price display
-                const summaryTotalElement = document.getElementById('summaryTotal');
+                const summaryTotalElement = document.getElementById('summaryTotal'
                 if (summaryTotalElement) {
-                    const currentPrice = window.quoteSystem.calculateTotalPrice();
+                    const currentPrice = window.quoteSystem.calculateTotalPrice(
                     summaryTotalElement.textContent = `$${currentPrice.toLocaleString()}`;
                 }
                 
-                }, 100);
+                }, 100
         }
-    });
+    }
     
     // Update summary when page is shown (including back navigation)
     window.addEventListener('pageshow', function(event) {
         if (window.quoteSystem) {
             setTimeout(() => {
                 // Force reload from localStorage and restore UI state
-                window.quoteSystem.loadFromLocalStorage();
-                window.quoteSystem.restoreUIState();
-                window.quoteSystem.updateSummary();
-                window.quoteSystem.updateGenerateButton();
+                window.quoteSystem.loadFromLocalStorage(
+                window.quoteSystem.restoreUIState(
+                window.quoteSystem.updateSummary(
+                window.quoteSystem.updateGenerateButton(
                 
                 // Force price display
-                const summaryTotalElement = document.getElementById('summaryTotal');
+                const summaryTotalElement = document.getElementById('summaryTotal'
                 if (summaryTotalElement) {
-                    const currentPrice = window.quoteSystem.calculateTotalPrice();
+                    const currentPrice = window.quoteSystem.calculateTotalPrice(
                     summaryTotalElement.textContent = `$${currentPrice.toLocaleString()}`;
                 }
                 
-                }, 100);
+                }, 100
         }
-    });
+    }
     
     // Only scroll to top on page refresh/reload
     if (performance.navigation.type === 1) {
         // Page was refreshed/reloaded
-        scrollToTop();
+        scrollToTop(
         
         // Also scroll to top when window loads completely
         window.addEventListener('load', function() {
-            scrollToTop();
-        });
+            scrollToTop(
+        }
         
         // Single additional scroll to top after a delay
-        setTimeout(() => scrollToTop(), 1000);
+        setTimeout(() => scrollToTop(), 1000
     }
     
     // Initialize modal functionality
 
     
     // Component tab functionality
-    const tabBtns = document.querySelectorAll('.tab-btn');
+    const tabBtns = document.querySelectorAll('.tab-btn'
     tabBtns.forEach(btn => {
         btn.addEventListener('click', function() {
             const tabName = this.dataset.tab;
             
             // Remove active class from all buttons
-            tabBtns.forEach(b => b.classList.remove('active'));
+            tabBtns.forEach(b => b.classList.remove('active')
             
             // Add active class to clicked button
-            this.classList.add('active');
+            this.classList.add('active'
             
             // Hide all tab contents
             document.querySelectorAll('.tab-content').forEach(content => {
-                content.classList.remove('active');
-            });
+                content.classList.remove('active'
+            }
             
             // Show selected tab content
-            const selectedContent = document.getElementById(`${tabName}-tab`);
+            const selectedContent = document.getElementById(`${tabName}-tab`
             if (selectedContent) {
-                selectedContent.classList.add('active');
+                selectedContent.classList.add('active'
             }
-        });
-    });
+        }
+    }
     
     // Mobile menu toggle
-    const mobileMenuToggle = document.getElementById('mobileMenuToggle');
-    const navList = document.querySelector('.nav-list');
+    const mobileMenuToggle = document.getElementById('mobileMenuToggle'
+    const navList = document.querySelector('.nav-list'
     
     if (mobileMenuToggle && navList) {
         mobileMenuToggle.addEventListener('click', function() {
-            navList.classList.toggle('active');
-            this.classList.toggle('active');
-        });
+            navList.classList.toggle('active'
+            this.classList.toggle('active'
+        }
     }
     
     // Get Started button scroll functionality
-    const getStartedBtn = document.querySelector('.hero-btn-primary');
+    const getStartedBtn = document.querySelector('.hero-btn-primary'
     if (getStartedBtn) {
         getStartedBtn.addEventListener('click', function() {
-            const heroSection = document.querySelector('.hero-section');
+            const heroSection = document.querySelector('.hero-section'
             if (heroSection) {
                 const heroBottom = heroSection.offsetTop + heroSection.offsetHeight;
                 window.scrollTo({
                     top: heroBottom,
                     behavior: 'smooth'
-                });
+                }
                 
                 // Update quote summary after scrolling
                 setTimeout(() => {
                     if (window.quoteSystem) {
-                        window.quoteSystem.updateSummary();
+                        window.quoteSystem.updateSummary(
                         }
-                }, 500);
+                }, 500
             }
-        });
+        }
     }
     
     // Learn More button functionality
-    const learnMoreBtn = document.querySelector('.hero-btn-secondary');
+    const learnMoreBtn = document.querySelector('.hero-btn-secondary'
     if (learnMoreBtn) {
         learnMoreBtn.addEventListener('click', function() {
             window.location.href = 'about-us.html';
-        });
+        }
     }
-});
+}
 
 // Helper functions for validation
 function isValidEmail(email) {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    return emailRegex.test(email);
+    return emailRegex.test(email
 }
 
 function isValidPhone(phone) {
     // Remove all non-digit characters except + at the beginning
-    const cleaned = phone.replace(/[^\d+]/g, '');
+    const cleaned = phone.replace(/[^\d+]/g, ''
     // Must start with + or digit, have 7-15 digits total
     const phoneRegex = /^[\+]?[1-9][\d]{6,14}$/;
-    return phoneRegex.test(cleaned);
+    return phoneRegex.test(cleaned
 }
 
 // Add missing toggle methods for simplified system
 QuoteSystem.prototype.toggleAdditionalFeature = function(card) {
     const featureId = card.dataset.featureId;
     if (!featureId) return;
-    
-    );
+
     
     if (this.selectedAdditionalFeatures.has(featureId)) {
-        this.selectedAdditionalFeatures.delete(featureId);
-        card.classList.remove('selected');
+        this.selectedAdditionalFeatures.delete(featureId
+        card.classList.remove('selected'
         } else {
-        this.selectedAdditionalFeatures.add(featureId);
-        card.classList.add('selected');
+        this.selectedAdditionalFeatures.add(featureId
+        card.classList.add('selected'
         }
     
     // Update visual state
-    this.updateAdditionalFeatureVisualState(card, featureId);
+    this.updateAdditionalFeatureVisualState(card, featureId
     
     // Re-render and update
-    this.virtualRenderer.queueRender(() => this.renderAdditionalFeatures(), 'normal');
-    this.saveToLocalStorage();
-    this.updateSummary();
-    this.updateGenerateButton();
+    this.virtualRenderer.queueRender(() => this.renderAdditionalFeatures(), 'normal'
+    this.saveToLocalStorage(
+    this.updateSummary(
+    this.updateGenerateButton(
     
     // Show user feedback
-    const feature = this.additionalFeatures.find(f => f.id === featureId);
+    const feature = this.additionalFeatures.find(f => f.id === featureId
     if (feature) {
         const action = this.selectedAdditionalFeatures.has(featureId) ? 'added' : 'removed';
-        this.showNotification(`${feature.name} ${action} to your quote`, 'success');
+        this.showNotification(`${feature.name} ${action} to your quote`, 'success'
     }
 };
 
 QuoteSystem.prototype.updateAdditionalFeatureVisualState = function(card, featureId) {
-    const isSelected = this.selectedAdditionalFeatures.has(featureId);
-    const isIncluded = card.classList.contains('included-in-package');
+    const isSelected = this.selectedAdditionalFeatures.has(featureId
+    const isIncluded = card.classList.contains('included-in-package'
     
     // Update card classes
     if (isSelected) {
-        card.classList.add('selected');
-        card.classList.remove('not-selected');
+        card.classList.add('selected'
+        card.classList.remove('not-selected'
     } else {
-        card.classList.remove('selected');
-        card.classList.add('not-selected');
+        card.classList.remove('selected'
+        card.classList.add('not-selected'
     }
     
     // Update badges
-    const existingBadges = card.querySelectorAll('.included-badge, .selected-badge, .not-selected-badge');
-    existingBadges.forEach(badge => badge.remove());
+    const existingBadges = card.querySelectorAll('.included-badge, .selected-badge, .not-selected-badge'
+    existingBadges.forEach(badge => badge.remove()
     
     if (isIncluded) {
-        card.insertAdjacentHTML('beforeend', '<div class="included-badge">Included</div>');
+        card.insertAdjacentHTML('beforeend', '<div class="included-badge">Included</div>'
     } else if (isSelected) {
-        card.insertAdjacentHTML('beforeend', '<div class="selected-badge">Selected</div>');
+        card.insertAdjacentHTML('beforeend', '<div class="selected-badge">Selected</div>'
     } else {
-        card.insertAdjacentHTML('beforeend', '<div class="not-selected-badge">Not Selected</div>');
+        card.insertAdjacentHTML('beforeend', '<div class="not-selected-badge">Not Selected</div>'
     }
 };
 
 QuoteSystem.prototype.toggleAddonService = function(serviceId, card = null) {
     // If no card provided, try to find it
     if (!card) {
-        card = document.querySelector(`[data-service-id="${serviceId}"]`);
+        card = document.querySelector(`[data-service-id="${serviceId}"]`
     }
     if (!card) {
         return;
     }
-    
-    );
+
     
     if (this.selectedAddonServices.has(serviceId)) {
-        this.selectedAddonServices.delete(serviceId);
-        card.classList.remove('selected');
+        this.selectedAddonServices.delete(serviceId
+        card.classList.remove('selected'
         } else {
-        this.selectedAddonServices.add(serviceId);
-        card.classList.add('selected');
+        this.selectedAddonServices.add(serviceId
+        card.classList.add('selected'
         }
-    
-    );
+
     
     // Re-render to update the UI
-    this.virtualRenderer.queueRender(() => this.renderAddonServices(), 'normal');
-    this.saveToLocalStorage();
-    this.updateSummary();
-    this.updateGenerateButton();
+    this.virtualRenderer.queueRender(() => this.renderAddonServices(), 'normal'
+    this.saveToLocalStorage(
+    this.updateSummary(
+    this.updateGenerateButton(
     
     // Show user feedback
-    const service = this.addonServices.find(s => s.id === serviceId);
+    const service = this.addonServices.find(s => s.id === serviceId
     if (service) {
         const action = this.selectedAddonServices.has(serviceId) ? 'added' : 'removed';
-        this.showNotification(`${service.name} ${action} to your quote`, 'success');
+        this.showNotification(`${service.name} ${action} to your quote`, 'success'
     }
 };
 
@@ -4823,8 +4806,8 @@ QuoteSystem.prototype.toggleAddonService = function(serviceId, card = null) {
 
 // Initialize scroll to quote summary button
 document.addEventListener('DOMContentLoaded', function() {
-    const scrollBtn = document.getElementById('scrollToQuoteSummary');
-    const quoteSidebar = document.querySelector('.quote-sidebar');
+    const scrollBtn = document.getElementById('scrollToQuoteSummary'
+    const quoteSidebar = document.querySelector('.quote-sidebar'
     
     if (!scrollBtn || !quoteSidebar) return;
     
@@ -4836,43 +4819,46 @@ document.addEventListener('DOMContentLoaded', function() {
         
         // Show button when user scrolls past the quote sidebar
         if (scrollPosition > quoteSidebarTop - windowHeight + 100) {
-            scrollBtn.classList.add('show');
+            scrollBtn.classList.add('show'
         } else {
-            scrollBtn.classList.remove('show');
+            scrollBtn.classList.remove('show'
         }
     }
     
     // Smooth scroll to quote summary
     function scrollToQuoteSummary() {
-        const quoteSidebar = document.querySelector('.quote-sidebar');
-        const fixedQuoteSummary = document.getElementById('fixedQuoteSummary');
+        const quoteSidebar = document.querySelector('.quote-sidebar'
+        const fixedQuoteSummary = document.getElementById('fixedQuoteSummary'
         
         // Check if device is mobile
         const isMobile = window.innerWidth <= 768;
         
         if (isMobile && fixedQuoteSummary) {
             // On mobile, show the fixed quote summary
-            fixedQuoteSummary.classList.add('show');
-            const fixedSummaryContent = document.getElementById('fixedSummaryContent');
-            const fixedSummaryToggle = document.getElementById('fixedSummaryToggle');
+            fixedQuoteSummary.classList.add('show'
+            const fixedSummaryContent = document.getElementById('fixedSummaryContent'
+            const fixedSummaryToggle = document.getElementById('fixedSummaryToggle'
             if (fixedSummaryContent && fixedSummaryToggle) {
                 fixedSummaryContent.style.maxHeight = '180px';
-                fixedSummaryToggle.setAttribute('aria-expanded', 'true');
+                fixedSummaryToggle.setAttribute('aria-expanded', 'true'
             }
             
-            // Scroll to bottom to ensure visibility
-            const targetPosition = document.body.scrollHeight - window.innerHeight;
+            // On mobile, just scroll down a reasonable amount instead of to the very bottom
+            const currentScroll = window.pageYOffset;
+            const reasonableScrollDistance = Math.min(300, window.innerHeight * 0.3 // Max 300px or 30% of viewport
+            const targetPosition = Math.min(currentScroll + reasonableScrollDistance, document.body.scrollHeight - window.innerHeight
+            
             window.scrollTo({
                 top: targetPosition,
                 behavior: 'smooth'
-            });
+            }
             
             // Add highlight effect to fixed summary
             fixedQuoteSummary.style.transition = 'box-shadow 0.3s ease';
             fixedQuoteSummary.style.boxShadow = '0 0 30px rgba(59, 130, 246, 0.3)';
             setTimeout(() => {
                 fixedQuoteSummary.style.boxShadow = '';
-            }, 2000);
+            }, 2000
             
             return;
         }
@@ -4882,12 +4868,12 @@ document.addEventListener('DOMContentLoaded', function() {
         // Desktop behavior
         const targetPosition = quoteSidebar.offsetTop - 20;
         // Ensure we don't scroll beyond the document bounds
-        const finalTargetPosition = Math.max(0, Math.min(targetPosition, document.body.scrollHeight - window.innerHeight));
+        const finalTargetPosition = Math.max(0, Math.min(targetPosition, document.body.scrollHeight - window.innerHeight)
         // Smooth scroll to the target position
         window.scrollTo({
             top: finalTargetPosition,
             behavior: 'smooth'
-        });
+        }
         
         // Add a subtle highlight effect to the quote sidebar
         quoteSidebar.style.transition = 'box-shadow 0.3s ease';
@@ -4896,24 +4882,24 @@ document.addEventListener('DOMContentLoaded', function() {
         // Remove the highlight after animation
         setTimeout(() => {
             quoteSidebar.style.boxShadow = '';
-        }, 2000);
+        }, 2000
     }
     
     // Event listeners
-    window.addEventListener('scroll', toggleScrollButton);
-    scrollBtn.addEventListener('click', scrollToQuoteSummary);
+    window.addEventListener('scroll', toggleScrollButton
+    scrollBtn.addEventListener('click', scrollToQuoteSummary
     
     // Initialize button state
-    toggleScrollButton();
+    toggleScrollButton(
     
     // Add keyboard support
     document.addEventListener('keydown', function(e) {
         // Ctrl/Cmd + Up arrow to scroll to quote summary
         if ((e.ctrlKey || e.metaKey) && e.key === 'ArrowUp') {
-            e.preventDefault();
-            scrollToQuoteSummary();
+            e.preventDefault(
+            scrollToQuoteSummary(
         }
-    });
+    }
     
     // Add touch support for mobile
     let touchStartY = 0;
@@ -4921,7 +4907,7 @@ document.addEventListener('DOMContentLoaded', function() {
     
     document.addEventListener('touchstart', function(e) {
         touchStartY = e.touches[0].clientY;
-    });
+    }
     
     document.addEventListener('touchend', function(e) {
         touchEndY = e.changedTouches[0].clientY;
@@ -4929,17 +4915,17 @@ document.addEventListener('DOMContentLoaded', function() {
         
         // Swipe up gesture to scroll to quote summary (if button is visible)
         if (touchDiff > 50 && scrollBtn.classList.contains('show')) {
-            scrollToQuoteSummary();
+            scrollToQuoteSummary(
         }
-    });
-});
+    }
+}
 
 // ===== FIXED BOTTOM QUOTE SUMMARY FUNCTIONALITY =====
 
 document.addEventListener('DOMContentLoaded', function() {
-    const fixedQuoteSummary = document.getElementById('fixedQuoteSummary');
-    const fixedSummaryToggle = document.getElementById('fixedSummaryToggle');
-    const fixedSummaryContent = document.getElementById('fixedSummaryContent');
+    const fixedQuoteSummary = document.getElementById('fixedQuoteSummary'
+    const fixedSummaryToggle = document.getElementById('fixedSummaryToggle'
+    const fixedSummaryContent = document.getElementById('fixedSummaryContent'
     
     if (!fixedQuoteSummary || !fixedSummaryToggle || !fixedSummaryContent) return;
     
@@ -4950,34 +4936,34 @@ document.addEventListener('DOMContentLoaded', function() {
         if (isExpanded) {
             // Collapse
             fixedSummaryContent.style.maxHeight = '0';
-            fixedSummaryToggle.setAttribute('aria-expanded', 'false');
-            fixedQuoteSummary.classList.remove('show');
+            fixedSummaryToggle.setAttribute('aria-expanded', 'false'
+            fixedQuoteSummary.classList.remove('show'
         } else {
             // Expand
             fixedSummaryContent.style.maxHeight = '180px';
-            fixedSummaryToggle.setAttribute('aria-expanded', 'true');
-            fixedQuoteSummary.classList.add('show');
+            fixedSummaryToggle.setAttribute('aria-expanded', 'true'
+            fixedQuoteSummary.classList.add('show'
         }
     }
     
     // Event listener for toggle button
-    fixedSummaryToggle.addEventListener('click', toggleFixedSummary);
+    fixedSummaryToggle.addEventListener('click', toggleFixedSummary
     
     // Show fixed summary when items are selected (mobile only)
     function showFixedSummaryIfMobile() {
         if (window.innerWidth <= 768) {
-            fixedQuoteSummary.classList.add('show');
+            fixedQuoteSummary.classList.add('show'
             fixedSummaryContent.style.maxHeight = '180px';
-            fixedSummaryToggle.setAttribute('aria-expanded', 'true');
+            fixedSummaryToggle.setAttribute('aria-expanded', 'true'
         }
     }
     
     // Hide fixed summary when no items are selected (mobile only)
     function hideFixedSummaryIfMobile() {
         if (window.innerWidth <= 768) {
-            fixedQuoteSummary.classList.remove('show');
+            fixedQuoteSummary.classList.remove('show'
             fixedSummaryContent.style.maxHeight = '0';
-            fixedSummaryToggle.setAttribute('aria-expanded', 'false');
+            fixedSummaryToggle.setAttribute('aria-expanded', 'false'
         }
     }
     
@@ -4987,9 +4973,9 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Auto-show on mobile when page loads if there are selected items
     setTimeout(() => {
-        const selectedItems = document.querySelectorAll('.selected-item');
+        const selectedItems = document.querySelectorAll('.selected-item'
         if (selectedItems.length > 0 && window.innerWidth <= 768) {
-            showFixedSummaryIfMobile();
+            showFixedSummaryIfMobile(
         }
-    }, 1000);
-});
+    }, 1000
+}
