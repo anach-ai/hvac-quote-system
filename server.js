@@ -75,8 +75,6 @@ app.use(validateInput);
 
 // Security error handling middleware
 app.use((err, req, res, next) => {
-    console.error('Security Error:', err);
-    
     // Don't leak error details in production
     if (securityConfig.nodeEnv === 'production') {
         res.status(500).json({ 
@@ -763,10 +761,7 @@ app.use('*', (req, res) => {
 
 // Start server
 app.listen(PORT, () => {
-    console.log(`🚀 HVAC & Appliance Repair Quote System running on http://localhost:${PORT}`);
-    console.log(`📋 Quote packages and features available`);
-    console.log(`🔧 Emergency services and service areas configured`);
-});
+    });
 
 module.exports = app;
 
